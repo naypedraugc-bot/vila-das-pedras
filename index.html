@@ -2,193 +2,94 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>💎 Vila das Pedras</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#08060A;--surface:#0F0C14;--card:#161220;--card2:#1C1828;
+  --bg:#08060A;--surface:#0F0C14;--card:#161220;
   --border:rgba(180,140,255,0.08);--border-hover:rgba(200,160,255,0.2);
   --gold:#C9963A;--gold-light:#E8B96A;--gold-pale:rgba(201,150,58,0.1);
-  --purple:#9B59B6;--blue:#3498DB;--teal:#1ABC9C;--pink:#E91E8C;
-  --yellow:#F1C40F;--orange:#E67E22;--dark-gem:#2C2040;
+  --purple:#9B59B6;--blue:#3498DB;--teal:#1ABC9C;
   --text:#F0EAF8;--text-mid:#9080A8;--text-dim:#4A3860;
-  /* Gem colors */
   --ametista:#9B59B6;--sodalita:#2C5FC4;--aguamarinha:#00BCD4;
-  --quartzorosa:#FF69B4;--citrino:#F1C40F;--cornalina:#E64A19;--onix:#2C2C2C;
+  --quartzorosa:#FF69B4;--citrino:#F1C40F;--cornalina:#E64A19;--onix:#555;
+  --sidebar-w:235px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;height:100vh;overflow:hidden;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(155,89,182,0.04),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(52,152,219,0.04),transparent 60%);pointer-events:none;z-index:0;}
 
-/* Stars bg */
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(155,89,182,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(52,152,219,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+/* MOBILE BUTTON */
+.mob-btn{display:none;position:fixed;top:12px;left:12px;z-index:1000;background:var(--surface);border:1px solid var(--border-hover);border-radius:10px;width:42px;height:42px;align-items:center;justify-content:center;cursor:pointer;font-size:19px;color:var(--gold-light);}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(4,3,8,0.85);backdrop-filter:blur(8px);z-index:800;}
+.mob-overlay.open{display:block;}
 
 /* SIDEBAR */
-.sidebar{width:235px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;position:relative;z-index:10;}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;position:relative;z-index:10;transition:transform .3s cubic-bezier(.4,0,.2,1);}
 .sidebar::-webkit-scrollbar{display:none;}
 .sidebar-logo{padding:18px 16px 14px;border-bottom:1px solid var(--border);}
 .sidebar-logo h1{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold-light);letter-spacing:1px;}
-.sidebar-logo p{font-size:9px;color:var(--text-dim);margin-top:2px;letter-spacing:0.5px;}
-
-/* PROFILE SWITCHER */
+.sidebar-logo p{font-size:9px;color:var(--text-dim);margin-top:2px;letter-spacing:.5px;}
 .profile-switcher{padding:10px 12px;border-bottom:1px solid var(--border);}
 .profile-label{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
-.profile-current{background:var(--card);border:1px solid var(--border-hover);border-radius:10px;padding:9px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;width:100%;}
+.profile-current{background:var(--card);border:1px solid var(--border-hover);border-radius:10px;padding:9px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s;width:100%;}
 .profile-current:hover{border-color:var(--gold);}
-.profile-emoji{font-size:16px;}
 .profile-info{flex:1;text-align:left;}
 .profile-name{font-size:11px;font-weight:600;color:var(--text);}
 .profile-niche{font-size:9px;color:var(--text-dim);margin-top:1px;}
-.profile-arrow{font-size:9px;color:var(--text-dim);}
 .profile-dropdown{display:none;margin-top:5px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 .profile-dropdown.open{display:block;}
-.profile-option{display:flex;align-items:center;gap:7px;padding:8px 11px;cursor:pointer;transition:background 0.15s;border:none;background:none;width:100%;text-align:left;}
+.profile-option{display:flex;align-items:center;gap:7px;padding:8px 11px;cursor:pointer;transition:background .15s;border:none;background:none;width:100%;text-align:left;}
 .profile-option:hover,.profile-option.active{background:var(--gold-pale);}
 .profile-add{display:flex;align-items:center;gap:6px;padding:7px 11px;cursor:pointer;border-top:1px solid var(--border);font-size:10px;color:var(--gold);background:none;width:100%;border-left:none;border-right:none;border-bottom:none;}
 .profile-add:hover{background:var(--gold-pale);}
-
 .nav-section{padding:12px 10px 4px;}
 .nav-label{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);padding:0 8px;margin-bottom:3px;}
-.nav-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;cursor:pointer;font-size:11.5px;color:var(--text-mid);border:none;background:none;width:100%;text-align:left;transition:all 0.15s;}
-.nav-item:hover,.nav-item.active{background:rgba(155,89,182,0.12);color:var(--text);}
+.nav-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;cursor:pointer;font-size:11.5px;color:var(--text-mid);border:none;background:none;width:100%;text-align:left;transition:all .15s;}
+.nav-item:hover,.nav-item.active{background:rgba(155,89,182,.12);color:var(--text);}
 .nav-item.active{font-weight:600;color:var(--gold-light);}
 
 /* MAIN */
-.main{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;z-index:5;}
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;z-index:5;min-width:0;}
 .page{display:none;flex:1;overflow:hidden;}
 .page.active{display:flex;flex-direction:column;}
 .page-top{padding:20px 32px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.page-badge{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,150,58,0.25);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:8px;}
-.page-top h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--text);}
+.page-badge{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,150,58,.25);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:8px;}
+.page-top h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;}
 .page-top h2 em{font-style:italic;color:var(--gold-light);}
 .page-top p{font-size:11px;color:var(--text-mid);margin-top:4px;}
-.scroll-area{flex:1;overflow-y:auto;padding:20px 32px 40px;scrollbar-width:thin;scrollbar-color:rgba(155,89,182,0.2) transparent;}
+.scroll-area{flex:1;overflow-y:auto;padding:20px 32px 40px;scrollbar-width:thin;scrollbar-color:rgba(155,89,182,.2) transparent;}
 
-/* DASHBOARD BAR */
-.dash-bar{background:linear-gradient(135deg,rgba(155,89,182,0.08),rgba(52,152,219,0.06));border-bottom:1px solid var(--border);padding:10px 32px;display:flex;align-items:center;gap:16px;flex-shrink:0;}
-.dash-greeting h3{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--text);}
+/* DASH BAR */
+.dash-bar{background:linear-gradient(135deg,rgba(155,89,182,.08),rgba(52,152,219,.06));border-bottom:1px solid var(--border);padding:10px 32px;display:flex;align-items:center;gap:16px;flex-shrink:0;flex-wrap:wrap;}
+.dash-greeting h3{font-family:'Cormorant Garamond',serif;font-size:18px;}
 .dash-greeting h3 em{font-style:italic;color:var(--gold-light);}
 .dash-greeting p{font-size:10px;color:var(--text-mid);margin-top:1px;}
-.dash-cards{display:flex;gap:8px;margin-left:auto;}
-.dash-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+.dash-cards{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
 .dash-card:hover{border-color:var(--border-hover);transform:translateY(-2px);}
 .dash-card-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold-light);}
 .dash-card-info{font-size:9.5px;color:var(--text-mid);}
-.dash-card-title{font-weight:600;color:var(--text);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;}
+.dash-card-title{font-weight:600;color:var(--text);font-size:10px;text-transform:uppercase;letter-spacing:.5px;}
 
-/* PIPELINE */
-.pipeline-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--text);margin-bottom:14px;}
-.pipeline-title span{font-size:10px;color:var(--text-dim);font-style:normal;border-left:1px solid var(--border-hover);padding-left:10px;margin-left:10px;}
-.pipeline{display:flex;align-items:center;overflow-x:auto;padding-bottom:10px;gap:0;scrollbar-width:thin;}
-.pipe-arrow{color:var(--text-dim);font-size:14px;padding:0 8px;flex-shrink:0;margin-top:-18px;}
-
-/* GEM CARDS */
-.gem-card{width:152px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;}
-.gem-card:hover{transform:translateY(-10px) scale(1.04);box-shadow:0 24px 60px rgba(0,0,0,0.6);}
-.gem-num{position:absolute;top:8px;left:8px;background:rgba(8,6,10,0.85);border:1px solid var(--border-hover);color:var(--gold);font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;z-index:2;backdrop-filter:blur(4px);}
-.gem-chakra{position:absolute;top:8px;right:8px;font-size:9px;background:rgba(8,6,10,0.75);border-radius:5px;padding:2px 6px;color:var(--text-mid);z-index:2;backdrop-filter:blur(4px);}
-.gem-visual{width:100%;height:185px;position:relative;overflow:hidden;}
-.gem-visual img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 0.5s ease;display:block;}
-.gem-card:hover .gem-visual img{transform:scale(1.08);}
-.gem-visual-fallback{width:100%;height:185px;display:flex;align-items:center;justify-content:center;font-size:56px;}
-.gem-body{padding:11px 12px 13px;}
-.gem-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--text);}
-.gem-title{font-size:8.5px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin:2px 0 4px;opacity:0.85;}
-.gem-desc{font-size:10px;color:var(--text-mid);line-height:1.4;}
-.gem-card-footer{padding:0 12px 11px;display:flex;gap:5px;}
-.gem-btn{flex:1;font-size:9px;padding:5px 8px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text-mid);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;text-align:center;}
-.gem-btn:hover{border-color:var(--border-hover);color:var(--text);}
-.gem-btn.primary{background:var(--gold-pale);border-color:rgba(201,150,58,0.3);color:var(--gold-light);}
-.gem-btn.primary:hover{background:rgba(201,150,58,0.2);}
-
-/* AGENT PAGE */
-.agent-full-page{flex:1;display:flex;overflow:hidden;}
-.agent-list{width:185px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:12px 10px;overflow-y:auto;}
-.agent-pick{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:9px;cursor:pointer;border:1px solid var(--border);background:none;margin-bottom:6px;transition:all 0.15s;width:100%;text-align:left;}
-.agent-pick:hover{border-color:var(--border-hover);background:rgba(155,89,182,0.08);}
-.agent-pick.selected{border-color:var(--gold);background:var(--gold-pale);}
-.agent-pick-img{width:32px;height:32px;border-radius:8px;object-fit:cover;object-position:top;flex-shrink:0;}
-.agent-pick-emoji{font-size:20px;width:32px;text-align:center;flex-shrink:0;}
-.agent-pick-name{font-size:11px;font-weight:600;color:var(--text);}
-.agent-pick-role{font-size:9px;color:var(--text-dim);}
-.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.chat-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.chat-agent-avatar{width:36px;height:36px;border-radius:10px;object-fit:cover;object-position:top;flex-shrink:0;}
-.chat-agent-emoji{font-size:24px;flex-shrink:0;}
-.chat-agent-info h3{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text);}
-.chat-agent-info p{font-size:9.5px;color:var(--text-mid);font-style:italic;}
-.chat-profile-badge{margin-left:auto;background:var(--gold-pale);border:1px solid rgba(201,150,58,0.25);color:var(--gold);font-size:9.5px;padding:3px 10px;border-radius:7px;font-weight:600;}
-.chat-messages{flex:1;overflow-y:auto;padding:16px 20px;scrollbar-width:thin;scrollbar-color:rgba(155,89,182,0.15) transparent;}
-.msg{margin-bottom:12px;display:flex;gap:8px;animation:msgIn 0.3s ease;}
-@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.msg.user{flex-direction:row-reverse;}
-.msg-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
-.msg.user .msg-avatar{background:var(--gold-pale);border:1px solid var(--gold);}
-.msg.agent .msg-avatar{background:var(--card);border:1px solid var(--border);}
-.msg-bubble{max-width:76%;padding:10px 13px;border-radius:12px;font-size:12px;line-height:1.65;}
-.msg.user .msg-bubble{background:var(--gold-pale);border:1px solid rgba(201,150,58,0.25);color:var(--text);border-radius:12px 12px 4px 12px;}
-.msg.agent .msg-bubble{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:12px 12px 12px 4px;}
-.msg-bubble pre{background:rgba(0,0,0,0.4);border-radius:7px;padding:8px;margin-top:7px;font-size:10.5px;white-space:pre-wrap;}
-.typing{display:flex;gap:4px;padding:5px 0;}
-.typing span{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:bounce 1.2s infinite;}
-.typing span:nth-child(2){animation-delay:0.2s}.typing span:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.chat-input-area{padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0;}
-.quick-actions{display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap;}
-.quick-btn{font-size:10px;padding:4px 10px;border-radius:18px;border:1px solid var(--border);background:none;color:var(--text-mid);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;white-space:nowrap;}
-.quick-btn:hover{border-color:var(--border-hover);color:var(--gold-light);background:rgba(155,89,182,0.1);}
-.chat-input-row{display:flex;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 11px;transition:border-color 0.15s;}
-.chat-input-row:focus-within{border-color:var(--purple);}
-.chat-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:12px;font-family:'DM Sans',sans-serif;resize:none;max-height:90px;}
-.chat-input::placeholder{color:var(--text-dim);}
-.send-btn{background:linear-gradient(135deg,var(--purple),#7B2FBE);border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;align-self:flex-end;transition:opacity 0.15s;}
-.send-btn:hover{opacity:0.85;}
-.send-btn:disabled{background:var(--text-dim);cursor:not-allowed;}
-
-/* TOOL CARDS */
-.tools-page{flex:1;overflow-y:auto;padding:18px 32px 40px;scrollbar-width:thin;}
-.tools-section{margin-bottom:24px;}
-.tools-section-title{font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:9px;}
-.tool-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;gap:6px;}
-.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.4);}
-.tool-card-icon{font-size:24px;}
-.tool-card-name{font-size:12px;font-weight:600;color:var(--text);}
-.tool-card-desc{font-size:10.5px;color:var(--text-mid);line-height:1.5;}
-.tool-card-badge{font-size:8.5px;padding:2px 7px;border-radius:5px;background:var(--gold-pale);color:var(--gold);font-weight:600;display:inline-block;}
-.tool-card-badge.green{background:rgba(26,188,156,0.15);color:#1ABC9C;}
-.tool-card-badge.blue{background:rgba(52,152,219,0.15);color:#6aace7;}
-.tool-card-badge.purple{background:rgba(155,89,182,0.15);color:#C39BD3;}
-.tool-card-badge.red{background:rgba(231,76,60,0.15);color:#e77b6a;}
-.submenu{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px;}
-.sub-card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:10px;cursor:pointer;transition:all 0.15s;text-align:center;}
-.sub-card:hover{border-color:var(--gold);background:var(--gold-pale);}
-.sub-card-icon{font-size:18px;margin-bottom:3px;}
-.sub-card-name{font-size:10px;font-weight:600;color:var(--text);}
-.sub-card-desc{font-size:8.5px;color:var(--text-dim);margin-top:2px;}
-
-/* NOTION CARDS */
-.notion-toolbar{padding:12px 32px;border-bottom:1px solid var(--border);display:flex;gap:7px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
-.filter-btn{padding:4px 12px;border-radius:18px;border:1px solid var(--border);background:none;color:var(--text-mid);font-size:10.5px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;}
-.filter-btn.active,.filter-btn:hover{background:rgba(155,89,182,0.12);border-color:var(--border-hover);color:var(--text);}
-.refresh-btn{margin-left:auto;padding:4px 13px;border-radius:18px;border:1px solid var(--gold);background:var(--gold-pale);color:var(--gold-light);font-size:10.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
-.notion-grid{flex:1;overflow-y:auto;padding:16px 32px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px;align-content:start;scrollbar-width:thin;}
-.notion-card{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
-.notion-card:hover{border-color:var(--border-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.4);}
-.notion-card-top{padding:13px 13px 9px;}
-.notion-card-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4;}
-.notion-card-meta{font-size:10px;color:var(--text-dim);}
-.notion-card-tags{display:flex;gap:5px;padding:0 13px 12px;flex-wrap:wrap;}
-.notion-tag{font-size:8.5px;padding:2px 7px;border-radius:4px;background:var(--gold-pale);color:var(--gold);font-weight:600;}
-.notion-tag.green{background:rgba(26,188,156,0.15);color:#1ABC9C;}
-.notion-tag.red{background:rgba(231,76,60,0.15);color:#e77b6a;}
-.notion-tag.blue{background:rgba(52,152,219,0.15);color:#6aace7;}
-.notion-tag.purple{background:rgba(155,89,182,0.15);color:#C39BD3;}
-.empty-state{grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--text-dim);font-size:12px;}
-.loading-state{grid-column:1/-1;text-align:center;padding:50px 20px;}
-.loading-dots{display:flex;gap:5px;justify-content:center;margin-bottom:9px;}
-.loading-dots span{width:6px;height:6px;background:var(--purple);border-radius:50%;animation:bounce 1.2s infinite;}
-.loading-dots span:nth-child(2){animation-delay:0.2s}.loading-dots span:nth-child(3){animation-delay:0.4s}
+/* CONSELHO CARD */
+.conselho-card{background:var(--card);border:1px solid rgba(201,150,58,.25);border-radius:18px;overflow:hidden;margin-bottom:20px;cursor:pointer;transition:all .3s;}
+.conselho-card:hover{border-color:rgba(201,150,58,.5);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.conselho-img{width:100%;height:300px;object-fit:cover;object-position:top center;display:block;}
+.conselho-body{padding:16px 20px 18px;}
+.conselho-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:4px;}
+.conselho-title em{font-style:italic;color:var(--gold-light);}
+.conselho-desc{font-size:11px;color:var(--text-mid);line-height:1.6;margin-bottom:14px;}
+.conselho-btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.cbtn{padding:9px 18px;border-radius:9px;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;border:none;}
+.cbtn.pri{background:linear-gradient(135deg,var(--purple),#7B2FBE);color:#fff;}
+.cbtn.pri:hover{opacity:.85;}
+.cbtn.sec{background:none;border:1px solid var(--border-hover);color:var(--text-mid);}
+.cbtn.sec:hover{border-color:var(--gold);color:var(--gold);}
+.conselho-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.ctag{font-size:9px;padding:3px 9px;border-radius:5px;background:var(--gold-pale);color:var(--gold);font-weight:600;}
 
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px;}
@@ -196,115 +97,295 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .stat-num{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gold-light);}
 .stat-label{font-size:10px;color:var(--text-mid);margin-top:3px;}
 
-/* CONFIG */
+/* PIPELINE */
+.pipeline-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;margin-bottom:14px;}
+.pipeline-title span{font-size:10px;color:var(--text-dim);font-style:normal;border-left:1px solid var(--border-hover);padding-left:10px;margin-left:10px;}
+.pipeline{display:flex;align-items:center;overflow-x:auto;padding-bottom:10px;gap:0;scrollbar-width:thin;}
+.pipe-arrow{color:var(--text-dim);font-size:14px;padding:0 8px;flex-shrink:0;margin-top:-18px;}
+.gem-card{width:152px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative;}
+.gem-card:hover{transform:translateY(-10px) scale(1.04);box-shadow:0 24px 60px rgba(0,0,0,.6);}
+.gem-num{position:absolute;top:8px;left:8px;background:rgba(8,6,10,.85);border:1px solid var(--border-hover);color:var(--gold);font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;z-index:2;backdrop-filter:blur(4px);}
+.gem-chakra{position:absolute;top:8px;right:8px;font-size:9px;background:rgba(8,6,10,.75);border-radius:5px;padding:2px 6px;color:var(--text-mid);z-index:2;backdrop-filter:blur(4px);}
+.gem-visual{width:100%;height:185px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:56px;}
+.gem-visual img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s;}
+.gem-card:hover .gem-visual img{transform:scale(1.08);}
+.gem-body{padding:11px 12px 13px;}
+.gem-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;}
+.gem-guardian{font-size:8.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin:2px 0 4px;opacity:.85;}
+.gem-desc{font-size:10px;color:var(--text-mid);line-height:1.4;}
+
+/* AGENT PAGE */
+.agent-full-page{flex:1;display:flex;overflow:hidden;}
+.agent-list{width:185px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:12px 10px;overflow-y:auto;}
+.agent-pick{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:9px;cursor:pointer;border:1px solid var(--border);background:none;margin-bottom:6px;transition:all .15s;width:100%;text-align:left;}
+.agent-pick:hover{border-color:var(--border-hover);background:rgba(155,89,182,.08);}
+.agent-pick.selected{border-color:var(--gold);background:var(--gold-pale);}
+.agent-pick-name{font-size:11px;font-weight:600;color:var(--text);}
+.agent-pick-role{font-size:9px;color:var(--text-dim);}
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.chat-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-agent-info h3{font-family:'Cormorant Garamond',serif;font-size:16px;}
+.chat-agent-info p{font-size:9.5px;color:var(--text-mid);font-style:italic;}
+.chat-profile-badge{background:var(--gold-pale);border:1px solid rgba(201,150,58,.25);color:var(--gold);font-size:9.5px;padding:3px 10px;border-radius:7px;font-weight:600;}
+/* ← NOVO: botão copiar contexto no chat */
+.ctx-copy-btn{margin-left:auto;padding:4px 11px;border-radius:7px;background:rgba(155,89,182,.12);border:1px solid var(--border-hover);color:var(--text-mid);font-size:9.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.ctx-copy-btn:hover{background:var(--gold-pale);border-color:var(--gold);color:var(--gold);}
+.ctx-copy-btn.copied{background:rgba(26,188,156,.15);border-color:#1ABC9C;color:#1ABC9C;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px 20px;scrollbar-width:thin;}
+.msg{margin-bottom:12px;display:flex;gap:8px;animation:msgIn .3s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg.user{flex-direction:row-reverse;}
+.msg-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.msg.user .msg-avatar{background:var(--gold-pale);border:1px solid var(--gold);}
+.msg.agent .msg-avatar{background:var(--card);border:1px solid var(--border);}
+.msg-bubble{max-width:76%;padding:10px 13px;border-radius:12px;font-size:12px;line-height:1.65;}
+.msg.user .msg-bubble{background:var(--gold-pale);border:1px solid rgba(201,150,58,.25);border-radius:12px 12px 4px 12px;}
+.msg.agent .msg-bubble{background:var(--card);border:1px solid var(--border);border-radius:12px 12px 12px 4px;}
+.msg-bubble pre{background:rgba(0,0,0,.4);border-radius:7px;padding:8px;margin-top:7px;font-size:10.5px;white-space:pre-wrap;}
+.typing{display:flex;gap:4px;padding:5px 0;}
+.typing span{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:bounce 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,100%{transform:none}50%{transform:translateY(-5px)}}
+.chat-input-area{padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0;}
+.quick-actions{display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap;}
+.quick-btn{font-size:10px;padding:4px 10px;border-radius:18px;border:1px solid var(--border);background:none;color:var(--text-mid);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;}
+.quick-btn:hover{border-color:var(--border-hover);color:var(--gold-light);background:rgba(155,89,182,.1);}
+.chat-input-row{display:flex;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 11px;transition:border-color .15s;}
+.chat-input-row:focus-within{border-color:var(--purple);}
+.chat-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:12px;font-family:'DM Sans',sans-serif;resize:none;max-height:90px;}
+.chat-input::placeholder{color:var(--text-dim);}
+.send-btn{background:linear-gradient(135deg,var(--purple),#7B2FBE);border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;align-self:flex-end;transition:opacity .15s;}
+.send-btn:hover{opacity:.85;}
+.send-btn:disabled{background:var(--text-dim);cursor:not-allowed;}
+
+/* TOOLS */
+.tools-page{flex:1;overflow-y:auto;padding:18px 32px 40px;scrollbar-width:thin;}
+.tools-section{margin-bottom:24px;}
+.tools-section-title{font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:9px;}
+.tool-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:6px;}
+.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.4);}
+.tool-card-icon{font-size:24px;}
+.tool-card-name{font-size:12px;font-weight:600;}
+.tool-card-desc{font-size:10.5px;color:var(--text-mid);line-height:1.5;}
+.badge{font-size:8.5px;padding:2px 7px;border-radius:5px;background:var(--gold-pale);color:var(--gold);font-weight:600;display:inline-block;}
+.badge.g{background:rgba(26,188,156,.15);color:#1ABC9C;}
+.badge.b{background:rgba(52,152,219,.15);color:#6aace7;}
+.badge.p{background:rgba(155,89,182,.15);color:#C39BD3;}
+.badge.r{background:rgba(231,76,60,.15);color:#e77b6a;}
+.submenu{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px;}
+.sub-card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:10px;cursor:pointer;transition:all .15s;text-align:center;}
+.sub-card:hover{border-color:var(--gold);background:var(--gold-pale);}
+.sub-card-icon{font-size:18px;margin-bottom:3px;}
+.sub-card-name{font-size:10px;font-weight:600;}
+.sub-card-desc{font-size:8.5px;color:var(--text-dim);margin-top:2px;}
+
+/* NOTION CARDS */
+.notion-toolbar{padding:12px 32px;border-bottom:1px solid var(--border);display:flex;gap:7px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
+.filter-btn{padding:4px 12px;border-radius:18px;border:1px solid var(--border);background:none;color:var(--text-mid);font-size:10.5px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
+.filter-btn.active,.filter-btn:hover{background:rgba(155,89,182,.12);border-color:var(--border-hover);color:var(--text);}
+.refresh-btn{margin-left:auto;padding:4px 13px;border-radius:18px;border:1px solid var(--gold);background:var(--gold-pale);color:var(--gold-light);font-size:10.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.notion-grid{flex:1;overflow-y:auto;padding:16px 32px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px;align-content:start;scrollbar-width:thin;}
+.notion-card{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.notion-card:hover{border-color:var(--border-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.4);}
+.notion-card-top{padding:13px 13px 9px;}
+.notion-card-title{font-size:12px;font-weight:600;margin-bottom:4px;line-height:1.4;}
+.notion-card-meta{font-size:10px;color:var(--text-dim);}
+.notion-card-tags{display:flex;gap:5px;padding:0 13px 12px;flex-wrap:wrap;}
+.notion-tag{font-size:8.5px;padding:2px 7px;border-radius:4px;background:var(--gold-pale);color:var(--gold);font-weight:600;}
+.notion-tag.g{background:rgba(26,188,156,.15);color:#1ABC9C;}
+.notion-tag.r{background:rgba(231,76,60,.15);color:#e77b6a;}
+.notion-tag.b{background:rgba(52,152,219,.15);color:#6aace7;}
+.notion-tag.p{background:rgba(155,89,182,.15);color:#C39BD3;}
+.empty-state{grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--text-dim);font-size:12px;}
+.loading-state{grid-column:1/-1;text-align:center;padding:50px 20px;}
+.loading-dots{display:flex;gap:5px;justify-content:center;margin-bottom:9px;}
+.loading-dots span{width:6px;height:6px;background:var(--purple);border-radius:50%;animation:bounce 1.2s infinite;}
+.loading-dots span:nth-child(2){animation-delay:.2s}.loading-dots span:nth-child(3){animation-delay:.4s}
+
+/* CONFIG — NOVO: bloco contexto da marca */
 .config-scroll{flex:1;overflow-y:auto;padding:18px 32px 40px;scrollbar-width:thin;}
 .config-section{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px;margin-bottom:14px;}
 .config-section-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold-light);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
 .config-field{display:flex;flex-direction:column;gap:4px;}
 .config-field.full{grid-column:1/-1;}
-.config-field label{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-dim);}
-.config-input{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.15s;width:100%;}
+.config-field label{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);}
+.config-input{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;width:100%;}
 .config-input:focus{border-color:var(--purple);}
 .config-input::placeholder{color:var(--text-dim);}
 textarea.config-input{resize:vertical;min-height:65px;}
 .profile-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;margin-bottom:12px;}
-.profile-card-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all 0.15s;position:relative;}
+.profile-card-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .15s;position:relative;}
 .profile-card-item:hover{border-color:var(--border-hover);}
 .profile-card-item.active{border-color:var(--gold);background:var(--gold-pale);}
 .profile-card-emoji{font-size:22px;margin-bottom:5px;}
-.profile-card-name{font-size:12px;font-weight:600;color:var(--text);}
+.profile-card-name{font-size:12px;font-weight:600;}
 .profile-card-niche{font-size:9px;color:var(--text-dim);margin-top:2px;}
-.profile-card-delete{position:absolute;top:7px;right:7px;background:rgba(231,76,60,0.15);border:none;color:#e77b6a;border-radius:5px;width:20px;height:20px;cursor:pointer;font-size:10px;display:none;align-items:center;justify-content:center;}
+.profile-card-delete{position:absolute;top:7px;right:7px;background:rgba(231,76,60,.15);border:none;color:#e77b6a;border-radius:5px;width:20px;height:20px;cursor:pointer;font-size:10px;display:none;align-items:center;justify-content:center;}
 .profile-card-item:hover .profile-card-delete{display:flex;}
-.btn-add-profile{background:none;border:1px dashed var(--border-hover);border-radius:10px;padding:13px;cursor:pointer;color:var(--gold);font-size:11px;font-family:'DM Sans',sans-serif;transition:all 0.15s;width:100%;text-align:center;}
+.btn-add-profile{background:none;border:1px dashed var(--border-hover);border-radius:10px;padding:13px;cursor:pointer;color:var(--gold);font-size:11px;font-family:'DM Sans',sans-serif;transition:all .15s;width:100%;text-align:center;}
 .btn-add-profile:hover{background:var(--gold-pale);}
-.btn-save-config{background:var(--gold);color:var(--bg);border:none;border-radius:10px;padding:11px 24px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;}
-.btn-save-config:hover{background:var(--gold-light);}
+/* bloco contexto gerado */
+.ctx-block-wrap{margin-top:4px;}
+.ctx-block-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ctx-block-header h4{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold-light);flex:1;}
+.ctx-copy-main{padding:5px 13px;border-radius:7px;background:linear-gradient(135deg,var(--purple),#7B2FBE);color:#fff;font-size:10px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:opacity .15s;}
+.ctx-copy-main:hover{opacity:.85;}
+.ctx-copy-main.done{background:var(--teal);}
+.ctx-pre{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:10.5px;color:#A090C8;line-height:1.85;font-family:monospace;white-space:pre-wrap;max-height:220px;overflow-y:auto;}
+/* save/sec btns */
+.btn-save{background:var(--gold);color:var(--bg);border:none;border-radius:10px;padding:11px 24px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-save:hover{background:var(--gold-light);}
 .btn-sec{background:none;color:var(--text-mid);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;}
 
 /* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(4,3,8,0.85);backdrop-filter:blur(10px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+.overlay{position:fixed;inset:0;background:rgba(4,3,8,.85);backdrop-filter:blur(10px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
 .overlay.open{display:flex;}
-.modal{background:#12101A;border:1px solid rgba(155,89,182,0.25);border-radius:22px;max-width:600px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;animation:modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 40px 100px rgba(0,0,0,0.8);}
-@keyframes modalIn{from{transform:scale(0.92) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal{background:#12101A;border:1px solid rgba(155,89,182,.25);border-radius:22px;max-width:600px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;animation:modalIn .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.8);}
+@keyframes modalIn{from{transform:scale(.92) translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start;}
-.modal-img{width:56px;height:56px;border-radius:12px;object-fit:cover;object-position:top;flex-shrink:0;}
-.modal-emoji-fallback{font-size:44px;flex-shrink:0;}
 .modal-info{flex:1;}
 .modal-step{font-size:8px;font-weight:700;letter-spacing:1.2px;color:var(--gold);text-transform:uppercase;margin-bottom:2px;}
-.modal-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--text);}
-.modal-guardian{font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-top:1px;opacity:0.85;}
+.modal-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;}
+.modal-guardian{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-top:1px;opacity:.85;}
 .modal-chakra{font-size:10px;color:var(--text-mid);margin-top:2px;}
 .modal-meaning{font-size:10.5px;color:var(--text-mid);margin-top:3px;font-style:italic;}
-.modal-close{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-mid);border-radius:7px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.modal-close:hover{background:rgba(255,255,255,0.1);}
+.modal-close{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-mid);border-radius:7px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.modal-close:hover{background:rgba(255,255,255,.1);}
 .modal-body{padding:16px 24px;overflow-y:auto;flex:1;}
 .prompt-label{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
 .prompt-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;font-size:11px;color:#B8A8D8;line-height:1.75;white-space:pre-wrap;max-height:220px;overflow-y:auto;}
 .modal-footer{padding:12px 24px 18px;display:flex;gap:8px;border-top:1px solid var(--border);}
-.btn-primary{flex:1;background:linear-gradient(135deg,var(--purple),#7B2FBE);color:white;border:none;border-radius:9px;padding:10px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.15s;}
-.btn-primary:hover{opacity:0.85;}
+.btn-primary{flex:1;background:linear-gradient(135deg,var(--purple),#7B2FBE);color:#fff;border:none;border-radius:9px;padding:10px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity .15s;}
+.btn-primary:hover{opacity:.85;}
 .btn-primary.copied{background:var(--teal);}
 
 ::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-thumb{background:rgba(155,89,182,0.2);border-radius:10px;}
+::-webkit-scrollbar-thumb{background:rgba(155,89,182,.2);border-radius:10px;}
+
+/* ══ MOBILE ══ */
+@media(max-width:768px){
+  body,html{height:auto;overflow:auto;}
+  .mob-btn{display:flex;}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:900;transform:translateX(-100%);width:min(280px,85vw);}
+  .sidebar.open{transform:translateX(0);}
+  .main{width:100%;height:auto;min-height:100vh;overflow:visible;}
+  .page{display:none;flex-direction:column;min-height:100vh;height:auto;overflow:visible;}
+  .page.active{display:flex;}
+  .page-top{padding:56px 16px 14px;}
+  .page-top h2{font-size:20px;}
+  .dash-bar{padding:10px 16px;}
+  .dash-greeting h3{font-size:15px;}
+  .dash-cards{width:100%;margin-left:0;}
+  .dash-card{flex:1;padding:7px 8px;gap:5px;}
+  .dash-card-num{font-size:15px;}
+  .scroll-area{flex:none;padding:16px 16px 32px;overflow:visible;height:auto;}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .stat-num{font-size:22px;}
+  .pipeline{padding-bottom:16px;}
+  .gem-card{width:128px;}
+  .gem-visual{height:145px;}
+  .conselho-img{height:200px;}
+  .conselho-body{padding:12px 14px 14px;}
+  .conselho-title{font-size:18px;}
+  .conselho-btn-row{flex-direction:column;}
+  .cbtn{width:100%;text-align:center;}
+  .agent-full-page{flex-direction:column;}
+  .agent-list{width:100%;border-right:none;border-bottom:1px solid var(--border);padding:10px 12px;display:flex;gap:6px;overflow-x:auto;flex-direction:row;flex-shrink:0;}
+  .agent-pick{flex-direction:column;width:68px;flex-shrink:0;padding:8px 6px;align-items:center;text-align:center;margin-bottom:0;}
+  .agent-pick-name{font-size:9px;}
+  .agent-pick-role{display:none;}
+  .chat-main{flex:1;min-height:400px;}
+  .chat-header{padding:10px 14px;flex-wrap:wrap;gap:6px;}
+  .chat-profile-badge{display:none;}
+  .ctx-copy-btn{font-size:9px;padding:3px 8px;}
+  .chat-messages{padding:12px 14px;}
+  .chat-input-area{padding:10px 14px;}
+  .quick-actions{display:none;}
+  .tools-page{padding:14px 14px 32px;}
+  .tools-grid{grid-template-columns:1fr 1fr;}
+  .tool-card{padding:12px;}
+  .tool-card-icon{font-size:20px;}
+  .tool-card-name{font-size:11px;}
+  .tool-card-desc{font-size:9.5px;}
+  .notion-grid{padding:12px 14px 32px;grid-template-columns:1fr 1fr;gap:8px;}
+  .notion-toolbar{padding:10px 14px;gap:5px;}
+  .filter-btn{font-size:9.5px;padding:3px 9px;}
+  .config-scroll{padding:14px 14px 32px;}
+  .config-grid{grid-template-columns:1fr;}
+  .profile-cards{grid-template-columns:1fr 1fr;}
+  .overlay{padding:10px;}
+  .modal{max-height:95vh;border-radius:16px;}
+  .modal-header{padding:14px 16px 12px;gap:10px;}
+  .modal-footer{padding:10px 16px 14px;}
+}
+@media(max-width:400px){
+  .stats-row,.config-grid{grid-template-columns:1fr;}
+  .tools-grid,.notion-grid{grid-template-columns:1fr;}
+  .gem-card{width:112px;}
+}
 </style>
 </head>
 <body>
+<!-- MOBILE OVERLAY -->
+<button class="mob-btn" onclick="mobToggle()">☰</button>
+<div class="mob-overlay" id="mob-overlay" onclick="mobClose()"></div>
 
-<nav class="sidebar">
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <h1>💎 Vila das Pedras</h1>
     <p>Sistema Místico de Conteúdo ✦</p>
   </div>
   <div class="profile-switcher">
     <div class="profile-label">Projeto ativo</div>
-    <button class="profile-current" onclick="toggleProfileDropdown()">
+    <button class="profile-current" onclick="toggleDD()">
       <span class="profile-emoji" id="sw-emoji">📦</span>
       <div class="profile-info"><div class="profile-name" id="sw-name">Pack do Digital</div><div class="profile-niche" id="sw-niche">IA para marketing digital</div></div>
-      <span class="profile-arrow">▼</span>
+      <span style="font-size:9px;color:var(--text-dim)">▼</span>
     </button>
     <div class="profile-dropdown" id="profile-dropdown">
       <button class="profile-option active" onclick="switchProfile(0,this)"><span>📦</span><div><div style="font-size:11px;font-weight:600;color:var(--text)">Pack do Digital</div><div style="font-size:9px;color:var(--text-dim)">@packdodigital</div></div></button>
       <button class="profile-option" onclick="switchProfile(1,this)"><span>🌿</span><div><div style="font-size:11px;font-weight:600;color:var(--text)">Vitalitat</div><div style="font-size:9px;color:var(--text-dim)">Fisioterapia & Estética</div></div></button>
       <button class="profile-option" onclick="switchProfile(2,this)"><span>⚖️</span><div><div style="font-size:11px;font-weight:600;color:var(--text)">ADV Turbo</div><div style="font-size:9px;color:var(--text-dim)">Sistema Jurídico IA</div></div></button>
       <button class="profile-option" onclick="switchProfile(3,this)"><span>👶</span><div><div style="font-size:11px;font-weight:600;color:var(--text)">@tudodemamy</div><div style="font-size:9px;color:var(--text-dim)">Maternidade Digital</div></div></button>
-      <button class="profile-add" onclick="nav('config',document.querySelectorAll('.nav-item')[16]);toggleProfileDropdown()">➕ Gerenciar projetos</button>
+      <button class="profile-add" onclick="nav('config',this);mobClose()">➕ Gerenciar projetos</button>
     </div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Visão Geral</div>
-    <button class="nav-item active" onclick="nav('home',this)">🏠 Home</button>
-    <button class="nav-item" onclick="nav('agentes',this)">💎 As 7 Guardiãs</button>
-    <button class="nav-item" onclick="nav('metricas',this)">📊 Métricas</button>
+    <button class="nav-item active" onclick="nav('home',this);mobClose()">🏠 Home</button>
+    <button class="nav-item" onclick="nav('agentes',this);mobClose()">💎 As 7 Guardiãs</button>
+    <button class="nav-item" onclick="nav('metricas',this);mobClose()">📊 Métricas</button>
   </div>
   <div class="nav-section">
     <div class="nav-label">Criação com IA</div>
-    <button class="nav-item" onclick="nav('prompts',this)">🔮 Gerador de Prompts</button>
-    <button class="nav-item" onclick="nav('influencer',this)">✨ Criar Influencer</button>
-    <button class="nav-item" onclick="nav('videos',this)">🎬 Estúdio de Vídeos</button>
-    <button class="nav-item" onclick="nav('carrossel',this)">🎠 Gerar Carrossel</button>
+    <button class="nav-item" onclick="nav('conselho',this);mobClose()">🔮 Conselho das Pedras</button>
+    <button class="nav-item" onclick="nav('prompts',this);mobClose()">✨ Gerador de Prompts</button>
+    <button class="nav-item" onclick="nav('influencer',this);mobClose()">👤 Criar Influencer</button>
+    <button class="nav-item" onclick="nav('videos',this);mobClose()">🎬 Estúdio de Vídeos</button>
+    <button class="nav-item" onclick="nav('carrossel',this);mobClose()">🎠 Gerar Carrossel</button>
   </div>
   <div class="nav-section">
     <div class="nav-label">Conteúdo</div>
-    <button class="nav-item" onclick="nav('tiktok',this)">🎵 Vídeos TikTok</button>
-    <button class="nav-item" onclick="nav('instagram',this)">📸 Salvos Instagram</button>
-    <button class="nav-item" onclick="nav('bau',this)">💡 Baú de Temas</button>
-    <button class="nav-item" onclick="nav('ferramentas',this)">🤖 Ferramentas IA</button>
-    <button class="nav-item" onclick="nav('ctas',this)">📣 Banco de CTAs</button>
-    <button class="nav-item" onclick="nav('reels',this)">🎬 Reels para Gravar</button>
-    <button class="nav-item" onclick="nav('calendario',this)">📅 Calendário</button>
+    <button class="nav-item" onclick="nav('tiktok',this);mobClose()">🎵 Vídeos TikTok</button>
+    <button class="nav-item" onclick="nav('instagram',this);mobClose()">📸 Salvos Instagram</button>
+    <button class="nav-item" onclick="nav('bau',this);mobClose()">💡 Baú de Temas</button>
+    <button class="nav-item" onclick="nav('ferramentas',this);mobClose()">🤖 Ferramentas IA</button>
+    <button class="nav-item" onclick="nav('ctas',this);mobClose()">📣 Banco de CTAs</button>
+    <button class="nav-item" onclick="nav('reels',this);mobClose()">🎬 Reels para Gravar</button>
+    <button class="nav-item" onclick="nav('calendario',this);mobClose()">📅 Calendário</button>
   </div>
   <div class="nav-section">
     <div class="nav-label">Sistema</div>
-    <button class="nav-item" onclick="nav('config',this)">⚙️ Configurar Projeto</button>
+    <button class="nav-item" onclick="nav('config',this);mobClose()">⚙️ Configurar Projeto</button>
   </div>
 </nav>
 
 <main class="main">
 
-<!-- HOME -->
+<!-- ══ HOME ══ -->
 <div class="page active" id="page-home">
   <div class="page-top">
     <div class="page-badge">Sistema Ativo</div>
@@ -314,34 +395,108 @@ textarea.config-input{resize:vertical;min-height:65px;}
   <div class="dash-bar">
     <div class="dash-greeting">
       <h3 id="dash-h3">Bom dia, <em>Nay</em> ✨</h3>
-      <p id="dash-datetime"></p>
+      <p id="dash-dt"></p>
     </div>
     <div class="dash-cards">
-      <div class="dash-card" onclick="nav('reels',document.querySelectorAll('.nav-item')[11])">
-        <div>💜</div><div><div class="dash-card-title">Reels</div><div class="dash-card-num" id="dash-reels">3</div><div class="dash-card-info">para gravar</div></div>
-      </div>
-      <div class="dash-card" onclick="nav('tiktok',document.querySelectorAll('.nav-item')[8])">
-        <div>📌</div><div><div class="dash-card-title">Refs</div><div class="dash-card-num" id="dash-refs">0</div><div class="dash-card-info">TikTok · IG</div></div>
-      </div>
-      <div class="dash-card" onclick="nav('bau',document.querySelectorAll('.nav-item')[10])">
-        <div>🔥</div><div><div class="dash-card-title">Temas</div><div class="dash-card-num">6</div><div class="dash-card-info">no baú</div></div>
-      </div>
+      <div class="dash-card" onclick="nav('reels',null)"><div>💜</div><div><div class="dash-card-title">Reels</div><div class="dash-card-num">3</div><div class="dash-card-info">para gravar</div></div></div>
+      <div class="dash-card" onclick="nav('tiktok',null)"><div>📌</div><div><div class="dash-card-title">Refs</div><div class="dash-card-num">0</div><div class="dash-card-info">TikTok · IG</div></div></div>
+      <div class="dash-card" onclick="nav('bau',null)"><div>🔥</div><div><div class="dash-card-title">Temas</div><div class="dash-card-num">6</div><div class="dash-card-info">no baú</div></div></div>
     </div>
   </div>
   <div class="scroll-area">
-    <div id="home-banner"></div>
+    <!-- Projeto Ativo banner -->
+    <div id="home-banner" style="margin-bottom:18px"></div>
+
+    <!-- CONSELHO DAS PEDRAS CARD -->
+    <div class="conselho-card" onclick="nav('conselho',null)">
+      <img class="conselho-img" src="CONSELHO_DAS_PEDRAS_PNG.png" alt="Conselho das Pedras" loading="lazy"/>
+      <div class="conselho-body">
+        <div style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,150,58,.25);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:8px">🔮 Oráculo</div>
+        <div class="conselho-title">Conselho das <em>Pedras</em></div>
+        <p class="conselho-desc">A reunião de todas as pedras. O Oráculo gerador de prompts e links das melhores ferramentas de IA para cada necessidade. Diga o que quer criar — o Conselho indica a ferramenta certa e gera o prompt ideal.</p>
+        <div class="conselho-btn-row">
+          <button class="cbtn pri" onclick="event.stopPropagation();nav('conselho',null)">🔮 Entrar no Conselho</button>
+          <button class="cbtn sec" onclick="event.stopPropagation();window.open('https://claude.ai/projects','_blank')">Abrir no Claude →</button>
+        </div>
+        <div class="conselho-tags">
+          <span class="ctag">🖼️ Imagem</span><span class="ctag">🎬 Vídeo Veo3</span><span class="ctag">👤 Avatar</span><span class="ctag">🪞 Clone</span><span class="ctag">🎠 Carrossel</span><span class="ctag">🎙️ Roteiro</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
     <div class="stats-row">
       <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Guardiãs ativas</div></div>
-      <div class="stat-card"><div class="stat-num">13</div><div class="stat-label">Ferramentas IA</div></div>
+      <div class="stat-card"><div class="stat-num">15</div><div class="stat-label">Ferramentas IA</div></div>
       <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Projetos ativos</div></div>
       <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Automações Make</div></div>
     </div>
+
+    <!-- PIPELINE -->
     <div class="pipeline-title">As 7 Guardiãs do Fluxo <span>Do insight à publicação — 7 passos alinhados</span></div>
     <div class="pipeline" id="pipeline-home"></div>
   </div>
 </div>
 
-<!-- AGENTES -->
+<!-- ══ CONSELHO DAS PEDRAS ══ -->
+<div class="page" id="page-conselho">
+  <div class="page-top">
+    <div class="page-badge">🔮 Oráculo</div>
+    <h2>Conselho das <em>Pedras</em></h2>
+    <p>A reunião de todas as pedras. Diga o que quer criar — o Oráculo indica a ferramenta e gera o prompt ideal.</p>
+  </div>
+  <div class="tools-page">
+    <!-- imagem grande -->
+    <div style="background:var(--card);border:1px solid rgba(201,150,58,.2);border-radius:18px;overflow:hidden;margin-bottom:24px;">
+      <img src="CONSELHO_DAS_PEDRAS_PNG.png" alt="Conselho das Pedras" style="width:100%;max-height:320px;object-fit:cover;object-position:top center;display:block;"/>
+      <div style="padding:16px 20px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold-light);margin-bottom:6px;">O Oráculo que conecta intenção à solução</h3>
+        <p style="font-size:11px;color:var(--text-mid);line-height:1.7;">O Conselho das Pedras reúne as 7 Guardiãs para gerar prompts profissionais para qualquer tipo de criação com IA — imagens, vídeos, avatares, carrosséis e roteiros.</p>
+      </div>
+    </div>
+    <!-- categorias -->
+    <div class="tools-section">
+      <div class="tools-section-title">Escolha o tipo de prompt</div>
+      <div class="tools-grid">
+        <div class="tool-card" onclick="openPromptGen('imagem')"><div class="tool-card-icon">🖼️</div><div class="tool-card-name">Prompt de Imagem</div><div class="tool-card-desc">Midjourney, DALL-E, Ideogram, Nano Banana, Stable Diffusion.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="openPromptGen('video')"><div class="tool-card-icon">🎬</div><div class="tool-card-name">Prompt de Vídeo Veo3</div><div class="tool-card-desc">Prompts cinematográficos para Veo3, Sora, Wan, Seedance, Kling.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="openPromptGen('avatar')"><div class="tool-card-icon">👤</div><div class="tool-card-name">Prompt de Avatar</div><div class="tool-card-desc">Influencers e avatares digitais hiper-realistas. Nano Banana, Higgsfield.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="openPromptGen('clone')"><div class="tool-card-icon">🪞</div><div class="tool-card-name">Prompt de Clone Digital</div><div class="tool-card-desc">Clone digital a partir das suas fotos. HeyGen, D-ID, Gemini.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="openPromptGen('carrossel')"><div class="tool-card-icon">🎠</div><div class="tool-card-name">Estrutura de Carrossel</div><div class="tool-card-desc">Carrosséis completos: título, slides, legenda, CTA, hashtags.</div><span class="badge p">Cornalina</span></div>
+        <div class="tool-card" onclick="openPromptGen('roteiro')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Roteiro de Reel</div><div class="tool-card-desc">Roteiro faceless com hook 3s, cenas, narração e CTA.</div><span class="badge b">Água Marinha</span></div>
+      </div>
+    </div>
+    <!-- gerador inline -->
+    <div id="prompt-gen-area" style="display:none;margin-bottom:24px;">
+      <div class="config-section">
+        <div class="config-section-title" id="prompt-gen-title">🖼️ Gerador de Prompt de Imagem</div>
+        <p style="font-size:11px;color:var(--text-mid);margin-bottom:12px">Descreva sua ideia — o Oráculo gera o prompt profissional completo.</p>
+        <div class="chat-input-row" style="margin-bottom:9px"><textarea class="chat-input" id="prompt-input" placeholder="Ex: Influencer digital brasileira, 28 anos, home office clean, luz natural..." rows="3"></textarea></div>
+        <button onclick="gerarPrompt()" style="background:linear-gradient(135deg,var(--purple),#7B2FBE);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer">✨ Gerar Prompt</button>
+        <div id="prompt-result" style="display:none;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;font-size:11.5px;color:#B8A8D8;line-height:1.75;white-space:pre-wrap"></div>
+        <button id="prompt-copy-btn" onclick="copyPromptResult()" style="display:none;margin-top:8px;background:none;border:1px solid var(--border);color:var(--text-mid);border-radius:9px;padding:8px 16px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer">📋 Copiar prompt</button>
+      </div>
+    </div>
+    <!-- ferramentas por objetivo -->
+    <div class="tools-section">
+      <div class="tools-section-title">Ferramentas por objetivo — clique para abrir</div>
+      <div class="tools-grid">
+        <div class="tool-card" onclick="window.open('https://chatgpt.com','_blank')"><div class="tool-card-icon">🤖</div><div class="tool-card-name">Foto realista de pessoa</div><div class="tool-card-desc">Midjourney v6 / DALL-E via ChatGPT</div><span class="badge b">ChatGPT</span></div>
+        <div class="tool-card" onclick="window.open('https://labs.google/fx/pt/tools/video-fx','_blank')"><div class="tool-card-icon">🎥</div><div class="tool-card-name">Vídeo cinemático 4K</div><div class="tool-card-desc">Melhor qualidade do mercado atualmente.</div><span class="badge g">Veo3 — Google</span></div>
+        <div class="tool-card" onclick="window.open('https://nanobananai.com','_blank')"><div class="tool-card-icon">🍌</div><div class="tool-card-name">Influencer IA (personagem)</div><div class="tool-card-desc">Crie um avatar digital com aparência personalizada.</div><span class="badge">Nano Banana</span></div>
+        <div class="tool-card" onclick="window.open('https://heygen.com','_blank')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Clone de vídeo que fala</div><div class="tool-card-desc">Grave uma vez, o avatar grava por você para sempre.</div><span class="badge r">HeyGen</span></div>
+        <div class="tool-card" onclick="window.open('https://higgsfield.ai','_blank')"><div class="tool-card-icon">✨</div><div class="tool-card-name">Animar foto</div><div class="tool-card-desc">Foto estática → vídeo animado cinematográfico.</div><span class="badge">Higgsfield</span></div>
+        <div class="tool-card" onclick="window.open('https://wan.video','_blank')"><div class="tool-card-icon">🌊</div><div class="tool-card-name">Vídeo criativo rápido</div><div class="tool-card-desc">Animações e transições criativas. Gratuito.</div><span class="badge p">Wan — Qwen AI</span></div>
+        <div class="tool-card" onclick="window.open('https://gamma.app','_blank')"><div class="tool-card-icon">🎠</div><div class="tool-card-name">Carrossel com design pronto</div><div class="tool-card-desc">Gera carrosséis visuais a partir de texto.</div><span class="badge b">Gamma.app</span></div>
+        <div class="tool-card" onclick="window.open('https://capcut.com','_blank')"><div class="tool-card-icon">✂️</div><div class="tool-card-name">Editar vídeo e legendar</div><div class="tool-card-desc">Remove silêncios, legendas automáticas, templates virais.</div><span class="badge g">CapCut — Grátis</span></div>
+        <div class="tool-card" onclick="window.open('https://claude.ai/new','_blank')"><div class="tool-card-icon">🔮</div><div class="tool-card-name">Claude — Todos os propósitos</div><div class="tool-card-desc">Melhor para prompts detalhados, roteiros e sistema completo.</div><span class="badge p">Recomendado</span></div>
+        <div class="tool-card" onclick="window.open('https://chat.openai.com','_blank')"><div class="tool-card-icon">🤖</div><div class="tool-card-name">ChatGPT</div><div class="tool-card-desc">Ótimo para gerar imagens com DALL-E integrado.</div><span class="badge b">OpenAI</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GUARDIÃS ══ -->
 <div class="page" id="page-agentes">
   <div class="page-top">
     <div class="page-badge">As 7 Guardiãs</div>
@@ -351,10 +506,12 @@ textarea.config-input{resize:vertical;min-height:65px;}
   <div class="agent-full-page">
     <div class="agent-list" id="agent-list"></div>
     <div class="chat-main">
-      <div class="chat-header" id="chat-header">
-        <div class="chat-agent-emoji" id="chat-emoji">🔮</div>
+      <div class="chat-header">
+        <div id="chat-emoji" style="font-size:24px;flex-shrink:0">🔮</div>
         <div class="chat-agent-info"><h3 id="chat-name">Ametista</h3><p id="chat-meaning">Guardiã da Transcendência · A Oráculo</p></div>
-        <div class="chat-profile-badge" id="chat-profile-badge">📦 Pack do Digital</div>
+        <div class="chat-profile-badge" id="chat-badge">📦 Pack do Digital</div>
+        <!-- NOVO: botão copiar contexto -->
+        <button class="ctx-copy-btn" id="ctx-btn" onclick="copiarContexto()">📋 Copiar contexto</button>
       </div>
       <div class="chat-messages" id="chat-messages">
         <div class="msg agent"><div class="msg-avatar">🔮</div><div class="msg-bubble">Olá! Sou a <strong>Ametista</strong>, Guardiã da Transcendência. Meu poder é revelar o que está oculto — tendências, referências e oportunidades antes de todo mundo ver. Como posso te ajudar hoje?</div></div>
@@ -367,24 +524,24 @@ textarea.config-input{resize:vertical;min-height:65px;}
         </div>
         <div class="chat-input-row">
           <textarea class="chat-input" id="chat-input" placeholder="Fale com a Ametista..." rows="1" onkeydown="handleKey(event)"></textarea>
-          <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+          <button class="send-btn" id="send-btn" onclick="sendMsg()">➤</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CONFIG -->
+<!-- ══ CONFIG ══ -->
 <div class="page" id="page-config">
-  <div class="page-top"><div class="page-badge">Configuração</div><h2>Configurar <em>Projeto</em></h2><p>Gerencie seus projetos. As guardiãs usam essas informações automaticamente.</p></div>
+  <div class="page-top"><div class="page-badge">Configuração</div><h2>Configurar <em>Projeto</em></h2><p>Fonte oficial da memória da marca. As Guardiãs consomem essas informações automaticamente.</p></div>
   <div class="config-scroll">
     <div class="config-section">
       <div class="config-section-title">📋 Projetos cadastrados</div>
       <div class="profile-cards" id="profile-cards"></div>
       <button class="btn-add-profile" onclick="showAddProfile()">➕ Adicionar novo projeto</button>
     </div>
-    <div class="config-section" id="edit-profile-section" style="display:none">
-      <div class="config-section-title" id="edit-profile-title">✏️ Editar projeto</div>
+    <div class="config-section" id="edit-section" style="display:none">
+      <div class="config-section-title" id="edit-title">✏️ Editar projeto</div>
       <div class="config-grid">
         <div class="config-field"><label>Emoji</label><input class="config-input" id="cfg-emoji" placeholder="📦" maxlength="2"/></div>
         <div class="config-field"><label>Nome do projeto</label><input class="config-input" id="cfg-name" placeholder="Pack do Digital"/></div>
@@ -393,39 +550,53 @@ textarea.config-input{resize:vertical;min-height:65px;}
         <div class="config-field"><label>Público-alvo</label><input class="config-input" id="cfg-audience" placeholder="Criadores de conteúdo, empreendedores"/></div>
         <div class="config-field"><label>Redes sociais</label><input class="config-input" id="cfg-social" placeholder="@packdodigital"/></div>
         <div class="config-field full"><label>Tom de voz</label><input class="config-input" id="cfg-tone" placeholder="Simples, moderno, direto, curioso, acessível"/></div>
-        <div class="config-field full"><label>Regras do projeto</label><textarea class="config-input" id="cfg-rules" placeholder="Nunca aparecer no vídeo. Nunca prometer dinheiro fácil..."></textarea></div>
+        <div class="config-field full"><label>Regras fixas do projeto</label><textarea class="config-input" id="cfg-rules" placeholder="Nunca aparecer no vídeo. Nunca prometer dinheiro fácil..."></textarea></div>
         <div class="config-field full"><label>Objetivo principal</label><input class="config-input" id="cfg-goal" placeholder="Crescer audiência qualificada, vender Workshop IA"/></div>
+        <div class="config-field full"><label>Estética / Identidade visual</label><input class="config-input" id="cfg-estetica" placeholder="Dark, minimalista, roxo e dourado, elegante..."/></div>
+        <div class="config-field full"><label>Referências principais</label><input class="config-input" id="cfg-refs" placeholder="@perfil1, @perfil2, canal YouTube..."/></div>
       </div>
       <div style="display:flex;gap:9px;margin-top:14px;">
-        <button class="btn-save-config" onclick="saveProfile()">💾 Salvar projeto</button>
+        <button class="btn-save" onclick="saveProfile()">💾 Salvar projeto</button>
         <button class="btn-sec" onclick="cancelEdit()">Cancelar</button>
+      </div>
+    </div>
+    <!-- NOVO: CONTEXTO DA MARCA GERADO AUTOMATICAMENTE -->
+    <div class="config-section" id="ctx-section" style="display:none">
+      <div class="config-section-title">🧠 Contexto da Marca — Copie e Cole nas Guardiãs</div>
+      <p style="font-size:11px;color:var(--text-mid);margin-bottom:12px;line-height:1.6">Este bloco é gerado automaticamente a partir dos dados do projeto. Cole ao iniciar qualquer Guardiã no Claude para que ela trabalhe com as informações corretas da marca.</p>
+      <div class="ctx-block-wrap">
+        <div class="ctx-block-header">
+          <h4 id="ctx-project-name">Pack do Digital</h4>
+          <button class="ctx-copy-main" id="ctx-copy-main-btn" onclick="copiarContextoMain()">📋 Copiar contexto</button>
+        </div>
+        <pre class="ctx-pre" id="ctx-pre-content"></pre>
       </div>
     </div>
   </div>
 </div>
 
-<!-- TIKTOK -->
+<!-- ══ TIKTOK ══ -->
 <div class="page" id="page-tiktok">
   <div class="page-top"><div class="page-badge">Referências</div><h2>Vídeos Salvos <em>TikTok</em></h2><p>Salvos via Save to Notion — aparecem aqui automaticamente.</p></div>
   <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">Gancho</button><button class="filter-btn">Formato</button><button class="filter-btn">Copy</button><button class="filter-btn">Tendência</button><button class="refresh-btn">↻ Sincronizar</button></div>
   <div class="notion-grid"><div class="empty-state">🎵 Nenhum vídeo salvo ainda.<br><small>Use o Save to Notion no Chrome para salvar vídeos do TikTok.</small></div></div>
 </div>
 
-<!-- INSTAGRAM -->
+<!-- ══ INSTAGRAM ══ -->
 <div class="page" id="page-instagram">
   <div class="page-top"><div class="page-badge">Referências</div><h2>Salvos do <em>Instagram</em></h2><p>Posts e reels salvos via Save to Notion.</p></div>
   <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">Reel</button><button class="filter-btn">Carrossel</button><button class="filter-btn">Copy</button><button class="filter-btn">Visual</button><button class="refresh-btn">↻ Sincronizar</button></div>
   <div class="notion-grid"><div class="empty-state">📸 Nenhum post salvo ainda.<br><small>Use o Save to Notion no Chrome para salvar posts do Instagram.</small></div></div>
 </div>
 
-<!-- BAÚ -->
+<!-- ══ BAÚ ══ -->
 <div class="page" id="page-bau">
   <div class="page-top"><div class="page-badge">Ideias</div><h2>Baú de <em>Temas</em></h2><p>Ideias organizadas por pilar — prontas para virar conteúdo.</p></div>
   <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">Autoridade</button><button class="filter-btn">Conexão</button><button class="filter-btn">Conversão</button><button class="filter-btn">🔥 Viral</button><button class="refresh-btn">↻ Sincronizar</button></div>
-  <div class="notion-grid" id="grid-bau"><div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div><div style="color:var(--text-dim);font-size:12px;margin-top:8px">Carregando temas...</div></div></div>
+  <div class="notion-grid" id="grid-bau"><div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div></div>
 </div>
 
-<!-- FERRAMENTAS -->
+<!-- ══ FERRAMENTAS ══ -->
 <div class="page" id="page-ferramentas">
   <div class="page-top"><div class="page-badge">Arsenal</div><h2>Ferramentas de <em>IA</em></h2><p>Seu arsenal completo — clique para abrir.</p></div>
   <div class="notion-toolbar">
@@ -433,165 +604,123 @@ textarea.config-input{resize:vertical;min-height:65px;}
     <button class="filter-btn" onclick="filterTools('Usando ativamente',this)">✅ Usando</button>
     <button class="filter-btn" onclick="filterTools('Testando',this)">🧪 Testando</button>
     <button class="filter-btn" onclick="filterTools('Quero testar',this)">🎯 Quero testar</button>
-    <button class="refresh-btn" onclick="loadFerramentas()">↻ Atualizar</button>
+    <button class="refresh-btn" onclick="renderFerramentas(allFerramentas)">↻ Atualizar</button>
   </div>
   <div class="notion-grid" id="grid-ferramentas"><div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div></div>
 </div>
 
-<!-- CTAs -->
+<!-- ══ CTAs ══ -->
 <div class="page" id="page-ctas">
   <div class="page-top"><div class="page-badge">CTAs</div><h2>Banco de <em>CTAs</em></h2><p>Clique para copiar instantaneamente.</p></div>
   <div class="scroll-area"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px" id="ctas-grid"></div></div>
 </div>
 
-<!-- REELS -->
+<!-- ══ REELS ══ -->
 <div class="page" id="page-reels">
   <div class="page-top"><div class="page-badge">Produção</div><h2>Reels para <em>Gravar</em></h2><p>Fila de roteiros prontos esperando execução.</p></div>
   <div class="scroll-area"><div style="display:flex;flex-direction:column;gap:10px" id="reels-list"></div></div>
 </div>
 
-<!-- MÉTRICAS -->
+<!-- ══ MÉTRICAS ══ -->
 <div class="page" id="page-metricas">
   <div class="page-top"><div class="page-badge">Dashboard</div><h2>Métricas do <em>Mês</em></h2><p>Preencha os dados e a Sodalita gera análise estratégica completa.</p></div>
   <div class="scroll-area">
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px">
-      <div class="stat-card"><div class="stat-label">Alcance total</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Engajamento</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Novos seguidores</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Reels publicados</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Saves totais</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Visitas ao perfil</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Cliques no link bio</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-      <div class="stat-card"><div class="stat-label">Vendas geradas</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>
-    </div>
-    <button onclick="analisarMetricas()" style="background:linear-gradient(135deg,var(--purple),#7B2FBE);color:white;border:none;border-radius:10px;padding:12px 24px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:16px">✨ Analisar com Sodalita</button>
-    <div id="metricas-result" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:12px;line-height:1.75;color:var(--text)"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px" id="met-grid"></div>
+    <button onclick="analisarMetricas()" style="background:linear-gradient(135deg,var(--purple),#7B2FBE);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:16px">✨ Analisar com Sodalita</button>
+    <div id="metricas-result" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:12px;line-height:1.75"></div>
   </div>
 </div>
 
-<!-- CALENDÁRIO -->
+<!-- ══ CALENDÁRIO ══ -->
 <div class="page" id="page-calendario">
   <div class="page-top"><div class="page-badge">Planejamento</div><h2>Calendário <em>Editorial</em></h2><p>Acione a Sodalita para gerar o calendário do mês.</p></div>
   <div class="scroll-area">
-    <button onclick="nav('agentes',document.querySelectorAll('.nav-item')[1]);setTimeout(()=>selectAgent('sodalita',document.querySelectorAll('.agent-pick')[1]),100)" style="background:linear-gradient(135deg,var(--sodalita),#1A3A8C);color:white;border:none;border-radius:10px;padding:11px 20px;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:18px">🔵 Abrir Sodalita → Gerar calendário</button>
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
-      ${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(d=>`<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);text-align:center;padding:6px 0">${d}</div>`).join('')}
-      ${Array.from({length:35},(_,i)=>{const d=i-3;const h=[1,3,8,10,15,17,22].includes(d);return `<div style="background:var(--card);border:1px solid ${h?'rgba(155,89,182,0.25)':'var(--border)'};border-radius:8px;padding:8px 6px;min-height:60px;">${d>0&&d<=31?`<div style="font-size:9px;color:var(--text-dim);font-weight:600;margin-bottom:3px">${d}</div>${h?`<div style="font-size:8.5px;color:var(--text-mid)"><span style="width:4px;height:4px;background:var(--purple);border-radius:50%;display:inline-block;margin-right:2px"></span>Reel</div>`:''}`:''}`;}).join('')}
-    </div>
+    <button onclick="nav('agentes',null);setTimeout(()=>selectAgent('sodalita'),150)" style="background:linear-gradient(135deg,var(--sodalita),#1A3A8C);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:18px">🔵 Abrir Sodalita → Gerar calendário</button>
+    <div id="cal-grid"></div>
   </div>
 </div>
 
-<!-- GERADOR DE PROMPTS -->
+<!-- ══ GERADOR DE PROMPTS ══ -->
 <div class="page" id="page-prompts">
-  <div class="page-top"><div class="page-badge">Criação com IA</div><h2>Gerador de <em>Prompts</em></h2><p>Prompts profissionais para imagens, vídeos, avatares e clones gerados pela Ametista.</p></div>
+  <div class="page-top"><div class="page-badge">Criação com IA</div><h2>Gerador de <em>Prompts</em></h2><p>Prompts profissionais gerados pelo Conselho das Pedras.</p></div>
   <div class="tools-page">
     <div class="tools-section">
-      <div class="tools-section-title">Escolha o tipo</div>
+      <div class="tools-section-title">Escolha o tipo — abre o gerador completo</div>
       <div class="tools-grid">
-        <div class="tool-card" onclick="openPromptAgent('imagem')"><div class="tool-card-icon">🖼️</div><div class="tool-card-name">Prompt de Imagem</div><div class="tool-card-desc">Midjourney, DALL-E, Ideogram, Stable Diffusion.</div><span class="tool-card-badge">Ametista</span></div>
-        <div class="tool-card" onclick="openPromptAgent('video')"><div class="tool-card-icon">🎬</div><div class="tool-card-name">Prompt de Vídeo Veo3</div><div class="tool-card-desc">Prompts cinematográficos para Veo3, Sora, Wan.</div><span class="tool-card-badge">Ametista</span></div>
-        <div class="tool-card" onclick="openPromptAgent('avatar')"><div class="tool-card-icon">👤</div><div class="tool-card-name">Prompt de Avatar</div><div class="tool-card-desc">Influencers e avatares digitais hiper-realistas.</div><span class="tool-card-badge">Ametista</span></div>
-        <div class="tool-card" onclick="openPromptAgent('clone')"><div class="tool-card-icon">🪞</div><div class="tool-card-name">Prompt de Clone</div><div class="tool-card-desc">Clone digital a partir das suas fotos.</div><span class="tool-card-badge">Ametista</span></div>
-      </div>
-    </div>
-    <div class="tools-section">
-      <div class="tools-section-title">Abrir no Claude ou ChatGPT</div>
-      <div class="tools-grid">
-        <div class="tool-card" onclick="window.open('https://claude.ai/new','_blank')"><div class="tool-card-icon">🔮</div><div class="tool-card-name">Claude</div><div class="tool-card-desc">Melhor para prompts detalhados e sistema completo.</div><span class="tool-card-badge purple">Recomendado</span></div>
-        <div class="tool-card" onclick="window.open('https://chat.openai.com','_blank')"><div class="tool-card-icon">🤖</div><div class="tool-card-name">ChatGPT</div><div class="tool-card-desc">Ótimo para gerar imagens com DALL-E integrado.</div><span class="tool-card-badge blue">OpenAI</span></div>
-      </div>
-    </div>
-    <div id="prompt-agent-area" style="display:none;margin-top:4px">
-      <div class="config-section">
-        <div class="config-section-title" id="prompt-agent-title">🖼️ Gerador de Prompt de Imagem</div>
-        <p style="font-size:11px;color:var(--text-mid);margin-bottom:12px">Descreva sua ideia e a Ametista gera o prompt perfeito.</p>
-        <div class="chat-input-row" style="margin-bottom:9px"><textarea class="chat-input" id="prompt-input" placeholder="Ex: Mulher brasileira segurando celular, influencer digital..." rows="3"></textarea></div>
-        <button onclick="gerarPrompt()" style="background:linear-gradient(135deg,var(--purple),#7B2FBE);color:white;border:none;border-radius:9px;padding:10px 20px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer">✨ Gerar Prompt</button>
-        <div id="prompt-result" style="display:none;margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;font-size:11.5px;color:#B8A8D8;line-height:1.75;white-space:pre-wrap"></div>
-        <button id="prompt-copy-btn" onclick="copyPromptResult()" style="display:none;margin-top:8px;background:none;border:1px solid var(--border);color:var(--text-mid);border-radius:9px;padding:8px 16px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer">📋 Copiar prompt</button>
+        <div class="tool-card" onclick="nav('conselho',null);setTimeout(()=>openPromptGen('imagem'),100)"><div class="tool-card-icon">🖼️</div><div class="tool-card-name">Prompt de Imagem</div><div class="tool-card-desc">Midjourney, DALL-E, Ideogram, Nano Banana.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="nav('conselho',null);setTimeout(()=>openPromptGen('video'),100)"><div class="tool-card-icon">🎬</div><div class="tool-card-name">Prompt de Vídeo Veo3</div><div class="tool-card-desc">Prompts cinematográficos para Veo3, Sora, Wan.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="nav('conselho',null);setTimeout(()=>openPromptGen('avatar'),100)"><div class="tool-card-icon">👤</div><div class="tool-card-name">Prompt de Avatar</div><div class="tool-card-desc">Influencers e avatares digitais hiper-realistas.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="nav('conselho',null);setTimeout(()=>openPromptGen('clone'),100)"><div class="tool-card-icon">🪞</div><div class="tool-card-name">Prompt de Clone Digital</div><div class="tool-card-desc">Clone digital a partir das suas fotos. HeyGen, D-ID.</div><span class="badge">Ametista</span></div>
+        <div class="tool-card" onclick="nav('conselho',null);setTimeout(()=>openPromptGen('carrossel'),100)"><div class="tool-card-icon">🎠</div><div class="tool-card-name">Estrutura de Carrossel</div><div class="tool-card-desc">Carrossel completo com slides, legenda e CTA.</div><span class="badge p">Cornalina</span></div>
+        <div class="tool-card" onclick="nav('conselho',null);setTimeout(()=>openPromptGen('roteiro'),100)"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Roteiro de Reel</div><div class="tool-card-desc">Roteiro faceless com hook, cenas e narração.</div><span class="badge b">Água Marinha</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CRIAR INFLUENCER -->
+<!-- ══ INFLUENCER ══ -->
 <div class="page" id="page-influencer">
   <div class="page-top"><div class="page-badge">Criação com IA</div><h2>Criar <em>Influencer</em></h2><p>Crie seu avatar digital do zero ou a partir da sua foto.</p></div>
   <div class="tools-page">
     <div class="tools-section">
       <div class="tools-section-title">Escolha como criar</div>
       <div class="tools-grid">
-        <div class="tool-card"><div class="tool-card-icon">✨</div><div class="tool-card-name">Do Zero — Personagem novo</div><div class="tool-card-desc">Avatar digital com aparência personalizada. Ideal para marca ou personagem fictício.</div><span class="tool-card-badge purple">ChatGPT + Prompt</span>
+        <div class="tool-card"><div class="tool-card-icon">✨</div><div class="tool-card-name">Do Zero — Personagem novo</div><div class="tool-card-desc">Avatar digital com aparência personalizada. Ideal para marca ou personagem fictício.</div><span class="badge p">ChatGPT + Prompt</span>
           <div class="submenu" style="margin-top:9px">
             <div class="sub-card" onclick="window.open('https://chat.openai.com','_blank')"><div class="sub-card-icon">🤖</div><div class="sub-card-name">ChatGPT</div><div class="sub-card-desc">Com prompt otimizado</div></div>
             <div class="sub-card" onclick="copyInfluencerPrompt()"><div class="sub-card-icon">📋</div><div class="sub-card-name">Copiar Prompt</div><div class="sub-card-desc">Estrutura completa</div></div>
           </div>
         </div>
-        <div class="tool-card"><div class="tool-card-icon">📸</div><div class="tool-card-name">Da Sua Foto — Clone seu</div><div class="tool-card-desc">Avatar hiper-realista baseado nas suas fotos. Clone digital de si mesmo.</div><span class="tool-card-badge blue">Nano Banana</span>
+        <div class="tool-card"><div class="tool-card-icon">📸</div><div class="tool-card-name">Da Sua Foto — Clone seu</div><div class="tool-card-desc">Avatar hiper-realista baseado nas suas fotos. Clone digital de si mesmo.</div><span class="badge b">Nano Banana</span>
           <div class="submenu" style="margin-top:9px">
             <div class="sub-card" onclick="window.open('https://nanobananai.com','_blank')"><div class="sub-card-icon">🍌</div><div class="sub-card-name">Nano Banana</div><div class="sub-card-desc">Upload das fotos</div></div>
             <div class="sub-card" onclick="window.open('https://gemini.google.com/app','_blank')"><div class="sub-card-icon">🔵</div><div class="sub-card-name">Gemini</div><div class="sub-card-desc">IA Google</div></div>
           </div>
         </div>
-        <div class="tool-card"><div class="tool-card-icon">🎭</div><div class="tool-card-name">Animar Imagem</div><div class="tool-card-desc">Foto estática → vídeo animado. Melhor para conteúdo criativo sem gravar.</div><span class="tool-card-badge green">Google Flow</span>
+        <div class="tool-card"><div class="tool-card-icon">🎭</div><div class="tool-card-name">Animar Imagem</div><div class="tool-card-desc">Foto estática → vídeo animado cinematográfico.</div><span class="badge g">Google Flow</span>
           <div class="submenu" style="margin-top:9px">
             <div class="sub-card" onclick="window.open('https://labs.google/fx/tools/flow/about','_blank')"><div class="sub-card-icon">🌊</div><div class="sub-card-name">Google Flow</div><div class="sub-card-desc">Melhor qualidade</div></div>
             <div class="sub-card" onclick="window.open('https://higgsfield.ai','_blank')"><div class="sub-card-icon">⚡</div><div class="sub-card-name">Higgsfield</div><div class="sub-card-desc">Efeitos criativos</div></div>
           </div>
         </div>
-        <div class="tool-card" onclick="window.open('https://app.heygen.com/avatar/avatar-shots','_blank')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Clone HeyGen</div><div class="tool-card-desc">Avatar de vídeo que fala com sua voz. Grave uma vez, use para sempre.</div><span class="tool-card-badge red">HeyGen</span></div>
+        <div class="tool-card" onclick="window.open('https://app.heygen.com/avatar/avatar-shots','_blank')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Clone HeyGen</div><div class="tool-card-desc">Avatar de vídeo que fala com sua voz. Grave uma vez, use para sempre.</div><span class="badge r">HeyGen</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ESTÚDIO DE VÍDEOS -->
+<!-- ══ ESTÚDIO DE VÍDEOS ══ -->
 <div class="page" id="page-videos">
   <div class="page-top"><div class="page-badge">Criação com IA</div><h2>Estúdio de <em>Vídeos</em></h2><p>Escolha a melhor ferramenta para cada tipo de vídeo.</p></div>
   <div class="tools-page">
-    <div class="tools-section">
-      <div class="tools-section-title">Vídeos com seu avatar (clone fala)</div>
-      <div class="tools-grid">
-        <div class="tool-card" onclick="window.open('https://app.heygen.com','_blank')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Vídeos com seu clone</div><div class="tool-card-desc">Você escreve o roteiro, seu avatar grava no seu lugar. Perfeito para conteúdo educacional.</div><span class="tool-card-badge">HeyGen</span></div>
-      </div>
-    </div>
-    <div class="tools-section">
-      <div class="tools-section-title">Vídeos gerados por IA (sem gravar)</div>
-      <div class="tools-grid">
-        <div class="tool-card" onclick="window.open('https://opal.google/app/1cFdnpj_qxsrF8N36ba-lBufu2tpd2a82','_blank')"><div class="tool-card-icon">🎥</div><div class="tool-card-name">Vídeos cinematográficos 4K</div><div class="tool-card-desc">Melhor qualidade do mercado. Meu especialista Veo3 já configurado.</div><span class="tool-card-badge green">Veo3 — Especialista</span></div>
-        <div class="tool-card" onclick="window.open('https://opal.google','_blank')"><div class="tool-card-icon">⚡</div><div class="tool-card-name">Automação de vídeos</div><div class="tool-card-desc">Fluxos automáticos: prompt → vídeo → publicação.</div><span class="tool-card-badge blue">VeoFlow / Opal</span></div>
-        <div class="tool-card" onclick="window.open('https://chat.qwen.ai','_blank')"><div class="tool-card-icon">🌊</div><div class="tool-card-name">Vídeos rápidos e criativos</div><div class="tool-card-desc">Animações, transições criativas e tendências. Gratuito.</div><span class="tool-card-badge purple">Wan — Qwen AI</span></div>
-        <div class="tool-card" onclick="window.open('https://higgsfield.ai','_blank')"><div class="tool-card-icon">✨</div><div class="tool-card-name">Animar fotos e imagens</div><div class="tool-card-desc">Imagens estáticas → vídeos com movimento cinematográfico.</div><span class="tool-card-badge">Higgsfield</span></div>
-      </div>
-    </div>
-    <div class="tools-section">
-      <div class="tools-section-title">Edição e corte</div>
-      <div class="tools-grid">
-        <div class="tool-card" onclick="window.open('https://capcut.com','_blank')"><div class="tool-card-icon">✂️</div><div class="tool-card-name">Editar, cortar e legendar</div><div class="tool-card-desc">Remove silêncios, legendas automáticas, templates virais.</div><span class="tool-card-badge green">CapCut — Gratuito</span></div>
-        <div class="tool-card" onclick="window.open('https://ads.tiktok.com/creative/creativestudio/home/pt-BR','_blank')"><div class="tool-card-icon">🎬</div><div class="tool-card-name">Vídeos para anúncios</div><div class="tool-card-desc">Estúdio oficial do TikTok. Templates de alta conversão.</div><span class="tool-card-badge red">TikTok Creative Studio</span></div>
-      </div>
-    </div>
+    <div class="tools-section"><div class="tools-section-title">Clone que fala</div><div class="tools-grid"><div class="tool-card" onclick="window.open('https://app.heygen.com','_blank')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Vídeos com seu clone</div><div class="tool-card-desc">Você escreve o roteiro, seu avatar grava no seu lugar.</div><span class="badge">HeyGen</span></div></div></div>
+    <div class="tools-section"><div class="tools-section-title">Gerados por IA (sem gravar)</div><div class="tools-grid">
+      <div class="tool-card" onclick="window.open('https://labs.google/fx/pt/tools/video-fx','_blank')"><div class="tool-card-icon">🎥</div><div class="tool-card-name">Vídeos cinematográficos 4K</div><div class="tool-card-desc">Melhor qualidade do mercado.</div><span class="badge g">Veo3 — Google</span></div>
+      <div class="tool-card" onclick="window.open('https://chat.qwen.ai','_blank')"><div class="tool-card-icon">🌊</div><div class="tool-card-name">Vídeos rápidos e criativos</div><div class="tool-card-desc">Animações e transições. Gratuito.</div><span class="badge p">Wan — Qwen AI</span></div>
+      <div class="tool-card" onclick="window.open('https://higgsfield.ai','_blank')"><div class="tool-card-icon">✨</div><div class="tool-card-name">Animar fotos e imagens</div><div class="tool-card-desc">Imagens estáticas → vídeos cinematográficos.</div><span class="badge">Higgsfield</span></div>
+    </div></div>
+    <div class="tools-section"><div class="tools-section-title">Edição e corte</div><div class="tools-grid">
+      <div class="tool-card" onclick="window.open('https://capcut.com','_blank')"><div class="tool-card-icon">✂️</div><div class="tool-card-name">Editar, cortar e legendar</div><div class="tool-card-desc">Remove silêncios, legendas automáticas, templates virais.</div><span class="badge g">CapCut — Gratuito</span></div>
+      <div class="tool-card" onclick="window.open('https://ads.tiktok.com/creative/creativestudio/home/pt-BR','_blank')"><div class="tool-card-icon">🎬</div><div class="tool-card-name">Vídeos para anúncios</div><div class="tool-card-desc">Estúdio oficial do TikTok. Templates de alta conversão.</div><span class="badge r">TikTok Creative Studio</span></div>
+    </div></div>
   </div>
 </div>
 
-<!-- CARROSSEL -->
+<!-- ══ CARROSSEL ══ -->
 <div class="page" id="page-carrossel">
   <div class="page-top"><div class="page-badge">Criação com IA</div><h2>Gerar <em>Carrossel</em></h2><p>A Cornalina cria carrosséis completos que salvam e convertem.</p></div>
   <div class="tools-page">
-    <div class="tools-section">
-      <div class="tools-section-title">Fluxo recomendado pela Cornalina</div>
-      <div class="tools-grid">
-        <div class="tool-card" onclick="selectAgent('cornalina',document.querySelectorAll('.agent-pick')[5]);nav('agentes',document.querySelectorAll('.nav-item')[1])"><div class="tool-card-icon">🔴</div><div class="tool-card-name">1. Gerar copy e estrutura</div><div class="tool-card-desc">Cornalina cria título, slides, texto, legenda, CTA e prompt visual.</div><span class="tool-card-badge red">Cornalina — A Criadora</span></div>
-        <div class="tool-card" onclick="window.open('https://canva.com','_blank')"><div class="tool-card-icon">🎨</div><div class="tool-card-name">2. Montar o visual</div><div class="tool-card-desc">Cole o texto no template do Canva com sua identidade visual.</div><span class="tool-card-badge green">Canva</span></div>
-        <div class="tool-card" onclick="window.open('https://gamma.app','_blank')"><div class="tool-card-icon">⚡</div><div class="tool-card-name">Carrossel visual automático</div><div class="tool-card-desc">Gera carrosséis com design pronto a partir de texto.</div><span class="tool-card-badge blue">Gamma.app</span></div>
-      </div>
-    </div>
+    <div class="tools-section"><div class="tools-section-title">Fluxo recomendado pela Cornalina</div><div class="tools-grid">
+      <div class="tool-card" onclick="selectAgent('cornalina');nav('agentes',null)"><div class="tool-card-icon">🔴</div><div class="tool-card-name">1. Gerar copy e estrutura</div><div class="tool-card-desc">Cornalina cria título, slides, texto, legenda, CTA e prompt visual.</div><span class="badge r">Cornalina — A Criadora</span></div>
+      <div class="tool-card" onclick="window.open('https://canva.com','_blank')"><div class="tool-card-icon">🎨</div><div class="tool-card-name">2. Montar o visual</div><div class="tool-card-desc">Cole o texto no template do Canva com sua identidade visual.</div><span class="badge g">Canva</span></div>
+      <div class="tool-card" onclick="window.open('https://gamma.app','_blank')"><div class="tool-card-icon">⚡</div><div class="tool-card-name">Carrossel visual automático</div><div class="tool-card-desc">Gera carrosséis com design pronto a partir de texto.</div><span class="badge b">Gamma.app</span></div>
+    </div></div>
   </div>
 </div>
 
 </main>
 
-<!-- MODAL -->
+<!-- ══ MODAL ══ -->
 <div class="overlay" id="overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-header">
@@ -610,363 +739,363 @@ textarea.config-input{resize:vertical;min-height:65px;}
       <div class="prompt-block" id="m-prompt"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn-primary" id="m-copy-btn" onclick="copyPrompt()">📋 Copiar System Prompt</button>
-      <button class="btn-sec" onclick="nav('agentes',document.querySelectorAll('.nav-item')[1]);setTimeout(()=>{const k=currentModalKey;selectAgent(k,document.querySelectorAll('.agent-pick')[Object.keys(AGENTS).indexOf(k)]);},100);document.getElementById('overlay').classList.remove('open')">💬 Conversar agora</button>
+      <button class="btn-primary" id="m-copy-btn" onclick="copyPromptModal()">📋 Copiar System Prompt</button>
+      <button class="btn-sec" onclick="nav('agentes',null);setTimeout(()=>selectAgent(currentModalKey),100);document.getElementById('overlay').classList.remove('open')">💬 Conversar agora</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── PROFILES ──
-const DEFAULT_PROFILES=[
-  {id:0,emoji:'📦',name:'Pack do Digital',niche:'IA para marketing digital',desc:'Uma curadora de ferramentas de IA para marketing digital. Ensina como usar IA na vida real para trabalhar melhor e ganhar dinheiro online. Conteúdo sem aparecer: tela gravada, prints, IA, carrosséis, voz IA.',audience:'Criadores de conteúdo, empreendedores digitais, freelancers',social:'@packdodigital',tone:'Simples, moderno, direto, curioso, acessível. Sem guru. Sem promessa milagrosa.',rules:'Nunca aparecer no vídeo. Nunca prometer dinheiro fácil. Nunca linguagem de guru. Sempre mostrar aplicação prática.',goal:'Crescer audiência qualificada, vender Workshop de IA'},
-  {id:1,emoji:'🌿',name:'Vitalitat',niche:'Fisioterapia e estética em Salvador/BA',desc:'Clínica de fisioterapia e estética. Foco em reabilitação, dor crônica, estética e qualidade de vida.',audience:'Mulheres 35-44, Salvador/BA',social:'@vitalitat',tone:'Profissional, acolhedor, educativo',rules:'5 hashtags por post: 2 brand + 2 geolocadas Salvador/BA + 1 nicho. Nunca hashtags genéricas.',goal:'Gerar agendamentos, crescer autoridade local'},
-  {id:2,emoji:'⚖️',name:'ADV Turbo',niche:'Sistema operacional jurídico com IA',desc:'Sistema jurídico com IA para automatizar documentos, padronizar operação e aumentar produtividade de advogados.',audience:'Advogados autônomos, escritórios pequenos',social:'ADV Turbo',tone:'Jurídico, formal, preciso',rules:'Nunca inventar dados. Nunca sair do padrão jurídico.',goal:'Automatizar documentos, padronizar escritório'},
-  {id:3,emoji:'👶',name:'@tudodemamy',niche:'Maternidade e produtos digitais para gestantes',desc:'Produtos digitais para gestantes de primeira viagem. Combo Mamãe Preparada na Hotmart R$57.',audience:'Gestantes de primeira viagem',social:'@tudodemamy',tone:'Empático, acolhedor, calmo, materno',rules:'Sempre linguagem gentil e acolhedora. Foco em preparação prática.',goal:'Vender Combo Mamãe Preparada, conectar com gestantes'}
-];
-let profiles=JSON.parse(localStorage.getItem('vpv3-profiles')||'null')||DEFAULT_PROFILES;
-let activeProfileIdx=parseInt(localStorage.getItem('vpv3-active')||'0');
-let editingProfileIdx=-1;
-function saveProfiles(){localStorage.setItem('vpv3-profiles',JSON.stringify(profiles));localStorage.setItem('vpv3-active',activeProfileIdx);}
-function getActiveProfile(){return profiles[activeProfileIdx]||profiles[0];}
+// MOBILE
+function mobToggle(){var sb=document.getElementById('sidebar');var ov=document.getElementById('mob-overlay');var o=sb.classList.toggle('open');ov.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
+function mobClose(){document.getElementById('sidebar').classList.remove('open');document.getElementById('mob-overlay').classList.remove('open');document.body.style.overflow='';}
 
-function updateProfileUI(){
-  const p=getActiveProfile();
+// PROFILES
+var DEF=[
+  {id:0,emoji:'📦',name:'Pack do Digital',niche:'IA para marketing digital',desc:'Curadora de ferramentas de IA para marketing digital. Ensina como usar IA na vida real para trabalhar melhor e ganhar dinheiro online. Conteudo sem aparecer: tela gravada, prints, IA, carrosseis, voz IA.',audience:'Criadores de conteudo, empreendedores digitais, freelancers',social:'@packdodigital',tone:'Simples, moderno, direto, curioso, acessivel. Sem guru. Sem promessa milagrosa.',rules:'Nunca aparecer no video. Nunca prometer dinheiro facil. Nunca linguagem de guru. Sempre mostrar aplicacao pratica.',goal:'Crescer audiencia qualificada, vender Workshop de IA',estetica:'Dark, minimalista, roxo e dourado, elegante, tecnologico',refs:'@mrbeast, @alexhormozi, influencers de IA e marketing digital'},
+  {id:1,emoji:'🌿',name:'Vitalitat',niche:'Fisioterapia e estetica em Salvador/BA',desc:'Clinica de fisioterapia e estetica. Foco em reabilitacao, dor cronica, estetica e qualidade de vida.',audience:'Mulheres 35-44, Salvador/BA',social:'@vitalitat',tone:'Profissional, acolhedor, educativo',rules:'5 hashtags por post: 2 brand + 2 geolocadas Salvador/BA + 1 nicho. Nunca hashtags genericas.',goal:'Gerar agendamentos, crescer autoridade local',estetica:'Verde, natural, clean, saude e bem-estar',refs:'Clinicas de fisioterapia referencia, perfis de saude feminina'},
+  {id:2,emoji:'⚖',name:'ADV Turbo',niche:'Sistema operacional juridico com IA',desc:'Sistema juridico com IA para automatizar documentos, padronizar operacao e aumentar produtividade de advogados.',audience:'Advogados autonomos, escritorios pequenos',social:'ADV Turbo',tone:'Juridico, formal, preciso',rules:'Nunca inventar dados. Nunca sair do padrao juridico.',goal:'Automatizar documentos, padronizar escritorio',estetica:'Azul escuro, corporativo, profissional, confianca',refs:'Perfis juridicos de autoridade no LinkedIn'},
+  {id:3,emoji:'👶',name:'@tudodemamy',niche:'Maternidade e produtos digitais para gestantes',desc:'Produtos digitais para gestantes de primeira viagem.',audience:'Gestantes de primeira viagem',social:'@tudodemamy',tone:'Empatico, acolhedor, calmo, materno',rules:'Sempre linguagem gentil e acolhedora. Foco em preparacao pratica.',goal:'Vender Combo Mamae Preparada, conectar com gestantes',estetica:'Rosa suave, delicado, aquarela, materno',refs:'Perfis de maternidade com alto engajamento'}
+];
+var profiles=JSON.parse(localStorage.getItem('vp4-profiles')||'null')||DEF;
+var activeIdx=parseInt(localStorage.getItem('vp4-active')||'0');
+var editIdx=-1;
+var chatH={};
+function saveLS(){localStorage.setItem('vp4-profiles',JSON.stringify(profiles));localStorage.setItem('vp4-active',activeIdx);}
+function getP(){return profiles[activeIdx]||profiles[0];}
+
+function buildContexto(p){
+  var rules=(p.rules||'').split('.').filter(function(r){return r.trim();}).map(function(r){return '- '+r.trim();}).join('\n');
+  return 'PROJETO ATIVO: '+p.name+'\nHANDLE / REDES: '+p.social+'\nNICHO: '+p.niche+'\nPOSICIONAMENTO: '+p.desc+'\nPUBLICO-ALVO: '+p.audience+'\nTOM DE VOZ: '+p.tone+'\nPLATAFORMAS: Instagram · TikTok · YouTube\nPILARES: Autoridade · Conexao · Conversao · Viral\nESTETICA: '+(p.estetica||'Nao definida')+'\nREFERENCIAS: '+(p.refs||'Nao definidas')+'\nREGRAS FIXAS:\n'+rules+'\nOBJETIVO: '+p.goal;
+}
+
+function updateUI(){
+  var p=getP();
   document.getElementById('sw-emoji').textContent=p.emoji;
   document.getElementById('sw-name').textContent=p.name;
   document.getElementById('sw-niche').textContent=p.niche.substring(0,28)+'...';
-  const apin=document.getElementById('agent-profile-name');if(apin)apin.textContent=p.name;
-  const apni=document.getElementById('agent-profile-niche');if(apni)apni.textContent=p.niche.substring(0,26)+'...';
-  const cpb=document.getElementById('chat-profile-badge');if(cpb)cpb.textContent=p.emoji+' '+p.name;
-  const banner=document.getElementById('home-banner');
-  if(banner)banner.innerHTML=`<div style="background:var(--card);border:1px solid var(--border-hover);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-shrink:0"><div style="font-size:28px">${p.emoji}</div><div style="flex:1"><div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--gold-light)">${p.name}</div><div style="font-size:10px;color:var(--text-mid);margin-top:2px;line-height:1.5">${p.desc.substring(0,100)}...</div><div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">${p.audience.split(',').slice(0,3).map(a=>`<span style="font-size:8.5px;padding:2px 8px;border-radius:4px;background:var(--gold-pale);color:var(--gold);font-weight:600">${a.trim()}</span>`).join('')}</div></div><button onclick="nav('config',document.querySelectorAll('.nav-item')[16])" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:7px;padding:5px 11px;font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap">✏️ Editar</button></div>`;
+  var cb=document.getElementById('chat-badge');if(cb)cb.textContent=p.emoji+' '+p.name;
+  var banner=document.getElementById('home-banner');
+  if(banner){
+    var tags=p.audience.split(',').slice(0,3).map(function(a){return '<span style="font-size:8.5px;padding:2px 8px;border-radius:4px;background:var(--gold-pale);color:var(--gold);font-weight:600">'+a.trim()+'</span>';}).join('');
+    banner.innerHTML='<div style="background:var(--card);border:1px solid var(--border-hover);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:12px;margin-bottom:0"><div style="font-size:28px">'+p.emoji+'</div><div style="flex:1;min-width:0"><div style="font-family:\'Cormorant Garamond\',serif;font-size:17px;font-weight:700;color:var(--gold-light)">'+p.name+'</div><div style="font-size:10px;color:var(--text-mid);margin-top:2px;line-height:1.5">'+p.desc.substring(0,100)+'...</div><div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">'+tags+'</div></div><button onclick="nav(\'config\',null)" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:7px;padding:5px 11px;font-size:10px;font-family:\'DM Sans\',sans-serif;cursor:pointer;flex-shrink:0">✏️ Editar</button></div>';
+  }
+  var pre=document.getElementById('ctx-pre-content');if(pre)pre.textContent=buildContexto(p);
+  var cn=document.getElementById('ctx-project-name');if(cn)cn.textContent=p.name;
+  var cs=document.getElementById('ctx-section');if(cs)cs.style.display='block';
+  var apn=document.getElementById('ap-name');if(apn)apn.textContent=p.name;
+  var apni=document.getElementById('ap-niche');if(apni)apni.textContent=p.niche.substring(0,26)+'...';
 }
-function toggleProfileDropdown(){document.getElementById('profile-dropdown').classList.toggle('open');}
+
+function copiarContexto(){
+  var p=getP();navigator.clipboard.writeText(buildContexto(p));
+  var btn=document.getElementById('ctx-btn');if(!btn)return;
+  btn.textContent='✅ Copiado!';btn.classList.add('copied');
+  setTimeout(function(){btn.textContent='📋 Copiar contexto';btn.classList.remove('copied');},2200);
+}
+function copiarContextoMain(){
+  var p=getP();navigator.clipboard.writeText(buildContexto(p));
+  var btn=document.getElementById('ctx-copy-main-btn');if(!btn)return;
+  btn.textContent='✅ Copiado!';btn.classList.add('done');
+  setTimeout(function(){btn.textContent='📋 Copiar contexto';btn.classList.remove('done');},2200);
+}
+
+function toggleDD(){document.getElementById('profile-dropdown').classList.toggle('open');}
 function switchProfile(idx,btn){
-  activeProfileIdx=idx;saveProfiles();
-  document.querySelectorAll('.profile-option').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  updateProfileUI();toggleProfileDropdown();
+  activeIdx=idx;saveLS();
+  document.querySelectorAll('.profile-option').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  updateUI();toggleDD();
   currentAgent='ametista';
-  Object.keys(chatHistories).forEach(k=>chatHistories[k]=[]);
-  renderAgentList();
-  selectAgent('ametista',document.querySelector('.agent-pick'));
+  Object.keys(chatH).forEach(function(k){chatH[k]=[];});
+  renderAgentList();selectAgent('ametista');
 }
 function renderProfileCards(){
-  document.getElementById('profile-cards').innerHTML=profiles.map((p,i)=>`<div class="profile-card-item ${i===activeProfileIdx?'active':''}" onclick="editProfile(${i})"><button class="profile-card-delete" onclick="event.stopPropagation();deleteProfile(${i})">✕</button><div class="profile-card-emoji">${p.emoji}</div><div class="profile-card-name">${p.name}</div><div class="profile-card-niche">${p.niche.substring(0,32)}...</div></div>`).join('');
+  document.getElementById('profile-cards').innerHTML=profiles.map(function(p,i){
+    return '<div class="profile-card-item '+(i===activeIdx?'active':'')+'" onclick="editProfile('+i+')"><button class="profile-card-delete" onclick="event.stopPropagation();deleteProfile('+i+')">✕</button><div class="profile-card-emoji">'+p.emoji+'</div><div class="profile-card-name">'+p.name+'</div><div class="profile-card-niche">'+p.niche.substring(0,32)+'...</div></div>';
+  }).join('');
+  updateUI();
 }
 function editProfile(idx){
-  editingProfileIdx=idx;const p=profiles[idx];
-  ['cfg-emoji','cfg-name','cfg-niche','cfg-desc','cfg-audience','cfg-social','cfg-tone','cfg-rules','cfg-goal'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=p[id.replace('cfg-','')]||'';});
-  document.getElementById('cfg-emoji').value=p.emoji;
-  document.getElementById('cfg-name').value=p.name;
-  document.getElementById('edit-profile-title').textContent='✏️ Editar — '+p.name;
-  document.getElementById('edit-profile-section').style.display='block';
+  editIdx=idx;var p=profiles[idx];
+  ['emoji','name','niche','desc','audience','social','tone','rules','goal','estetica','refs'].forEach(function(f){var el=document.getElementById('cfg-'+f);if(el)el.value=p[f]||'';});
+  document.getElementById('edit-title').textContent='✏️ Editar — '+p.name;
+  document.getElementById('edit-section').style.display='block';
+  document.getElementById('edit-section').scrollIntoView({behavior:'smooth'});
 }
-function showAddProfile(){editingProfileIdx=-1;['cfg-emoji','cfg-name','cfg-niche','cfg-desc','cfg-audience','cfg-social','cfg-tone','cfg-rules','cfg-goal'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('edit-profile-title').textContent='➕ Novo projeto';document.getElementById('edit-profile-section').style.display='block';}
-function cancelEdit(){document.getElementById('edit-profile-section').style.display='none';}
+function showAddProfile(){
+  editIdx=-1;
+  ['emoji','name','niche','desc','audience','social','tone','rules','goal','estetica','refs'].forEach(function(f){var el=document.getElementById('cfg-'+f);if(el)el.value='';});
+  document.getElementById('edit-title').textContent='➕ Novo projeto';
+  document.getElementById('edit-section').style.display='block';
+}
+function cancelEdit(){document.getElementById('edit-section').style.display='none';}
 function saveProfile(){
-  const p={emoji:document.getElementById('cfg-emoji').value||'📁',name:document.getElementById('cfg-name').value||'Novo Projeto',niche:document.getElementById('cfg-niche').value||'',desc:document.getElementById('cfg-desc').value||'',audience:document.getElementById('cfg-audience').value||'',social:document.getElementById('cfg-social').value||'',tone:document.getElementById('cfg-tone').value||'',rules:document.getElementById('cfg-rules').value||'',goal:document.getElementById('cfg-goal').value||''};
-  if(editingProfileIdx>=0)profiles[editingProfileIdx]={...profiles[editingProfileIdx],...p};
+  var p={
+    emoji:document.getElementById('cfg-emoji').value||'📁',
+    name:document.getElementById('cfg-name').value||'Novo Projeto',
+    niche:document.getElementById('cfg-niche').value||'',
+    desc:document.getElementById('cfg-desc').value||'',
+    audience:document.getElementById('cfg-audience').value||'',
+    social:document.getElementById('cfg-social').value||'',
+    tone:document.getElementById('cfg-tone').value||'',
+    rules:document.getElementById('cfg-rules').value||'',
+    goal:document.getElementById('cfg-goal').value||'',
+    estetica:document.getElementById('cfg-estetica').value||'',
+    refs:document.getElementById('cfg-refs').value||''
+  };
+  if(editIdx>=0){profiles[editIdx]=Object.assign({},profiles[editIdx],p);}
   else{p.id=Date.now();profiles.push(p);}
-  saveProfiles();renderProfileCards();updateProfileUI();cancelEdit();
+  saveLS();renderProfileCards();cancelEdit();
 }
-function deleteProfile(idx){if(profiles.length<=1){alert('Precisa ter pelo menos 1 projeto.');return;}if(!confirm('Deletar este projeto?'))return;profiles.splice(idx,1);if(activeProfileIdx>=profiles.length)activeProfileIdx=0;saveProfiles();renderProfileCards();updateProfileUI();}
+function deleteProfile(idx){
+  if(profiles.length<=1){alert('Precisa ter pelo menos 1 projeto.');return;}
+  if(!confirm('Deletar este projeto?'))return;
+  profiles.splice(idx,1);if(activeIdx>=profiles.length)activeIdx=0;saveLS();renderProfileCards();
+}
 
-// ── AGENTS ──
-const AGENTS={
-  ametista:{step:'01',name:'Ametista',guardian:'Guardiã da Transcendência',chakra:'Chakra Coroa · A Oráculo',meaning:'Revela o que está oculto antes de todo mundo ver.',color:'var(--ametista)',img:'ametista.png',emoji:'🔮',
-    quickActions:['🔥 O que tá viralizando sobre IA?','📊 Analisa concorrentes','💡 5 temas para hoje','🎯 Melhor formato da semana'],
-    getPrompt:(p)=>`Você é Ametista, Guardiã da Transcendência — especialista em pesquisa de tendências e benchmarking.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nDescrição: ${p.desc}\nPúblico: ${p.audience}\nRedes: ${p.social}\nRegras: ${p.rules||''}\n\nSua missão: revelar tendências, referências virais, o que os maiores players estão fazendo no TikTok, Instagram e YouTube, e transformar em oportunidades reais de conteúdo.\n\nEntregue:\n1. 3-5 tendências de formato ou tema do momento\n2. O que os maiores players estão fazendo agora\n3. Oportunidades ainda não exploradas\n4. Ângulo original para usar primeiro\n\nSeja direta e estratégica. Só o que pode ser aplicado agora.`},
-  sodalita:{step:'02',name:'Sodalita',guardian:'Guardiã da Visão',chakra:'Chakra Terceiro Olho · A Visionária',meaning:'Enxerga padrões e transforma insights em planos poderosos.',color:'var(--sodalita)',img:'sodalita.png',emoji:'🔵',
-    quickActions:['📅 Planeja o mês','🗂️ Organiza a semana','📌 Distribui pilares','📊 Analisa métricas'],
-    getPrompt:(p)=>`Você é Sodalita, Guardiã da Visão — especialista em planejamento criativo e calendário editorial.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nPúblico: ${p.audience}\nTom: ${p.tone}\nObjetivo: ${p.goal}\nRedes: ${p.social}\n\nSua missão: planejar conteúdos com base em pesquisas e organizar temas, séries, editoriais e calendário de forma estratégica.\n\nEntregue calendários em tabela. Seja organizada e visual.\n${p.name==='Vitalitat'?'Regra: 5 hashtags por post — 2 brand + 2 geolocadas Salvador/BA + 1 nicho.':''}`},
-  aguamarinha:{step:'03',name:'Água Marinha',guardian:'Guardiã da Comunicação',chakra:'Chakra Garganta · A Mensageira',meaning:'As palavras são ondas. Ela guia o que transforma.',color:'var(--aguamarinha)',img:'aguamarinha.png',emoji:'🌊',
-    quickActions:['🎬 Cria roteiro de Reel','⚡ Formato Dinamismo','🔥 Gancho irresistível','📱 Roteiro para HeyGen'],
-    getPrompt:(p)=>`Você é Água Marinha, Guardiã da Comunicação — especialista em roteiros de Reels e TikTok.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nPúblico: ${p.audience}\nTom: ${p.tone}\nRegras: ${p.rules||''}\n\nSua missão: criar Reels com hook, roteiro, cenas sem rosto, narração, texto na tela, legenda e CTA.\n\nEstrutura obrigatória:\n- GANCHO (para o scroll em 3 segundos)\n- DESENVOLVIMENTO (com virada inesperada)\n- CTA (discreto e natural)\n- CENAS (sem aparecer: tela, mão, IA)\n- LEGENDA completa\n\nFormato Dinamismo quando aplicável.`},
-  quartzorosa:{step:'04',name:'Quartzo Rosa',guardian:'Guardiã da Conexão',chakra:'Chakra Coração · A Curadora',meaning:'Eu acolho. Eu conecto. Eu transformo relações em laços reais.',color:'var(--quartzorosa)',img:'quartzorosa.png',emoji:'🌸',
-    quickActions:['🎠 Cria carrossel de conexão','💝 Ajusta tom emocional','✨ Branding emocional','🌸 Posicionamento afetivo'],
-    getPrompt:(p)=>`Você é Quartzo Rosa, Guardiã da Conexão — especialista em branding emocional e copywriting para carrosséis.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nPúblico: ${p.audience}\nTom: ${p.tone}\n\nSua missão: fazer ajustes finais de conexão, clareza, tom de voz, emoção e posicionamento. Também cria carrosséis que geram identificação profunda.\n\nEstrutura carrossel:\n- Slide 1: Gancho forte\n- Slides 2-8: Uma ideia por slide, máx 3 linhas\n- Slide final: CTA humanizado\n\nSem linguagem corporativa. Frases curtas. Conexão genuína.`},
-  citrino:{step:'05',name:'Citrino',guardian:'Guardiã da Vontade',chakra:'Chakra Plexo Solar · A Executora',meaning:'Eu planejo. Eu executo. Eu realizo. A ação transforma sonhos em realidade.',color:'var(--citrino)',img:'citrino.png',emoji:'☀️',
-    quickActions:['📋 Cria checklist do dia','🗂️ Plano de execução','⚡ Transforma conteúdo em tarefa','📅 Cronograma semanal'],
-    getPrompt:(p)=>`Você é Citrino, Guardiã da Vontade — especialista em produtividade e execução.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nObjetivo: ${p.goal}\n\nSua missão: transformar conteúdos e ideias em tarefas, cronogramas, checklists e planos de execução claros e acionáveis.\n\nEntregue sempre:\n- Lista de tarefas com prioridade\n- Estimativa de tempo\n- Ordem lógica de execução\n- Próximos 3 passos imediatos`},
-  cornalina:{step:'06',name:'Cornalina',guardian:'Guardiã da Criação',chakra:'Chakra Sacral · A Criadora',meaning:'Eu crio. Eu imagino. Eu dou vida.',color:'var(--cornalina)',img:'cornalina.png',emoji:'🔴',
-    quickActions:['🎠 Cria carrossel completo','🎨 Estrutura visual','📝 Titulo + slides + legenda','🔥 Carrossel viral'],
-    getPrompt:(p)=>`Você é Cornalina, Guardiã da Criação — especialista em carrosséis completos e conteúdo criativo.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nPúblico: ${p.audience}\nTom: ${p.tone}\nRegras: ${p.rules||''}\n\nSua missão: criar carrosséis completos com título, slides, texto, design sugerido, legenda, CTA e prompt visual.\n\nEstrutura obrigatória:\n- TEMA e promessa do carrossel\n- TÍTULO do carrossel\n- SLIDE 1: hook irresistível\n- SLIDES 2-8: desenvolvimento\n- SLIDE FINAL: CTA\n- LEGENDA completa\n- PROMPT VISUAL para gerar imagem do carrossel`},
-  onix:{step:'07',name:'Ônix',guardian:'Guardiã da Estrutura',chakra:'Chakra Raiz · A Guardiã da Base',meaning:'Eu organizo. Eu estruturo. Eu sustento.',color:'#888888',img:'onix.png',emoji:'🖤',
-    quickActions:['⚙️ Organiza fluxo de publicação','🔗 Conecta ferramentas','📅 Prepara para Metricool','✅ Checklist de publicação'],
-    getPrompt:(p)=>`Você é Ônix, Guardiã da Estrutura — especialista em organização, automação e publicação.\n\nProjeto ativo: ${p.name}\nNicho: ${p.niche}\nRedes: ${p.social}\n\nSua missão: organizar, estruturar fluxos, preparar conteúdos para publicação e conectar ferramentas (Notion, Trello, Metricool, Make).\n\nREGRA FUNDAMENTAL: NUNCA publicar automaticamente. Sempre preparar e aguardar confirmação manual.\n\nEntregue:\n- Checklist de publicação\n- Estrutura do post formatada\n- Hashtags adequadas\n- Melhor horário sugerido\n- Confirmação necessária antes de qualquer ação`}
+// AGENTS
+var GC={ametista:'linear-gradient(135deg,#1A0A2E,#4A1F7B)',sodalita:'linear-gradient(135deg,#0A1528,#1A3A7C)',aguamarinha:'linear-gradient(135deg,#001820,#004D5C)',quartzorosa:'linear-gradient(135deg,#2E0A1A,#7B1A4A)',citrino:'linear-gradient(135deg,#1A1200,#4A3500)',cornalina:'linear-gradient(135deg,#2E0A00,#7B1A00)',onix:'linear-gradient(135deg,#0A0A0A,#1E1E1E)'};
+function makePrompt(role,desc,mission,structure,extra,p){return 'Voce e '+role+'\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nDescricao: '+p.desc+'\nPublico: '+p.audience+'\nRedes: '+p.social+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\n'+mission+'\n\n'+structure+(extra?'\n\n'+extra:'');}
+var AGENTS={
+  ametista:{step:'01',name:'Ametista',guardian:'Guardia da Transcendencia',chakra:'Chakra Coroa · A Oraculo',meaning:'Revela o que esta oculto antes de todo mundo ver.',color:'var(--ametista)',img:'IMAGENS DOS AGENTES/ametista.png',emoji:'🔮',qa:['🔥 O que ta viralizando sobre IA?','📊 Analisa concorrentes','💡 5 temas para hoje','🎯 Melhor formato da semana'],getPrompt:function(p){return 'Voce e Ametista, Guardia da Transcendencia — especialista em pesquisa de tendencias e benchmarking.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nRegras: '+(p.rules||'')+'\n\nSua missao: revelar tendencias, referencias virais e transformar em oportunidades de conteudo.\n\nEntregue:\n1. 3-5 tendencias de formato ou tema do momento\n2. O que os maiores players estao fazendo agora\n3. Oportunidades ainda nao exploradas\n4. Angulo original para usar primeiro';}},
+  sodalita:{step:'02',name:'Sodalita',guardian:'Guardia da Visao',chakra:'Chakra Terceiro Olho · A Visionaria',meaning:'Enxerga padroes e transforma insights em planos poderosos.',color:'var(--sodalita)',img:'IMAGENS DOS AGENTES/sodalita.png',emoji:'🔵',qa:['📅 Planeja o mes','🗂️ Organiza a semana','📌 Distribui pilares','📊 Analisa metricas'],getPrompt:function(p){return 'Voce e Sodalita, Guardia da Visao — especialista em planejamento criativo e calendario editorial.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nObjetivo: '+p.goal+'\n\nSua missao: planejar conteudos e organizar calendario de forma estrategica. Entregue calendarios em tabela. Seja organizada e visual.'+(p.name==='Vitalitat'?'\n\nRegra: 5 hashtags por post — 2 brand + 2 geolocadas Salvador/BA + 1 nicho.':'');}},
+  aguamarinha:{step:'03',name:'Agua Marinha',guardian:'Guardia da Comunicacao',chakra:'Chakra Garganta · A Mensageira',meaning:'As palavras sao ondas. Ela guia o que transforma.',color:'var(--aguamarinha)',img:'IMAGENS DOS AGENTES/aguamarinha.png',emoji:'🌊',qa:['🎬 Cria roteiro de Reel','⚡ Formato Dinamismo','🔥 Gancho irresistivel','📱 Roteiro para HeyGen'],getPrompt:function(p){return 'Voce e Agua Marinha, Guardia da Comunicacao — especialista em roteiros de Reels e TikTok.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\nEstrutura obrigatoria:\n- GANCHO (3 segundos)\n- DESENVOLVIMENTO (virada inesperada)\n- CTA (discreto e natural)\n- CENAS (sem aparecer: tela, mao, IA)\n- LEGENDA completa';}},
+  quartzorosa:{step:'04',name:'Quartzo Rosa',guardian:'Guardia da Conexao',chakra:'Chakra Coracao · A Curadora',meaning:'Eu acolho. Eu conecto. Eu transformo relacoes em lacos reais.',color:'var(--quartzorosa)',img:'IMAGENS DOS AGENTES/quartzorosa.png',emoji:'🌸',qa:['🎠 Cria carrossel de conexao','💝 Ajusta tom emocional','✨ Branding emocional','🌸 Posicionamento afetivo'],getPrompt:function(p){return 'Voce e Quartzo Rosa, Guardia da Conexao — especialista em branding emocional.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\n\nEstrutura carrossel:\n- Slide 1: Gancho forte\n- Slides 2-8: Uma ideia por slide, max 3 linhas\n- Slide final: CTA humanizado\n\nSem linguagem corporativa. Fracoes curtas. Conexao genuina.';}},
+  citrino:{step:'05',name:'Citrino',guardian:'Guardia da Vontade',chakra:'Chakra Plexo Solar · A Executora',meaning:'Eu planejo. Eu executo. Eu realizo.',color:'var(--citrino)',img:'IMAGENS DOS AGENTES/citrino.png',emoji:'☀️',qa:['📋 Cria checklist do dia','🗂️ Plano de execucao','⚡ Transforma conteudo em tarefa','📅 Cronograma semanal'],getPrompt:function(p){return 'Voce e Citrino, Guardia da Vontade — especialista em produtividade e execucao.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nObjetivo: '+p.goal+'\n\nEntregue:\n- Lista de tarefas com prioridade\n- Estimativa de tempo\n- Ordem logica de execucao\n- Proximos 3 passos imediatos';}},
+  cornalina:{step:'06',name:'Cornalina',guardian:'Guardia da Criacao',chakra:'Chakra Sacral · A Criadora',meaning:'Eu crio. Eu imagino. Eu dou vida.',color:'var(--cornalina)',img:'IMAGENS DOS AGENTES/cornalina.png',emoji:'🔴',qa:['🎠 Cria carrossel completo','🎨 Estrutura visual','📝 Titulo + slides + legenda','🔥 Carrossel viral'],getPrompt:function(p){return 'Voce e Cornalina, Guardia da Criacao — especialista em carrosseis completos.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\nEstrutura obrigatoria:\n- TEMA e promessa\n- TITULO\n- SLIDE 1: hook irresistivel\n- SLIDES 2-8: desenvolvimento\n- SLIDE FINAL: CTA\n- LEGENDA completa\n- PROMPT VISUAL para gerar imagem';}},
+  onix:{step:'07',name:'Onix',guardian:'Guardia da Estrutura',chakra:'Chakra Raiz · A Guardia da Base',meaning:'Eu organizo. Eu estruturo. Eu sustento.',color:'#888',img:'IMAGENS DOS AGENTES/onix.png',emoji:'🖤',qa:['⚙️ Organiza fluxo de publicacao','🔗 Conecta ferramentas','📅 Prepara para Metricool','✅ Checklist de publicacao'],getPrompt:function(p){return 'Voce e Onix, Guardia da Estrutura — especialista em organizacao e publicacao.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nRedes: '+p.social+'\n\nREGRA: NUNCA publicar automaticamente. Sempre preparar e aguardar confirmacao manual.\n\nEntregue:\n- Checklist de publicacao\n- Estrutura do post formatada\n- Hashtags adequadas\n- Melhor horario sugerido';}}
 };
 
-const GEM_COLORS={ametista:'linear-gradient(135deg,#1A0A2E,#4A1F7B)',sodalita:'linear-gradient(135deg,#0A1528,#1A3A7C)',aguamarinha:'linear-gradient(135deg,#001820,#004D5C)',quartzorosa:'linear-gradient(135deg,#2E0A1A,#7B1A4A)',citrino:'linear-gradient(135deg,#1A1200,#4A3500)',cornalina:'linear-gradient(135deg,#2E0A00,#7B1A00)',onix:'linear-gradient(135deg,#0A0A0A,#1E1E1E)'};
-
-let currentAgent='ametista';
-let currentModalKey='';
-let chatHistories={};
-Object.keys(AGENTS).forEach(k=>chatHistories[k]=[]);
+Object.keys(AGENTS).forEach(function(k){chatH[k]=[];});
+var currentAgent='ametista';var currentModalKey='';
 
 // NAV
 function nav(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const pg=document.getElementById('page-'+id);
-  if(pg)pg.classList.add('active');
-  if(el)el.classList.add('active');
-  if(id==='ferramentas')loadFerramentas();
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var pg=document.getElementById('page-'+id);if(pg)pg.classList.add('active');
+  if(el&&el.classList)el.classList.add('active');
+  if(id==='ferramentas')renderFerramentas(allFerramentas);
   if(id==='bau')loadBAU();
-  if(id==='config'){renderProfileCards();document.getElementById('edit-profile-section').style.display='none';}
+  if(id==='config'){renderProfileCards();document.getElementById('edit-section').style.display='none';}
   if(id==='ctas')renderCTAs();
   if(id==='reels')renderReels();
   if(id==='agentes')renderAgentList();
+  if(id==='calendario')renderCal();
+  if(id==='metricas')renderMetGrid();
+  if(window.innerWidth<=768)window.scrollTo(0,0);
 }
 
 // PIPELINE
-function renderPipeline(containerId){
-  const keys=Object.keys(AGENTS);
-  const c=document.getElementById(containerId);
-  if(!c)return;
-  c.innerHTML=keys.map((k,i)=>{
-    const a=AGENTS[k];
-    return `${i>0?'<div class="pipe-arrow">→</div>':''}
-    <div class="gem-card" onclick="openModal('${k}')" style="position:relative">
-      <div class="gem-num">${a.step}</div>
-      <div class="gem-chakra">${a.chakra.split('\xb7')[0].trim()}</div>
-      <div class="gem-visual" style="background:${GEM_COLORS[k]};width:100%;height:185px;display:flex;align-items:center;justify-content:center;font-size:56px" id="gv-${k}">${a.emoji}</div>
-      <div class="gem-body">
-        <div class="gem-name">${a.name}</div>
-        <div class="gem-title" style="color:${a.color}">${a.guardian}</div>
-        <div class="gem-desc">${a.meaning.substring(0,45)}...</div>
-      </div>
-    </div>`;
+function renderPipeline(cid){
+  var c=document.getElementById(cid);if(!c)return;
+  c.innerHTML=Object.keys(AGENTS).map(function(k,i){
+    var a=AGENTS[k];
+    return (i>0?'<div class="pipe-arrow">→</div>':'')+
+    '<div class="gem-card" onclick="openModal(\''+k+'\')" style="position:relative">'+
+    '<div class="gem-num">'+a.step+'</div>'+
+    '<div class="gem-chakra">'+a.chakra.split('·')[0].trim()+'</div>'+
+    '<div class="gem-visual" style="background:'+GC[k]+'" id="gv-'+k+'"><span style="font-size:56px">'+a.emoji+'</span></div>'+
+    '<div class="gem-body"><div class="gem-name">'+a.name+'</div><div class="gem-guardian" style="color:'+a.color+'">'+a.guardian+'</div><div class="gem-desc">'+a.meaning.substring(0,45)+'...</div></div>'+
+    '</div>';
   }).join('');
-  // Load images dynamically
-  keys.forEach(k=>{
-    const img=new Image();
-    img.onload=function(){
-      const el=document.getElementById('gv-'+k);
-      if(el){el.style.padding='0';el.style.fontSize='0';el.innerHTML='<img src="'+AGENTS[k].img+'" style="width:100%;height:185px;object-fit:cover;object-position:top;display:block"/>';}
-    };
+  Object.keys(AGENTS).forEach(function(k){
+    var img=new Image();
+    img.onload=function(){var el=document.getElementById('gv-'+k);if(el)el.innerHTML='<img src="'+AGENTS[k].img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block"/>';};
     img.src=AGENTS[k].img;
   });
 }
 
+// AGENT LIST
 function renderAgentList(){
-  const list=document.getElementById('agent-list');
-  if(!list)return;
-  list.innerHTML='<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:7px;">Escolha a guardiã</div>'+
-  Object.keys(AGENTS).map((k,i)=>{
-    const a=AGENTS[k];
-    return `<button class="agent-pick ${k===currentAgent?'selected':''}" onclick="selectAgent('${k}',this)">
-      <div id="ap-${k}" style="width:32px;height:32px;border-radius:8px;background:${GEM_COLORS[k]};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${a.emoji}</div>
-      <div><div class="agent-pick-name">${a.name}</div><div class="agent-pick-role">${a.guardian}</div></div>
-    </button>`;
-  }).join('')+
-  `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
-    <div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px">Projeto ativo</div>
-    <div id="agent-profile-badge" style="background:var(--gold-pale);border:1px solid rgba(201,150,58,0.2);border-radius:7px;padding:7px 9px">
-      <div style="font-size:11px;font-weight:600;color:var(--gold-light)" id="agent-profile-name">${getActiveProfile().name}</div>
-      <div style="font-size:9px;color:var(--text-dim);margin-top:1px" id="agent-profile-niche">${getActiveProfile().niche.substring(0,26)}...</div>
-    </div>
-  </div>`;
+  var list=document.getElementById('agent-list');if(!list)return;
+  var p=getP();
+  list.innerHTML='<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:7px">Escolha a guardia</div>'+
+  Object.keys(AGENTS).map(function(k){var a=AGENTS[k];return '<button class="agent-pick '+(k===currentAgent?'selected':'')+'" onclick="selectAgent(\''+k+'\',this)"><div style="width:32px;height:32px;border-radius:8px;background:'+GC[k]+';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0" id="apv-'+k+'">'+a.emoji+'</div><div><div class="agent-pick-name">'+a.name+'</div><div class="agent-pick-role">'+a.guardian+'</div></div></button>';}).join('')+
+  '<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)"><div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px">Projeto ativo</div><div style="background:var(--gold-pale);border:1px solid rgba(201,150,58,.2);border-radius:7px;padding:7px 9px"><div style="font-size:11px;font-weight:600;color:var(--gold-light)" id="ap-name">'+p.name+'</div><div style="font-size:9px;color:var(--text-dim);margin-top:1px" id="ap-niche">'+p.niche.substring(0,26)+'...</div></div></div>';
+  Object.keys(AGENTS).forEach(function(k){var img=new Image();img.onload=function(){var el=document.getElementById('apv-'+k);if(el)el.innerHTML='<img src="'+AGENTS[k].img+'" style="width:32px;height:32px;border-radius:8px;object-fit:cover;object-position:top;display:block"/>';};img.src=AGENTS[k].img;});
 }
 
 // MODAL
 function openModal(key){
-  currentModalKey=key;
-  const a=AGENTS[key];const p=getActiveProfile();
-  const wrap=document.getElementById('modal-avatar-wrap');
-  wrap.innerHTML=`<div id="modal-img-wrap" style="width:56px;height:56px;border-radius:12px;background:${GEM_COLORS[key]||'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0">${a.emoji}</div>`;
-  const mimg=new Image();
-  mimg.onload=()=>{const el=document.getElementById('modal-img-wrap');if(el)el.innerHTML=`<img src="${a.img}" style="width:56px;height:56px;border-radius:12px;object-fit:cover;object-position:top;display:block"/>`;};
-  mimg.src=a.img;
-  document.getElementById('m-step').textContent='Guardiã '+a.step+' de 7';
+  currentModalKey=key;var a=AGENTS[key];var p=getP();
+  var wrap=document.getElementById('modal-avatar-wrap');
+  wrap.innerHTML='<div id="mav" style="width:56px;height:56px;border-radius:12px;background:'+GC[key]+';display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0">'+a.emoji+'</div>';
+  var img=new Image();img.onload=function(){var el=document.getElementById('mav');if(el)el.innerHTML='<img src="'+a.img+'" style="width:56px;height:56px;border-radius:12px;object-fit:cover;object-position:top"/>';};img.src=a.img;
+  document.getElementById('m-step').textContent='Guardia '+a.step+' de 7';
   document.getElementById('m-name').textContent=a.name;
-  document.getElementById('m-guardian').textContent=a.guardian;
-  document.getElementById('m-guardian').style.color=a.color;
+  document.getElementById('m-guardian').textContent=a.guardian;document.getElementById('m-guardian').style.color=a.color;
   document.getElementById('m-chakra').textContent=a.chakra;
   document.getElementById('m-meaning').textContent=a.meaning;
   document.getElementById('m-prompt').textContent=a.getPrompt(p);
-  document.getElementById('m-copy-btn').textContent='📋 Copiar System Prompt';
-  document.getElementById('m-copy-btn').classList.remove('copied');
+  document.getElementById('m-copy-btn').textContent='📋 Copiar System Prompt';document.getElementById('m-copy-btn').classList.remove('copied');
   document.getElementById('overlay').classList.add('open');
 }
 function closeModal(e){if(e.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('open');}
-function copyPrompt(){
-  navigator.clipboard.writeText(AGENTS[currentModalKey].getPrompt(getActiveProfile()));
-  const btn=document.getElementById('m-copy-btn');
-  btn.textContent='✅ Copiado!';btn.classList.add('copied');
-  setTimeout(()=>{btn.textContent='📋 Copiar System Prompt';btn.classList.remove('copied');},2500);
+function copyPromptModal(){
+  navigator.clipboard.writeText(AGENTS[currentModalKey].getPrompt(getP()));
+  var btn=document.getElementById('m-copy-btn');btn.textContent='✅ Copiado!';btn.classList.add('copied');
+  setTimeout(function(){btn.textContent='📋 Copiar System Prompt';btn.classList.remove('copied');},2500);
 }
 
 // CHAT
 function selectAgent(key,btn){
-  document.querySelectorAll('.agent-pick').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.agent-pick').forEach(function(b){b.classList.remove('selected');});
   if(btn)btn.classList.add('selected');
-  currentAgent=key;
-  const a=AGENTS[key];const p=getActiveProfile();
-  const ce=document.getElementById('chat-emoji');
-  if(ce)ce.textContent=a.emoji;
-  const cn=document.getElementById('chat-name');if(cn)cn.textContent=a.name;
-  const cm=document.getElementById('chat-meaning');if(cm)cm.textContent=a.guardian+' · '+a.chakra.split('·')[1]?.trim();
-  const ci=document.getElementById('chat-input');if(ci)ci.placeholder=`Fale com ${a.name}...`;
-  const cpb=document.getElementById('chat-profile-badge');if(cpb)cpb.textContent=p.emoji+' '+p.name;
-  const msgs=document.getElementById('chat-messages');
-  if(msgs)msgs.innerHTML=`<div class="msg agent"><div class="msg-avatar">${a.emoji}</div><div class="msg-bubble">Sou <strong>${a.name}</strong>, ${a.guardian}. ${a.meaning} Trabalhando com o projeto <strong>${p.name}</strong>. Como posso te ajudar?</div></div>`;
-  const qa=document.getElementById('quick-actions');
-  if(qa)qa.innerHTML=a.quickActions.map(q=>`<button class="quick-btn" onclick="quickSend(this)">${q}</button>`).join('');
+  else{var picks=document.querySelectorAll('.agent-pick');var idx=Object.keys(AGENTS).indexOf(key);if(picks[idx])picks[idx].classList.add('selected');}
+  currentAgent=key;var a=AGENTS[key];var p=getP();
+  var ce=document.getElementById('chat-emoji');if(ce)ce.textContent=a.emoji;
+  var cn=document.getElementById('chat-name');if(cn)cn.textContent=a.name;
+  var cm=document.getElementById('chat-meaning');if(cm)cm.textContent=a.guardian+' · '+(a.chakra.split('·')[1]||'').trim();
+  var ci=document.getElementById('chat-input');if(ci)ci.placeholder='Fale com '+a.name+'...';
+  var cb=document.getElementById('chat-badge');if(cb)cb.textContent=p.emoji+' '+p.name;
+  var msgs=document.getElementById('chat-messages');
+  if(msgs)msgs.innerHTML='<div class="msg agent"><div class="msg-avatar">'+a.emoji+'</div><div class="msg-bubble">Sou <strong>'+a.name+'</strong>, '+a.guardian+'. '+a.meaning+' Trabalhando com <strong>'+p.name+'</strong>. Como posso te ajudar?</div></div>';
+  var qa=document.getElementById('quick-actions');
+  if(qa)qa.innerHTML=a.qa.map(function(q){return '<button class="quick-btn" onclick="quickSend(this)">'+q+'</button>';}).join('');
 }
-
-async function sendMessage(text){
-  const input=document.getElementById('chat-input');
-  const msg=text||input.value.trim();
-  if(!msg)return;
-  input.value='';
-  addMsg('user',msg);
-  const btn=document.getElementById('send-btn');btn.disabled=true;
-  const typingId=addTyping();
-  const a=AGENTS[currentAgent];const p=getActiveProfile();
-  chatHistories[currentAgent].push({role:'user',content:msg});
+async function sendMsg(txt){
+  var input=document.getElementById('chat-input');var msg=txt||input.value.trim();if(!msg)return;
+  input.value='';addMsg('user',msg);
+  var btn=document.getElementById('send-btn');btn.disabled=true;
+  var tid=addTyping();var a=AGENTS[currentAgent];var p=getP();
+  chatH[currentAgent].push({role:'user',content:msg});
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:a.getPrompt(p),messages:chatHistories[currentAgent]})});
-    const data=await res.json();
-    removeTyping(typingId);
-    const reply=data.content?.[0]?.text||'Erro.';
-    chatHistories[currentAgent].push({role:'assistant',content:reply});
-    addMsg('agent',reply,a.emoji);
-  }catch(e){
-    removeTyping(typingId);
-    addMsg('agent','Para usar o chat ao vivo, adicione sua API Key do Claude no código. Por enquanto, copie o System Prompt e use nos Projects do Claude! 💜',a.emoji);
-  }
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:a.getPrompt(p),messages:chatH[currentAgent]})});
+    var data=await res.json();removeTyping(tid);
+    var reply=data.content&&data.content[0]?data.content[0].text:'Erro.';chatH[currentAgent].push({role:'assistant',content:reply});addMsg('agent',reply,a.emoji);
+  }catch(e){removeTyping(tid);addMsg('agent','Para usar o chat ao vivo, adicione sua API Key no codigo. Por enquanto, copie o System Prompt e use nos Projects do Claude! 💜',a.emoji);}
   btn.disabled=false;
 }
-function quickSend(btn){sendMessage(btn.textContent.replace(/^[^\s]+\s/,'')||btn.textContent);}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
-function addMsg(role,text,emoji='👤'){
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div');div.className=`msg ${role}`;
-  const f=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>').replace(/```([\s\S]*?)```/g,'<pre>$1</pre>');
-  div.innerHTML=`<div class="msg-avatar">${role==='user'?'✍️':emoji}</div><div class="msg-bubble">${f}</div>`;
+function quickSend(btn){sendMsg(btn.textContent.replace(/^[^\s]+\s/,'')||btn.textContent);}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function addMsg(role,text,emoji){
+  if(!emoji)emoji='👤';
+  var msgs=document.getElementById('chat-messages');var div=document.createElement('div');div.className='msg '+role;
+  var f=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>').replace(/```([\s\S]*?)```/g,'<pre>$1</pre>');
+  div.innerHTML='<div class="msg-avatar">'+(role==='user'?'✍️':emoji)+'</div><div class="msg-bubble">'+f+'</div>';
   msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
 function addTyping(){
-  const msgs=document.getElementById('chat-messages');const id='t'+Date.now();
-  msgs.innerHTML+=`<div class="msg agent" id="${id}"><div class="msg-avatar">${AGENTS[currentAgent].emoji}</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  var msgs=document.getElementById('chat-messages');var id='t'+Date.now();
+  msgs.innerHTML+='<div class="msg agent" id="'+id+'"><div class="msg-avatar">'+AGENTS[currentAgent].emoji+'</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>';
   msgs.scrollTop=msgs.scrollHeight;return id;
 }
-function removeTyping(id){const el=document.getElementById(id);if(el)el.remove();}
+function removeTyping(id){var el=document.getElementById(id);if(el)el.remove();}
 
 // FERRAMENTAS
-const FERRAMENTAS=[
-  {nome:'Claude',funcao:'Agente de IA',status:'Usando ativamente',pedras:'Todas',link:'https://claude.ai',vale:'🔥'},
-  {nome:'HeyGen',funcao:'Vídeo com Avatar',status:'Usando ativamente',pedras:'Água Marinha',link:'https://heygen.com',vale:'🔥'},
-  {nome:'CapCut',funcao:'Edição de Vídeo',status:'Usando ativamente',pedras:'Água Marinha',link:'https://capcut.com',vale:'🔥'},
-  {nome:'Veo3',funcao:'Geração de Vídeo',status:'Testando',pedras:'Cornalina',link:'https://labs.google/veo',vale:'🔥'},
-  {nome:'ManyChat',funcao:'Chatbot',status:'Usando ativamente',pedras:'Ônix',link:'https://manychat.com',vale:'🔥'},
-  {nome:'Make.com',funcao:'Automação',status:'Quero testar',pedras:'Ônix',link:'https://make.com',vale:'🔥'},
-  {nome:'Canva',funcao:'Design Gráfico',status:'Usando ativamente',pedras:'Cornalina',link:'https://canva.com',vale:'🔥'},
-  {nome:'ElevenLabs',funcao:'Áudio e Voz',status:'Quero testar',pedras:'Água Marinha',link:'https://elevenlabs.io',vale:'⭐'},
-  {nome:'Notion',funcao:'Produtividade',status:'Usando ativamente',pedras:'Ônix',link:'https://notion.so',vale:'🔥'},
-  {nome:'Hotmart',funcao:'Infoprodutos',status:'Usando ativamente',pedras:'Citrino',link:'https://hotmart.com',vale:'🔥'},
-  {nome:'Perplexity AI',funcao:'Pesquisa',status:'Quero testar',pedras:'Ametista',link:'https://perplexity.ai',vale:'⭐'},
-  {nome:'Higgsfield AI',funcao:'Geração de Vídeo',status:'Testando',pedras:'Cornalina',link:'https://higgsfield.ai',vale:'⭐'},
-  {nome:'ChatGPT',funcao:'Agente de IA',status:'Usando ativamente',pedras:'Ametista',link:'https://chat.openai.com',vale:'⭐'},
+var allFerramentas=[
+  {n:'Claude',f:'Agente de IA',s:'Usando ativamente',p:'Todas',l:'https://claude.ai',v:'🔥'},
+  {n:'HeyGen',f:'Video com Avatar',s:'Usando ativamente',p:'Agua Marinha',l:'https://heygen.com',v:'🔥'},
+  {n:'CapCut',f:'Edicao de Video',s:'Usando ativamente',p:'Agua Marinha',l:'https://capcut.com',v:'🔥'},
+  {n:'Canva',f:'Design Grafico',s:'Usando ativamente',p:'Cornalina',l:'https://canva.com',v:'🔥'},
+  {n:'Notion',f:'Produtividade',s:'Usando ativamente',p:'Onix',l:'https://notion.so',v:'🔥'},
+  {n:'ManyChat',f:'Chatbot',s:'Usando ativamente',p:'Onix',l:'https://manychat.com',v:'🔥'},
+  {n:'Hotmart',f:'Infoprodutos',s:'Usando ativamente',p:'Citrino',l:'https://hotmart.com',v:'🔥'},
+  {n:'ChatGPT',f:'Agente de IA',s:'Usando ativamente',p:'Ametista',l:'https://chat.openai.com',v:'⭐'},
+  {n:'Veo3',f:'Geracao de Video 4K',s:'Testando',p:'Cornalina',l:'https://labs.google/fx/pt/tools/video-fx',v:'🔥'},
+  {n:'Nano Banana',f:'Avatar / Influencer IA',s:'Testando',p:'Ametista',l:'https://nanobananai.com',v:'🔥'},
+  {n:'Higgsfield AI',f:'Animar Imagens',s:'Testando',p:'Cornalina',l:'https://higgsfield.ai',v:'⭐'},
+  {n:'Wan (Qwen)',f:'Video IA Gratuito',s:'Testando',p:'Agua Marinha',l:'https://wan.video',v:'⭐'},
+  {n:'Make.com',f:'Automacao',s:'Quero testar',p:'Onix',l:'https://make.com',v:'🔥'},
+  {n:'ElevenLabs',f:'Audio e Voz',s:'Quero testar',p:'Agua Marinha',l:'https://elevenlabs.io',v:'⭐'},
+  {n:'Perplexity AI',f:'Pesquisa',s:'Quero testar',p:'Ametista',l:'https://perplexity.ai',v:'⭐'},
+  {n:'Gamma.app',f:'Carrossel / Slides',s:'Quero testar',p:'Cornalina',l:'https://gamma.app',v:'⭐'},
+  {n:'Google Flow',f:'Animar Fotos',s:'Quero testar',p:'Cornalina',l:'https://labs.google/fx/tools/flow/about',v:'⭐'},
+  {n:'TikTok Creative Studio',f:'Anuncios TikTok',s:'Quero testar',p:'Citrino',l:'https://ads.tiktok.com/creative/creativestudio/home/pt-BR',v:'⭐'}
 ];
-let allFerramentas=[...FERRAMENTAS];
-function loadFerramentas(){renderFerramentas(allFerramentas);}
-function filterTools(s,btn){document.querySelectorAll('#page-ferramentas .filter-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderFerramentas(s==='todos'?allFerramentas:allFerramentas.filter(f=>f.status===s));}
+function filterTools(s,btn){document.querySelectorAll('#page-ferramentas .filter-btn').forEach(function(b){b.classList.remove('active');});if(btn)btn.classList.add('active');renderFerramentas(s==='todos'?allFerramentas:allFerramentas.filter(function(f){return f.s===s;}));}
 function renderFerramentas(list){
-  const grid=document.getElementById('grid-ferramentas');
-  if(!list.length){grid.innerHTML='<div class="empty-state">Nenhuma ferramenta encontrada.</div>';return;}
-  grid.innerHTML=list.map(f=>{const sc=f.status==='Usando ativamente'?'green':f.status==='Testando'?'blue':'';return `<div class="notion-card" onclick="window.open('${f.link}','_blank')"><div class="notion-card-top"><div class="notion-card-title">${f.vale} ${f.nome}</div><div class="notion-card-meta">${f.funcao}</div></div><div class="notion-card-tags"><span class="notion-tag ${sc}">${f.status}</span><span class="notion-tag">${f.pedras}</span></div></div>`;}).join('');
+  var g=document.getElementById('grid-ferramentas');if(!list.length){g.innerHTML='<div class="empty-state">Nenhuma ferramenta encontrada.</div>';return;}
+  g.innerHTML=list.map(function(f){var sc=f.s==='Usando ativamente'?'g':f.s==='Testando'?'b':'';return '<div class="notion-card" onclick="window.open(\''+f.l+'\',\'_blank\')"><div class="notion-card-top"><div class="notion-card-title">'+f.v+' '+f.n+'</div><div class="notion-card-meta">'+f.f+'</div></div><div class="notion-card-tags"><span class="notion-tag '+sc+'">'+f.s+'</span><span class="notion-tag">'+f.p+'</span></div></div>';}).join('');
 }
 
+// BAU
 function loadBAU(){
-  const temas=[{titulo:'Transformei o Claude numa equipe de conteúdo',gancho:'"Você ainda usa IA pra pedir legenda?"',pilar:'Viral',formato:'Reel Dinâmico',status:'⭐ Prioridade'},{titulo:'6 ferramentas de IA sem pagar nada',gancho:'"Você não precisa pagar caro pra usar IA de verdade."',pilar:'Autoridade',formato:'Carrossel',status:'Para criar'},{titulo:'Como crio conteúdo para 3 clientes',gancho:'"A resposta cabe em 60 segundos."',pilar:'Autoridade',formato:'Reel',status:'Para gravar'},{titulo:'5 serviços com IA para oferecer hoje',gancho:'"Se você sabe usar IA, já tem um negócio."',pilar:'Conversão',formato:'Carrossel',status:'Para criar'},{titulo:'A ferramenta que virou meu vício (gratuita)',gancho:'"Essa IA parece ilegal de tão boa."',pilar:'Viral',formato:'Reel',status:'Para gravar'},{titulo:'Por que sua legenda não converte',gancho:'"A legenda não é decoração. É venda."',pilar:'Autoridade',formato:'Carrossel',status:'Para criar'}];
-  const grid=document.getElementById('grid-bau');if(!grid)return;
-  grid.innerHTML=temas.map(t=>{const pc=t.pilar==='Viral'?'red':t.pilar==='Autoridade'?'blue':t.pilar==='Conversão'?'green':'purple';return `<div class="notion-card"><div class="notion-card-top"><div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">${t.pilar}</div><div class="notion-card-title">${t.titulo}</div><div class="notion-card-meta" style="font-style:italic;margin-top:3px">${t.gancho}</div></div><div class="notion-card-tags"><span class="notion-tag ${pc}">${t.formato}</span><span class="notion-tag">${t.status}</span></div></div>`;}).join('');
+  var temas=[{t:'Transformei o Claude numa equipe de conteudo',g:'"Voce ainda usa IA pra pedir legenda?"',p:'Viral',f:'Reel Dinamico',s:'⭐ Prioridade'},{t:'6 ferramentas de IA sem pagar nada',g:'"Voce nao precisa pagar caro pra usar IA."',p:'Autoridade',f:'Carrossel',s:'Para criar'},{t:'Como crio conteudo para 3 clientes',g:'"A resposta cabe em 60 segundos."',p:'Autoridade',f:'Reel',s:'Para gravar'},{t:'5 servicos com IA para oferecer hoje',g:'"Se voce sabe usar IA, ja tem um negocio."',p:'Conversao',f:'Carrossel',s:'Para criar'},{t:'A ferramenta que virou meu vicio (gratuita)',g:'"Essa IA parece ilegal de tao boa."',p:'Viral',f:'Reel',s:'Para gravar'},{t:'Por que sua legenda nao converte',g:'"A legenda nao e decoracao. E venda."',p:'Autoridade',f:'Carrossel',s:'Para criar'}];
+  var g=document.getElementById('grid-bau');if(!g)return;
+  g.innerHTML=temas.map(function(t){var pc=t.p==='Viral'?'r':t.p==='Autoridade'?'b':t.p==='Conversao'?'g':'p';return '<div class="notion-card"><div class="notion-card-top"><div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">'+t.p+'</div><div class="notion-card-title">'+t.t+'</div><div class="notion-card-meta" style="font-style:italic;margin-top:3px">'+t.g+'</div></div><div class="notion-card-tags"><span class="notion-tag '+pc+'">'+t.f+'</span><span class="notion-tag">'+t.s+'</span></div></div>';}).join('');
 }
 
+// CTAs
 function renderCTAs(){
-  const ctas=[['🔗','Link na Bio','Quer saber mais? O link está na bio.'],['💬','Comentar','Me conta nos comentários: o que você achou?'],['✉️','Direct','Me manda uma mensagem no direct e eu te mando mais detalhes.'],['📌','Salvar','Salva esse conteúdo para não perder — você vai querer voltar aqui.'],['🔁','Compartilhar','Manda pra aquela amiga que precisa ver isso agora.'],['🤫','Sala Secreta','Comenta aqui que eu te mando o acesso no direct.']];
-  document.getElementById('ctas-grid').innerHTML=ctas.map(([e,t,txt])=>`<div class="notion-card" onclick="copyCTA('${txt}',this)"><div class="notion-card-top"><div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">${e} ${t}</div><div class="notion-card-title" style="font-style:italic">"${txt}"</div></div><div class="notion-card-tags"><span class="notion-tag">Clique para copiar</span></div></div>`).join('');
+  var ctas=[['🔗','Link na Bio','Quer saber mais? O link esta na bio.'],['💬','Comentar','Me conta nos comentarios: o que voce achou?'],['✉️','Direct','Me manda uma mensagem no direct e eu te mando mais detalhes.'],['📌','Salvar','Salva esse conteudo para nao perder — voce vai querer voltar aqui.'],['🔁','Compartilhar','Manda pra aquela amiga que precisa ver isso agora.'],['🤫','Sala Secreta','Comenta aqui que eu te mando o acesso no direct.'],['🎯','Desafio','Testa e me conta o resultado nos comentarios!'],['🛒','Compra','Clica no link da bio para garantir o seu agora.']];
+  document.getElementById('ctas-grid').innerHTML=ctas.map(function(c){return '<div class="notion-card" onclick="copyCTA(this,\''+c[2].replace(/'/g,"&#39;")+'\')"><div class="notion-card-top"><div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">'+c[0]+' '+c[1]+'</div><div class="notion-card-title" style="font-style:italic">"'+c[2]+'"</div></div><div class="notion-card-tags"><span class="notion-tag">Clique para copiar</span></div></div>';}).join('');
 }
-function copyCTA(text,el){navigator.clipboard.writeText(text);const tag=el.querySelector('.notion-tag');const orig=tag.textContent;tag.textContent='✅ Copiado!';setTimeout(()=>tag.textContent=orig,1800);}
+function copyCTA(el,text){navigator.clipboard.writeText(text);var tag=el.querySelector('.notion-tag');var orig=tag.textContent;tag.textContent='✅ Copiado!';setTimeout(function(){tag.textContent=orig;},1800);}
 
+// REELS
 function renderReels(){
-  const reels=[['Transformei o Claude numa equipe de conteúdo','"Você ainda usa IA pra pedir legenda?"','Dinâmico'],['5 formas de usar IA no seu negócio essa semana','"Não é sobre ChatGPT. É sobre sistema."','Tela gravada'],['Essa ferramenta parece ilegal de tão boa','"Descobri uma IA que faz trabalho de um time."','Print + narração IA']];
-  const list=document.getElementById('reels-list');if(!list)return;
-  list.innerHTML=reels.map((r,i)=>`<div class="notion-card"><div class="notion-card-top" style="display:flex;align-items:center;gap:12px"><div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--text-dim);width:32px;flex-shrink:0;text-align:center">${String(i+1).padStart(2,'0')}</div><div><div class="notion-card-title">${r[0]}</div><div class="notion-card-meta" style="font-style:italic;margin-top:2px">"${r[1]}"</div></div></div><div class="notion-card-tags"><span class="notion-tag red">Para gravar</span><span class="notion-tag blue">${r[2]}</span></div></div>`).join('');
+  var reels=[['Transformei o Claude numa equipe de conteudo','"Voce ainda usa IA pra pedir legenda?"','Dinamico'],['5 formas de usar IA no seu negocio essa semana','"Nao e sobre ChatGPT. E sobre sistema."','Tela gravada'],['Essa ferramenta parece ilegal de tao boa','"Descobri uma IA que faz trabalho de um time."','Print + narracao IA']];
+  var list=document.getElementById('reels-list');if(!list)return;
+  list.innerHTML=reels.map(function(r,i){return '<div class="notion-card"><div class="notion-card-top" style="display:flex;align-items:center;gap:12px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:700;color:var(--text-dim);width:32px;flex-shrink:0;text-align:center">'+String(i+1).padStart(2,'0')+'</div><div><div class="notion-card-title">'+r[0]+'</div><div class="notion-card-meta" style="font-style:italic;margin-top:2px">"'+r[1]+'"</div></div></div><div class="notion-card-tags"><span class="notion-tag r">Para gravar</span><span class="notion-tag b">'+r[2]+'</span></div></div>';}).join('');
 }
 
+// CALENDARIO
+function renderCal(){
+  var g=document.getElementById('cal-grid');if(!g)return;
+  var days=['Seg','Ter','Qua','Qui','Sex','Sab','Dom'];var hc=[1,3,8,10,15,17,22];
+  g.style.cssText='display:grid;grid-template-columns:repeat(7,1fr);gap:6px';
+  g.innerHTML=days.map(function(d){return '<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);text-align:center;padding:6px 0">'+d+'</div>';}).join('')+
+  Array.from({length:35},function(_,i){var d=i-3;var h=hc.indexOf(d)>=0;return '<div style="background:var(--card);border:1px solid '+(h?'rgba(155,89,182,.25)':'var(--border)')+';border-radius:8px;padding:8px 6px;min-height:60px">'+(d>0&&d<=31?'<div style="font-size:9px;color:var(--text-dim);font-weight:600;margin-bottom:3px">'+d+'</div>'+(h?'<div style="font-size:8.5px;color:var(--text-mid)"><span style="width:4px;height:4px;background:var(--purple);border-radius:50%;display:inline-block;margin-right:2px"></span>Reel</div>':''):'')+'</div>';}).join('');
+}
+
+// METRICAS
+function renderMetGrid(){
+  var labels=['Alcance total','Engajamento','Novos seguidores','Reels publicados','Saves totais','Visitas ao perfil','Cliques no link bio','Vendas geradas'];
+  document.getElementById('met-grid').innerHTML=labels.map(function(l){return '<div class="stat-card"><div class="stat-label">'+l+'</div><input style="background:none;border:none;outline:none;color:var(--gold-light);font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:700;width:100%;margin-top:4px" placeholder="—"/></div>';}).join('');
+}
 async function analisarMetricas(){
-  const inputs=document.querySelectorAll('#page-metricas input');
-  const labels=['Alcance','Engajamento','Novos Seguidores','Reels Publicados','Saves','Visitas','Cliques Bio','Vendas'];
-  const dados=Array.from(inputs).map((inp,i)=>`${labels[i]}: ${inp.value||'não informado'}`).join('\n');
-  const result=document.getElementById('metricas-result');
-  result.style.display='block';result.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  try{
-    const p=getActiveProfile();
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:AGENTS.sodalita.getPrompt(p),messages:[{role:'user',content:`Analisa essas métricas e gera relatório estratégico para ${p.name}:\n\n${dados}`}]})});
-    const data=await res.json();
-    result.innerHTML=(data.content?.[0]?.text||'Erro').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-  }catch(e){result.innerHTML='Configure sua API Key para análises automáticas. Por enquanto, leve os dados para a Sodalita no Claude! 🔵';}
+  var inputs=document.querySelectorAll('#met-grid input');var labels=['Alcance','Engajamento','Novos Seguidores','Reels Publicados','Saves','Visitas','Cliques Bio','Vendas'];
+  var dados=Array.from(inputs).map(function(inp,i){return labels[i]+': '+(inp.value||'nao informado');}).join('\n');
+  var result=document.getElementById('metricas-result');result.style.display='block';result.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+  try{var p=getP();var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:AGENTS.sodalita.getPrompt(p),messages:[{role:'user',content:'Analisa essas metricas e gera relatorio estrategico para '+p.name+':\n\n'+dados}]})});var data=await res.json();result.innerHTML=(data.content&&data.content[0]?data.content[0].text:'Erro').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');}
+  catch(e){result.innerHTML='Configure sua API Key para analises automaticas. Por enquanto, leve os dados para a Sodalita no Claude!';}
 }
 
 // DATETIME
-function updateDatetime(){
-  const now=new Date();const h=now.getHours();
-  const greeting=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
-  const days=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const months=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-  const dh=document.getElementById('dash-h3');
-  if(dh)dh.innerHTML=`${greeting}, <em>Nay</em> ✨`;
-  const dd=document.getElementById('dash-datetime');
-  if(dd)dd.textContent=`${days[now.getDay()]}, ${now.getDate()} de ${months[now.getMonth()]} · ${String(h).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+function updateDT(){
+  var now=new Date();var h=now.getHours();var g=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+  var days=['Dom','Seg','Ter','Qua','Qui','Sex','Sab'];var months=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var dh=document.getElementById('dash-h3');if(dh)dh.innerHTML=g+', <em>Nay</em> ✨';
+  var dd=document.getElementById('dash-dt');if(dd)dd.textContent=days[now.getDay()]+', '+now.getDate()+' de '+months[now.getMonth()]+' · '+String(h).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
 }
-setInterval(updateDatetime,60000);
+setInterval(updateDT,60000);
 
 // PROMPTS
-let currentPromptType='imagem';
-const PROMPT_SYSTEMS={
-  imagem:'Você é especialista em prompts para geração de imagens com IA. Cria prompts técnicos para Midjourney, DALL-E, Ideogram. Inclua sujeito, estilo, iluminação, composição, qualidade. Responda APENAS com o prompt.',
-  video:'Você é especialista em prompts para vídeos com IA. Prompts cinematográficos para Veo3, Sora, Wan. Inclua cena, câmera, iluminação, estilo, qualidade. Responda APENAS com o prompt.',
-  avatar:'Você é especialista em prompts para avatares digitais. Gera personagens hiper-realistas. Inclua gênero, etnia, idade, expressão, roupa, cenário, iluminação. Responda APENAS com o prompt.',
-  clone:'Você é especialista em prompts para clones digitais a partir de fotos. Preserva características físicas. Inclua consistência facial e adaptação de estilo. Responda APENAS com o prompt.'
+var curPromptType='imagem';
+var PSYS={
+  imagem:'Voce e especialista em prompts para geracao de imagens com IA. Cria prompts tecnicos para Midjourney, DALL-E, Ideogram, Nano Banana. Inclua sujeito, estilo, iluminacao, composicao, qualidade. Responda APENAS com o prompt.',
+  video:'Voce e especialista em prompts para videos com IA. Prompts cinematograficos para Veo3, Sora, Wan, Seedance, Kling. Inclua cena, camera, iluminacao, estilo. Responda APENAS com o prompt.',
+  avatar:'Voce e especialista em prompts para avatares digitais. Gera personagens hiper-realistas. Inclua genero, etnia, idade, expressao, roupa, cenario, iluminacao. Responda APENAS com o prompt.',
+  clone:'Voce e especialista em prompts para clones digitais. Preserva caracteristicas fisicas. Responda APENAS com o prompt.',
+  carrossel:'Voce e Cornalina, especialista em carrosseis. Cria estrutura completa: tema, titulo impactante, 8 slides com texto curto (max 3 linhas), CTA final, legenda com hook e hashtags.',
+  roteiro:'Voce e Agua Marinha, especialista em roteiros de Reels. Cria roteiro faceless: GANCHO (3 segundos), cenas com texto na tela, narracao em off, CTA. Sem aparecer.'
 };
-const PROMPT_TITLES={imagem:'🖼️ Prompt de Imagem',video:'🎬 Prompt de Vídeo Veo3',avatar:'👤 Prompt de Avatar',clone:'🪞 Prompt de Clone'};
-function openPromptAgent(type){
-  currentPromptType=type;
-  document.getElementById('prompt-agent-title').textContent=PROMPT_TITLES[type];
-  document.getElementById('prompt-agent-area').style.display='block';
-  document.getElementById('prompt-result').style.display='none';
-  document.getElementById('prompt-copy-btn').style.display='none';
-  document.getElementById('prompt-agent-area').scrollIntoView({behavior:'smooth'});
+var PTITLES={imagem:'🖼️ Gerador de Prompt de Imagem',video:'🎬 Prompt de Video Veo3',avatar:'👤 Prompt de Avatar',clone:'🪞 Prompt de Clone Digital',carrossel:'🎠 Estrutura de Carrossel Completo',roteiro:'🎙️ Roteiro de Reel Faceless'};
+function openPromptGen(type){
+  curPromptType=type;var title=document.getElementById('prompt-gen-title');if(title)title.textContent=PTITLES[type];
+  var area=document.getElementById('prompt-gen-area');if(area){area.style.display='block';setTimeout(function(){area.scrollIntoView({behavior:'smooth'});},100);}
+  var r=document.getElementById('prompt-result');if(r)r.style.display='none';
+  var cb=document.getElementById('prompt-copy-btn');if(cb)cb.style.display='none';
 }
 async function gerarPrompt(){
-  const input=document.getElementById('prompt-input').value.trim();if(!input)return;
-  const result=document.getElementById('prompt-result');const copyBtn=document.getElementById('prompt-copy-btn');
-  result.style.display='block';result.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';copyBtn.style.display='none';
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,system:PROMPT_SYSTEMS[currentPromptType],messages:[{role:'user',content:input}]})});
-    const data=await res.json();
-    result.textContent=data.content?.[0]?.text||'Erro';copyBtn.style.display='inline-block';
-  }catch(e){result.textContent='Configure sua API Key para gerar prompts automáticos. Ou use o System Prompt da Ametista no Claude!';}
+  var input=document.getElementById('prompt-input').value.trim();if(!input)return;
+  var result=document.getElementById('prompt-result');var copyBtn=document.getElementById('prompt-copy-btn');
+  result.style.display='block';result.innerHTML='<div class="loading-dots" style="justify-content:flex-start"><span></span><span></span><span></span></div>';copyBtn.style.display='none';
+  try{var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,system:PSYS[curPromptType],messages:[{role:'user',content:input}]})});var data=await res.json();result.textContent=data.content&&data.content[0]?data.content[0].text:'Erro';copyBtn.style.display='inline-block';}
+  catch(e){result.textContent='Configure sua API Key para gerar prompts automaticos. Ou use o System Prompt da Ametista no Claude!';}
 }
-function copyPromptResult(){navigator.clipboard.writeText(document.getElementById('prompt-result').textContent);const btn=document.getElementById('prompt-copy-btn');btn.textContent='✅ Copiado!';setTimeout(()=>btn.textContent='📋 Copiar prompt',1800);}
-function copyInfluencerPrompt(){
-  const p=`Crie um avatar/influencer digital:\nGênero: [feminino/masculino]\nEtnia: [brasileira]\nIdade: [25-30 anos]\nCabelo: [cor, estilo]\nExpressão: [confiante, sorridente]\nRoupa: [casual chique]\nCenário: [home office clean]\nEstilo: hiper-realista, fotografia profissional, 8K, sharp focus`;
-  navigator.clipboard.writeText(p);alert('✅ Prompt copiado!');
-}
+function copyPromptResult(){navigator.clipboard.writeText(document.getElementById('prompt-result').textContent);var btn=document.getElementById('prompt-copy-btn');btn.textContent='✅ Copiado!';setTimeout(function(){btn.textContent='📋 Copiar prompt';},1800);}
+function copyInfluencerPrompt(){var p='Crie um avatar/influencer digital:\nGenero: [feminino/masculino]\nEtnia: [brasileira]\nIdade: [25-30 anos]\nCabelo: [cor, estilo]\nExpressao: [confiante, sorridente]\nRoupa: [casual chique]\nCenario: [home office clean]\nEstilo: hiper-realista, fotografia profissional, 8K, sharp focus';navigator.clipboard.writeText(p);alert('✅ Prompt copiado!');}
 
 // INIT
-updateProfileUI();
-updateDatetime();
+updateUI();updateDT();
 renderPipeline('pipeline-home');
 renderAgentList();
-loadFerramentas();
-loadBAU();
-renderCTAs();
-renderReels();
+renderFerramentas(allFerramentas);
+loadBAU();renderCTAs();renderReels();renderCal();renderMetGrid();
 </script>
 </body>
 </html>
