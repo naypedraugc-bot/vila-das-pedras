@@ -1179,8 +1179,13 @@ function copyInfluencerPrompt(){var p='Crie um avatar/influencer digital:\nGener
 // VILA DAS PEDRAS — MÓDULO DE INTEGRAÇÃO NOTION + MAKE
 // ══════════════════════════════════════════════════════
 var VILA_CONFIG = {
-  // OPÇÃO A — Notion direto (CORS bloqueado em produção, usar só em dev)
-  notionToken:  '',         // 'secret_XXXXXXXX...'
+  // ── JSONBIN (fonte principal — alimentada pelo Make via Notion) ──────
+  jsonbinUrl: 'https://api.jsonbin.io/v3/b/6a13b71c6610dd3ae89eaa62/latest',
+  jsonbinKey: '',  // ← cole aqui sua X-Access-Key do JSONBin
+  // ── FALLBACK: JSON estático no GitHub ───────────────────────────────
+  cacheFile:  'data/notion-cache.json',
+  // ── CONFIGURAÇÕES NOTION (para uso futuro) ───────────────────────────
+  notionToken:  '',
   databases: {
     pesquisasAmetista: '',
     hooks:             '',
@@ -1190,12 +1195,8 @@ var VILA_CONFIG = {
     conteudoProducao:  '',
     metricas:          '',
   },
-  // OPÇÃO B — Make webhook (não precisa escrever no GitHub)
-  makeWebhook: '',          // 'https://hook.eu1.make.com/XXXXXXXX'
-  // OPÇÃO C — JSON estático no GitHub (método atual, funciona bem)
-  cacheFile:   'data/notion-cache.json',
-  // OPÇÃO D — Notion via proxy público (notion2json, super.so, etc)
-  notionProxyUrl: '',       // ex: 'https://notion-api.splitbee.io/v1/table/SEU-ID'
+  makeWebhook:    '',
+  notionProxyUrl: '',
 };
 
 var NOTION_DATA = {};
@@ -1263,37 +1264,33 @@ function renderMenu() {
 
 // ── CARREGAR CACHE E APLICAR ──────────────────────────────────────────
 async function carregarNotionCache() {
-  // Tenta as fontes em ordem: proxy Notion → JSON estático → dados locais
-
-  // OPÇÃO D: Notion via proxy público (splitbee/notion-api)
-  if (VILA_CONFIG.notionProxyUrl) {
-    try {
-      var rp = await fetch(VILA_CONFIG.notionProxyUrl, { cache: 'no-store' });
-      if (rp.ok) {
-        var raw = await rp.json();
-        // Adapta formato do proxy para NOTION_DATA
-        NOTION_DATA = _adaptarProxyNotion(raw);
-        console.log('[Vila] Notion proxy carregado');
-        renderMenu(); aplicarDadosNotion(); return;
-      }
-    } catch(e) { console.log('[Vila] Proxy Notion falhou:', e.message); }
-  }
-
-  // OPÇÃO C: JSON estático no GitHub Pages (método padrão)
-  var base = window.location.href.split('?')[0].split('#')[0];
-  if (!base.endsWith('/')) base = base.substring(0, base.lastIndexOf('/') + 1);
-  var cachePath = base + VILA_CONFIG.cacheFile;
+  // FONTE PRINCIPAL: JSONBin (alimentado pelo Make via Notion)
   try {
-    var res = await fetch(cachePath + '?t=' + Date.now(), { cache: 'no-store' });
+    var res = await fetch(VILA_CONFIG.jsonbinUrl, {
+      cache: 'no-store',
+      headers: { 'X-Access-Key': VILA_CONFIG.jsonbinKey }
+    });
     if (res.ok) {
-      NOTION_DATA = await res.json();
-      console.log('[Vila] Cache JSON carregado:', cachePath);
+      var json = await res.json();
+      NOTION_DATA = json.record; // JSONBin envolve o conteúdo em { record: { ... } }
+      console.log('[Vila] JSONBin carregado:', Object.keys(NOTION_DATA));
       renderMenu(); aplicarDadosNotion(); return;
     }
-    console.log('[Vila] Cache nao encontrado:', cachePath);
-  } catch(e) { console.log('[Vila] Erro cache:', e.message); }
+    console.log('[Vila] JSONBin retornou status:', res.status);
+  } catch(e) { console.log('[Vila] JSONBin erro:', e.message); }
 
-  // Fallback: dados locais ja embutidos nas funcoes (loadBAU, renderReels, etc)
+  // FALLBACK: JSON estático no GitHub Pages
+  try {
+    var base = window.location.href.split('?')[0].split('#')[0];
+    if (!base.endsWith('/')) base = base.substring(0, base.lastIndexOf('/') + 1);
+    var res2 = await fetch(base + VILA_CONFIG.cacheFile + '?t=' + Date.now(), { cache: 'no-store' });
+    if (res2.ok) {
+      NOTION_DATA = await res2.json();
+      console.log('[Vila] Fallback JSON local carregado');
+      renderMenu(); aplicarDadosNotion(); return;
+    }
+  } catch(e) { console.log('[Vila] Fallback JSON erro:', e.message); }
+
   console.log('[Vila] Usando dados locais embutidos.');
 }
 
