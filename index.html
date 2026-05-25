@@ -362,7 +362,6 @@ textarea.config-input{resize:vertical;min-height:65px;}
   <div class="nav-section">
     <div class="nav-label">Criação com IA</div>
     <button class="nav-item" onclick="nav('conselho',this);mobClose()">🔮 Conselho das Pedras</button>
-    <button class="nav-item" onclick="nav('prompts',this);mobClose()">✨ Gerador de Prompts</button>
     <button class="nav-item" onclick="nav('influencer',this);mobClose()">👤 Criar Influencer</button>
     <button class="nav-item" onclick="nav('videos',this);mobClose()">🎬 Estúdio de Vídeos</button>
     <button class="nav-item" onclick="nav('carrossel',this);mobClose()">🎠 Gerar Carrossel</button>
@@ -392,6 +391,10 @@ textarea.config-input{resize:vertical;min-height:65px;}
     <h2>Vila das <em>Pedras</em></h2>
     <p>As 7 Guardiãs do Fluxo prontas para criar, planejar e publicar.</p>
   </div>
+  <!-- Banner principal Vila das Pedras -->
+  <div style="width:100%;overflow:hidden;flex-shrink:0;">
+    <img src="assets/banner-vila-das-pedras.png" alt="Vila das Pedras — As 7 Guardiãs do Fluxo" style="width:100%;max-height:200px;object-fit:cover;object-position:center top;display:block;" onerror="this.style.display='none'"/>
+  </div>
   <div class="dash-bar">
     <div class="dash-greeting">
       <h3 id="dash-h3">Bom dia, <em>Nay</em> ✨</h3>
@@ -409,7 +412,7 @@ textarea.config-input{resize:vertical;min-height:65px;}
 
     <!-- CONSELHO DAS PEDRAS CARD -->
     <div class="conselho-card" onclick="nav('conselho',null)">
-      <img class="conselho-img" src="IMAGENS DOS AGENTES/CAPA CONSELHO DAS PEDRAS.png" alt="Conselho das Pedras" loading="lazy"/>
+      <img class="conselho-img" src="assets/conselho.png" alt="Conselho das Pedras" loading="lazy" onerror="this.style.display='none'"/>
       <div class="conselho-body">
         <div style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,150,58,.25);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:8px">🔮 Oráculo</div>
         <div class="conselho-title">Conselho das <em>Pedras</em></div>
@@ -448,7 +451,7 @@ textarea.config-input{resize:vertical;min-height:65px;}
   <div class="tools-page">
     <!-- imagem grande -->
     <div style="background:var(--card);border:1px solid rgba(201,150,58,.2);border-radius:18px;overflow:hidden;margin-bottom:24px;">
-      <img src="IMAGENS DOS AGENTES/CAPA CONSELHO DAS PEDRAS.png" alt="Conselho das Pedras" style="width:100%;max-height:320px;object-fit:cover;object-position:top center;display:block;"/>
+      <img src="assets/conselho.png" alt="Conselho das Pedras" style="width:100%;max-height:320px;object-fit:cover;object-position:top center;display:block;" onerror="this.style.display='none'"/>
       <div style="padding:16px 20px;">
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold-light);margin-bottom:6px;">O Oráculo que conecta intenção à solução</h3>
         <p style="font-size:11px;color:var(--text-mid);line-height:1.7;">O Conselho das Pedras reúne as 7 Guardiãs para gerar prompts profissionais para qualquer tipo de criação com IA — imagens, vídeos, avatares, carrosséis e roteiros.</p>
@@ -483,7 +486,7 @@ textarea.config-input{resize:vertical;min-height:65px;}
       <div class="tools-grid">
         <div class="tool-card" onclick="window.open('https://chatgpt.com','_blank')"><div class="tool-card-icon">🤖</div><div class="tool-card-name">Foto realista de pessoa</div><div class="tool-card-desc">Midjourney v6 / DALL-E via ChatGPT</div><span class="badge b">ChatGPT</span></div>
         <div class="tool-card" onclick="window.open('https://labs.google/fx/pt/tools/video-fx','_blank')"><div class="tool-card-icon">🎥</div><div class="tool-card-name">Vídeo cinemático 4K</div><div class="tool-card-desc">Melhor qualidade do mercado atualmente.</div><span class="badge g">Veo3 — Google</span></div>
-        <div class="tool-card" onclick="window.open('https://nanobananai.com','_blank')"><div class="tool-card-icon">🍌</div><div class="tool-card-name">Influencer IA (personagem)</div><div class="tool-card-desc">Crie um avatar digital com aparência personalizada.</div><span class="badge">Nano Banana</span></div>
+        <div class="tool-card" onclick="window.open('https://gemini.google.com/app','_blank')"><div class="tool-card-icon">🍌</div><div class="tool-card-name">Influencer IA (personagem)</div><div class="tool-card-desc">Crie um avatar digital com aparência personalizada.</div><span class="badge">Nano Banana</span></div>
         <div class="tool-card" onclick="window.open('https://heygen.com','_blank')"><div class="tool-card-icon">🎙️</div><div class="tool-card-name">Clone de vídeo que fala</div><div class="tool-card-desc">Grave uma vez, o avatar grava por você para sempre.</div><span class="badge r">HeyGen</span></div>
         <div class="tool-card" onclick="window.open('https://higgsfield.ai','_blank')"><div class="tool-card-icon">✨</div><div class="tool-card-name">Animar foto</div><div class="tool-card-desc">Foto estática → vídeo animado cinematográfico.</div><span class="badge">Higgsfield</span></div>
         <div class="tool-card" onclick="window.open('https://wan.video','_blank')"><div class="tool-card-icon">🌊</div><div class="tool-card-name">Vídeo criativo rápido</div><div class="tool-card-desc">Animações e transições criativas. Gratuito.</div><span class="badge p">Wan — Qwen AI</span></div>
@@ -533,7 +536,14 @@ textarea.config-input{resize:vertical;min-height:65px;}
 
 <!-- ══ CONFIG ══ -->
 <div class="page" id="page-config">
-  <div class="page-top"><div class="page-badge">Configuração</div><h2>Configurar <em>Projeto</em></h2><p>Fonte oficial da memória da marca. As Guardiãs consomem essas informações automaticamente.</p></div>
+  <div class="page-top" style="display:flex;align-items:center;gap:16px;">
+    <div style="flex:1;">
+      <div class="page-badge">Configuração</div>
+      <h2>Configurar <em>Projeto</em></h2>
+      <p>Fonte oficial da memória da marca. As Guardiãs consomem essas informações automaticamente.</p>
+    </div>
+    <img src="assets/PROJETOS.png" alt="Projetos" style="width:72px;height:72px;border-radius:14px;object-fit:cover;flex-shrink:0;border:1px solid var(--border-hover);" onerror="this.style.display='none'"/>
+  </div>
   <div class="config-scroll">
     <div class="config-section">
       <div class="config-section-title">📋 Projetos cadastrados</div>
@@ -673,7 +683,7 @@ textarea.config-input{resize:vertical;min-height:65px;}
         </div>
         <div class="tool-card"><div class="tool-card-icon">📸</div><div class="tool-card-name">Da Sua Foto — Clone seu</div><div class="tool-card-desc">Avatar hiper-realista baseado nas suas fotos. Clone digital de si mesmo.</div><span class="badge b">Nano Banana</span>
           <div class="submenu" style="margin-top:9px">
-            <div class="sub-card" onclick="window.open('https://nanobananai.com','_blank')"><div class="sub-card-icon">🍌</div><div class="sub-card-name">Nano Banana</div><div class="sub-card-desc">Upload das fotos</div></div>
+            <div class="sub-card" onclick="window.open('https://gemini.google.com/app','_blank')"><div class="sub-card-icon">🍌</div><div class="sub-card-name">Nano Banana</div><div class="sub-card-desc">Upload das fotos</div></div>
             <div class="sub-card" onclick="window.open('https://gemini.google.com/app','_blank')"><div class="sub-card-icon">🔵</div><div class="sub-card-name">Gemini</div><div class="sub-card-desc">IA Google</div></div>
           </div>
         </div>
@@ -858,13 +868,13 @@ function deleteProfile(idx){
 var GC={ametista:'linear-gradient(135deg,#1A0A2E,#4A1F7B)',sodalita:'linear-gradient(135deg,#0A1528,#1A3A7C)',aguamarinha:'linear-gradient(135deg,#001820,#004D5C)',quartzorosa:'linear-gradient(135deg,#2E0A1A,#7B1A4A)',citrino:'linear-gradient(135deg,#1A1200,#4A3500)',cornalina:'linear-gradient(135deg,#2E0A00,#7B1A00)',onix:'linear-gradient(135deg,#0A0A0A,#1E1E1E)'};
 function makePrompt(role,desc,mission,structure,extra,p){return 'Voce e '+role+'\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nDescricao: '+p.desc+'\nPublico: '+p.audience+'\nRedes: '+p.social+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\n'+mission+'\n\n'+structure+(extra?'\n\n'+extra:'');}
 var AGENTS={
-  ametista:{step:'01',name:'Ametista',guardian:'Guardia da Transcendencia',chakra:'Chakra Coroa · A Oraculo',meaning:'Revela o que esta oculto antes de todo mundo ver.',color:'var(--ametista)',img:'IMAGENS DOS AGENTES/ametista.png',emoji:'🔮',qa:['🔥 O que ta viralizando sobre IA?','📊 Analisa concorrentes','💡 5 temas para hoje','🎯 Melhor formato da semana'],getPrompt:function(p){return 'Voce e Ametista, Guardia da Transcendencia — especialista em pesquisa de tendencias e benchmarking.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nRegras: '+(p.rules||'')+'\n\nSua missao: revelar tendencias, referencias virais e transformar em oportunidades de conteudo.\n\nEntregue:\n1. 3-5 tendencias de formato ou tema do momento\n2. O que os maiores players estao fazendo agora\n3. Oportunidades ainda nao exploradas\n4. Angulo original para usar primeiro';}},
-  sodalita:{step:'02',name:'Sodalita',guardian:'Guardia da Visao',chakra:'Chakra Terceiro Olho · A Visionaria',meaning:'Enxerga padroes e transforma insights em planos poderosos.',color:'var(--sodalita)',img:'IMAGENS DOS AGENTES/sodalita.png',emoji:'🔵',qa:['📅 Planeja o mes','🗂️ Organiza a semana','📌 Distribui pilares','📊 Analisa metricas'],getPrompt:function(p){return 'Voce e Sodalita, Guardia da Visao — especialista em planejamento criativo e calendario editorial.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nObjetivo: '+p.goal+'\n\nSua missao: planejar conteudos e organizar calendario de forma estrategica. Entregue calendarios em tabela. Seja organizada e visual.'+(p.name==='Vitalitat'?'\n\nRegra: 5 hashtags por post — 2 brand + 2 geolocadas Salvador/BA + 1 nicho.':'');}},
-  aguamarinha:{step:'03',name:'Agua Marinha',guardian:'Guardia da Comunicacao',chakra:'Chakra Garganta · A Mensageira',meaning:'As palavras sao ondas. Ela guia o que transforma.',color:'var(--aguamarinha)',img:'IMAGENS DOS AGENTES/aguamarinha.png',emoji:'🌊',qa:['🎬 Cria roteiro de Reel','⚡ Formato Dinamismo','🔥 Gancho irresistivel','📱 Roteiro para HeyGen'],getPrompt:function(p){return 'Voce e Agua Marinha, Guardia da Comunicacao — especialista em roteiros de Reels e TikTok.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\nEstrutura obrigatoria:\n- GANCHO (3 segundos)\n- DESENVOLVIMENTO (virada inesperada)\n- CTA (discreto e natural)\n- CENAS (sem aparecer: tela, mao, IA)\n- LEGENDA completa';}},
-  quartzorosa:{step:'04',name:'Quartzo Rosa',guardian:'Guardia da Conexao',chakra:'Chakra Coracao · A Curadora',meaning:'Eu acolho. Eu conecto. Eu transformo relacoes em lacos reais.',color:'var(--quartzorosa)',img:'IMAGENS DOS AGENTES/quartzorosa.png',emoji:'🌸',qa:['🎠 Cria carrossel de conexao','💝 Ajusta tom emocional','✨ Branding emocional','🌸 Posicionamento afetivo'],getPrompt:function(p){return 'Voce e Quartzo Rosa, Guardia da Conexao — especialista em branding emocional.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\n\nEstrutura carrossel:\n- Slide 1: Gancho forte\n- Slides 2-8: Uma ideia por slide, max 3 linhas\n- Slide final: CTA humanizado\n\nSem linguagem corporativa. Fracoes curtas. Conexao genuina.';}},
-  citrino:{step:'05',name:'Citrino',guardian:'Guardia da Vontade',chakra:'Chakra Plexo Solar · A Executora',meaning:'Eu planejo. Eu executo. Eu realizo.',color:'var(--citrino)',img:'IMAGENS DOS AGENTES/citrino.png',emoji:'☀️',qa:['📋 Cria checklist do dia','🗂️ Plano de execucao','⚡ Transforma conteudo em tarefa','📅 Cronograma semanal'],getPrompt:function(p){return 'Voce e Citrino, Guardia da Vontade — especialista em produtividade e execucao.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nObjetivo: '+p.goal+'\n\nEntregue:\n- Lista de tarefas com prioridade\n- Estimativa de tempo\n- Ordem logica de execucao\n- Proximos 3 passos imediatos';}},
-  cornalina:{step:'06',name:'Cornalina',guardian:'Guardia da Criacao',chakra:'Chakra Sacral · A Criadora',meaning:'Eu crio. Eu imagino. Eu dou vida.',color:'var(--cornalina)',img:'IMAGENS DOS AGENTES/cornalina.png',emoji:'🔴',qa:['🎠 Cria carrossel completo','🎨 Estrutura visual','📝 Titulo + slides + legenda','🔥 Carrossel viral'],getPrompt:function(p){return 'Voce e Cornalina, Guardia da Criacao — especialista em carrosseis completos.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\nEstrutura obrigatoria:\n- TEMA e promessa\n- TITULO\n- SLIDE 1: hook irresistivel\n- SLIDES 2-8: desenvolvimento\n- SLIDE FINAL: CTA\n- LEGENDA completa\n- PROMPT VISUAL para gerar imagem';}},
-  onix:{step:'07',name:'Onix',guardian:'Guardia da Estrutura',chakra:'Chakra Raiz · A Guardia da Base',meaning:'Eu organizo. Eu estruturo. Eu sustento.',color:'#888',img:'IMAGENS DOS AGENTES/onix.png',emoji:'🖤',qa:['⚙️ Organiza fluxo de publicacao','🔗 Conecta ferramentas','📅 Prepara para Metricool','✅ Checklist de publicacao'],getPrompt:function(p){return 'Voce e Onix, Guardia da Estrutura — especialista em organizacao e publicacao.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nRedes: '+p.social+'\n\nREGRA: NUNCA publicar automaticamente. Sempre preparar e aguardar confirmacao manual.\n\nEntregue:\n- Checklist de publicacao\n- Estrutura do post formatada\n- Hashtags adequadas\n- Melhor horario sugerido';}}
+  ametista:{step:'01',name:'Ametista',guardian:'Guardia da Transcendencia',chakra:'Chakra Coroa · A Oraculo',meaning:'Revela o que esta oculto antes de todo mundo ver.',color:'var(--ametista)',img:'assets/ametista.png',emoji:'🔮',qa:['🔥 O que ta viralizando sobre IA?','📊 Analisa concorrentes','💡 5 temas para hoje','🎯 Melhor formato da semana'],getPrompt:function(p){return 'Voce e Ametista, Guardia da Transcendencia — especialista em pesquisa de tendencias e benchmarking.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nRegras: '+(p.rules||'')+'\n\nSua missao: revelar tendencias, referencias virais e transformar em oportunidades de conteudo.\n\nEntregue:\n1. 3-5 tendencias de formato ou tema do momento\n2. O que os maiores players estao fazendo agora\n3. Oportunidades ainda nao exploradas\n4. Angulo original para usar primeiro';}},
+  sodalita:{step:'02',name:'Sodalita',guardian:'Guardia da Visao',chakra:'Chakra Terceiro Olho · A Visionaria',meaning:'Enxerga padroes e transforma insights em planos poderosos.',color:'var(--sodalita)',img:'assets/sodalita.png',emoji:'🔵',qa:['📅 Planeja o mes','🗂️ Organiza a semana','📌 Distribui pilares','📊 Analisa metricas'],getPrompt:function(p){return 'Voce e Sodalita, Guardia da Visao — especialista em planejamento criativo e calendario editorial.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nObjetivo: '+p.goal+'\n\nSua missao: planejar conteudos e organizar calendario de forma estrategica. Entregue calendarios em tabela. Seja organizada e visual.'+(p.name==='Vitalitat'?'\n\nRegra: 5 hashtags por post — 2 brand + 2 geolocadas Salvador/BA + 1 nicho.':'');}},
+  aguamarinha:{step:'03',name:'Agua Marinha',guardian:'Guardia da Comunicacao',chakra:'Chakra Garganta · A Mensageira',meaning:'As palavras sao ondas. Ela guia o que transforma.',color:'var(--aguamarinha)',img:'assets/aguamarinha.png',emoji:'🌊',qa:['🎬 Cria roteiro de Reel','⚡ Formato Dinamismo','🔥 Gancho irresistivel','📱 Roteiro para HeyGen'],getPrompt:function(p){return 'Voce e Agua Marinha, Guardia da Comunicacao — especialista em roteiros de Reels e TikTok.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\nEstrutura obrigatoria:\n- GANCHO (3 segundos)\n- DESENVOLVIMENTO (virada inesperada)\n- CTA (discreto e natural)\n- CENAS (sem aparecer: tela, mao, IA)\n- LEGENDA completa';}},
+  quartzorosa:{step:'04',name:'Quartzo Rosa',guardian:'Guardia da Conexao',chakra:'Chakra Coracao · A Curadora',meaning:'Eu acolho. Eu conecto. Eu transformo relacoes em lacos reais.',color:'var(--quartzorosa)',img:'assets/quartzorosa.png',emoji:'🌸',qa:['🎠 Cria carrossel de conexao','💝 Ajusta tom emocional','✨ Branding emocional','🌸 Posicionamento afetivo'],getPrompt:function(p){return 'Voce e Quartzo Rosa, Guardia da Conexao — especialista em branding emocional.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\n\nEstrutura carrossel:\n- Slide 1: Gancho forte\n- Slides 2-8: Uma ideia por slide, max 3 linhas\n- Slide final: CTA humanizado\n\nSem linguagem corporativa. Fracoes curtas. Conexao genuina.';}},
+  citrino:{step:'05',name:'Citrino',guardian:'Guardia da Vontade',chakra:'Chakra Plexo Solar · A Executora',meaning:'Eu planejo. Eu executo. Eu realizo.',color:'var(--citrino)',img:'assets/citrino.png',emoji:'☀️',qa:['📋 Cria checklist do dia','🗂️ Plano de execucao','⚡ Transforma conteudo em tarefa','📅 Cronograma semanal'],getPrompt:function(p){return 'Voce e Citrino, Guardia da Vontade — especialista em produtividade e execucao.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nObjetivo: '+p.goal+'\n\nEntregue:\n- Lista de tarefas com prioridade\n- Estimativa de tempo\n- Ordem logica de execucao\n- Proximos 3 passos imediatos';}},
+  cornalina:{step:'06',name:'Cornalina',guardian:'Guardia da Criacao',chakra:'Chakra Sacral · A Criadora',meaning:'Eu crio. Eu imagino. Eu dou vida.',color:'var(--cornalina)',img:'assets/cornalina.png',emoji:'🔴',qa:['🎠 Cria carrossel completo','🎨 Estrutura visual','📝 Titulo + slides + legenda','🔥 Carrossel viral'],getPrompt:function(p){return 'Voce e Cornalina, Guardia da Criacao — especialista em carrosseis completos.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nPublico: '+p.audience+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\nEstrutura obrigatoria:\n- TEMA e promessa\n- TITULO\n- SLIDE 1: hook irresistivel\n- SLIDES 2-8: desenvolvimento\n- SLIDE FINAL: CTA\n- LEGENDA completa\n- PROMPT VISUAL para gerar imagem';}},
+  onix:{step:'07',name:'Onix',guardian:'Guardia da Estrutura',chakra:'Chakra Raiz · A Guardia da Base',meaning:'Eu organizo. Eu estruturo. Eu sustento.',color:'#888',img:'assets/onix.png',emoji:'🖤',qa:['⚙️ Organiza fluxo de publicacao','🔗 Conecta ferramentas','📅 Prepara para Metricool','✅ Checklist de publicacao'],getPrompt:function(p){return 'Voce e Onix, Guardia da Estrutura — especialista em organizacao e publicacao.\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nRedes: '+p.social+'\n\nREGRA: NUNCA publicar automaticamente. Sempre preparar e aguardar confirmacao manual.\n\nEntregue:\n- Checklist de publicacao\n- Estrutura do post formatada\n- Hashtags adequadas\n- Melhor horario sugerido';}}
 };
 
 Object.keys(AGENTS).forEach(function(k){chatH[k]=[];});
@@ -1089,6 +1099,131 @@ async function gerarPrompt(){
 }
 function copyPromptResult(){navigator.clipboard.writeText(document.getElementById('prompt-result').textContent);var btn=document.getElementById('prompt-copy-btn');btn.textContent='✅ Copiado!';setTimeout(function(){btn.textContent='📋 Copiar prompt';},1800);}
 function copyInfluencerPrompt(){var p='Crie um avatar/influencer digital:\nGenero: [feminino/masculino]\nEtnia: [brasileira]\nIdade: [25-30 anos]\nCabelo: [cor, estilo]\nExpressao: [confiante, sorridente]\nRoupa: [casual chique]\nCenario: [home office clean]\nEstilo: hiper-realista, fotografia profissional, 8K, sharp focus';navigator.clipboard.writeText(p);alert('✅ Prompt copiado!');}
+
+
+// ══════════════════════════════════════════════════════
+// VILA DAS PEDRAS — MÓDULO DE INTEGRAÇÃO NOTION + MAKE
+// ══════════════════════════════════════════════════════
+//
+// ARQUITETURA DA INTEGRAÇÃO:
+//
+//  NOTION (banco de dados)
+//    ↓  API pública do Notion (notion-sync.js ou Make)
+//  MAKE (automação)
+//    ↓  Webhook → GitHub Pages (data/notion-cache.json)
+//  SITE (interface visual)
+//    ↓  fetch() → lê JSON → atualiza cards
+//  GUARDIÃS (Claude Projects)
+//    ↓  consomem contexto via copy/paste ou automação
+//
+// ══════════════════════════════════════════════════════
+
+var VILA_CONFIG = {
+  // ── CONFIGURE AQUI ──────────────────────────────────
+  // 1. Sua Notion Integration Token (gerada em notion.so/my-integrations)
+  notionToken: '',  // 'secret_XXXXXXXX...'
+
+  // 2. IDs dos databases do Notion (copie da URL de cada database)
+  databases: {
+    pesquisasAmetista:  '',  // ID do database 🌐 Pesquisas da Ametista
+    hooks:              '',  // ID do database 🧠 Hooks - BAÚ DE TEMAS
+    reelsVideos:        '',  // ID do database 🎥 Reels e Vídeos
+    referenciaVisual:   '',  // ID do database 📸 Referência Visual
+    conteudoProducao:   '',  // ID do database 🎬 Conteúdos em Produção
+    metricas:           '',  // ID do database 📊 Calendário de Conteúdo/Métricas
+  },
+
+  // 3. URL do webhook do Make (criado no Make.com)
+  makeWebhook: '',  // 'https://hook.eu1.make.com/XXXXXXXX'
+
+  // 4. Caminho do cache JSON local (gerado pelo Make)
+  cacheFile: 'data/notion-cache.json',
+  // ────────────────────────────────────────────────────
+};
+
+// ── CARREGAR DADOS DO NOTION (via cache JSON gerado pelo Make) ──
+var NOTION_DATA = {};
+
+async function carregarNotionCache() {
+  try {
+    var res = await fetch(VILA_CONFIG.cacheFile + '?v=' + Date.now());
+    if (!res.ok) return;
+    NOTION_DATA = await res.json();
+    console.log('[Vila] Cache Notion carregado:', Object.keys(NOTION_DATA));
+    aplicarDadosNotion();
+  } catch(e) {
+    console.log('[Vila] Cache Notion não encontrado — usando dados locais.');
+  }
+}
+
+// ── APLICAR DADOS DO NOTION NOS CARDS DO SITE ──
+function aplicarDadosNotion() {
+  // Baú de Temas (Hooks)
+  if (NOTION_DATA.hooks && NOTION_DATA.hooks.length > 0) {
+    var g = document.getElementById('grid-bau');
+    if (g) {
+      g.innerHTML = NOTION_DATA.hooks.map(function(item) {
+        var pc = item.pilar === 'Viral' ? 'r' : item.pilar === 'Autoridade' ? 'b' : item.pilar === 'Conversao' ? 'g' : 'p';
+        return '<div class="notion-card"><div class="notion-card-top">' +
+          '<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">' + (item.pilar || '') + '</div>' +
+          '<div class="notion-card-title">' + (item.titulo || '') + '</div>' +
+          '<div class="notion-card-meta" style="font-style:italic;margin-top:3px">' + (item.hook || '') + '</div>' +
+          '</div><div class="notion-card-tags">' +
+          '<span class="notion-tag ' + pc + '">' + (item.formato || '') + '</span>' +
+          '<span class="notion-tag">' + (item.status || '') + '</span>' +
+          '</div></div>';
+      }).join('');
+    }
+  }
+
+  // Reels para Gravar
+  if (NOTION_DATA.reels && NOTION_DATA.reels.length > 0) {
+    var list = document.getElementById('reels-list');
+    if (list) {
+      list.innerHTML = NOTION_DATA.reels.map(function(r, i) {
+        return '<div class="notion-card"><div class="notion-card-top" style="display:flex;align-items:center;gap:12px">' +
+          '<div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:700;color:var(--text-dim);width:32px;flex-shrink:0;text-align:center">' + String(i+1).padStart(2,'0') + '</div>' +
+          '<div><div class="notion-card-title">' + (r.titulo || '') + '</div>' +
+          '<div class="notion-card-meta" style="font-style:italic;margin-top:2px">"' + (r.hook || '') + '"</div></div>' +
+          '</div><div class="notion-card-tags"><span class="notion-tag r">Para gravar</span>' +
+          '<span class="notion-tag b">' + (r.formato || '') + '</span></div></div>';
+      }).join('');
+    }
+  }
+
+  // Stats da Home
+  if (NOTION_DATA.stats) {
+    var nr = document.getElementById('dash-reels');
+    if (nr && NOTION_DATA.stats.reels) nr.textContent = NOTION_DATA.stats.reels;
+  }
+}
+
+// ── ENVIAR EVENTO PARA O MAKE (webhook) ──
+// Chame esta função para disparar automações no Make
+// Exemplo: vilaWebhook('nova_referencia', { titulo: 'Meu Reel', formato: 'Reel' })
+async function vilaWebhook(evento, dados) {
+  if (!VILA_CONFIG.makeWebhook) {
+    console.log('[Vila] Webhook Make não configurado. Configure VILA_CONFIG.makeWebhook');
+    return;
+  }
+  try {
+    await fetch(VILA_CONFIG.makeWebhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ evento: evento, dados: dados, timestamp: new Date().toISOString() })
+    });
+    console.log('[Vila] Webhook enviado:', evento);
+  } catch(e) {
+    console.log('[Vila] Erro ao enviar webhook:', e);
+  }
+}
+
+// ── INIT DA INTEGRAÇÃO ──
+carregarNotionCache();
+
+// ══════════════════════════════════════════════════════
+// FIM DO MÓDULO DE INTEGRAÇÃO
+// ══════════════════════════════════════════════════════
 
 // INIT
 updateUI();updateDT();
