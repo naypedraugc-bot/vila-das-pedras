@@ -1,14 +1,74 @@
 {
   "_meta": {
-    "gerado_em": "2026-05-25T19:15:24.549Z",
+    "gerado_em": "2026-05-25T23:45:09.959Z",
     "versao": "2.0"
   },
   "stats": {
     "reels": 0,
     "refs": 0,
-    "temas": 1
+    "temas": 7
   },
   "hooks": [
+    {
+      "text": "Ninguém te conta isso sobre postar todo dia: não é consistência que faz crescer. É estratégia.",
+      "tema": "A verdade sobre criar conteúdo todo dia",
+      "pilar": "Conexão",
+      "formato": "Reel",
+      "emocao": "Identificação",
+      "guardiaOrigem": "🌸 Quartzo Rosa",
+      "prioridade": "⭐ Alta",
+      "status": "Ideia"
+    },
+    {
+      "text": "Esse é o meu sistema para não perder nenhuma ideia e ainda transformar tudo em conteúdo.",
+      "tema": "Como eu organizo meus projetos com IA",
+      "pilar": "Autoridade",
+      "formato": "Reel Dinâmico",
+      "emocao": "Inspiração",
+      "guardiaOrigem": "🟠 Cornalina",
+      "prioridade": "📌 Normal",
+      "status": "Ideia"
+    },
+    {
+      "text": "Eu coloquei uma IA pra trabalhar por mim às 3h da manhã. Ela entregou 7 roteiros. Eu só aprovei.",
+      "tema": "IA que cria conteúdo enquanto você dorme",
+      "pilar": "Autoridade",
+      "formato": "Reel",
+      "emocao": "Curiosidade",
+      "guardiaOrigem": "💜 Ametista",
+      "prioridade": "🔥 Urgente",
+      "status": "Ideia"
+    },
+    {
+      "text": "Para de correr atrás de seguidor e começa a correr atrás de audiência que compra.",
+      "tema": "Você não precisa de mais seguidores",
+      "pilar": "Viral",
+      "formato": "Reel",
+      "emocao": "Urgência",
+      "guardiaOrigem": "⚫ Ônix",
+      "prioridade": "⭐ Alta",
+      "status": "Ideia"
+    },
+    {
+      "text": "Você ainda faz tudo na mão? Em 2026, isso tem um custo muito alto — e não é tempo.",
+      "tema": "Por que você tá perdendo dinheiro sem automação",
+      "pilar": "Conversão",
+      "formato": "Carrossel",
+      "emocao": "Urgência",
+      "guardiaOrigem": "🔵 Sodalita",
+      "prioridade": "⭐ Alta",
+      "status": "Roteiro Pronto"
+    },
+    {
+      "text": "Esses 3 prompts economizaram mais de 10 horas da minha semana. Anota.",
+      "tema": "3 prompts que uso todo dia pra criar conteúdo",
+      "pilar": "Educação",
+      "formato": "Carrossel",
+      "emocao": "Curiosidade",
+      "guardiaOrigem": "💜 Ametista",
+      "prioridade": "🔥 Urgente",
+      "status": "Roteiro Pronto"
+    },
     {
       "text": "TESTE",
       "tema": "TESTE",
