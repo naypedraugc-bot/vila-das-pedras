@@ -1,0 +1,146 @@
+name: Sync Notion Cache
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync Notion data
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          node -e "
+          const https = require('https');
+          const fs = require('fs');
+          const DBS = {
+            hooks: '208c247eef49416187da3a07dc46c58d',
+            reelsVideos: 'f854678854bd431b9041fbbd52edc50e',
+            referenciaVisual: 'e9c34d94b94a4263b18b9a6470e5d1ce',
+            conteudoProducao: '34cab8df1b0747eb964d0d90dee34f9a',
+            metricas: '9a62978606a34efe933e5152b27d4afb'
+          };
+          const TOKEN = process.env.NOTION_TOKEN;
+          function queryDB(dbId) {
+            return new Promise((resolve, reject) => {
+              const data = JSON.stringify({ page_size: 100 });
+              const opts = {
+                hostname: 'api.notion.com',
+                path: '/v1/databases/' + dbId + '/query',
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + TOKEN,
+                  'Content-Type': 'application/json',
+                  'Notion-Version': '2022-06-28',
+                  'Content-Length': Buffer.byteLength(data)
+                }
+              };
+              const req = https.request(opts, (res) => {
+                let body = '';
+                res.on('data', d => body += d);
+                res.on('end', () => resolve(JSON.parse(body)));
+              });
+              req.on('error', reject);
+              req.write(data);
+              req.end();
+            });
+          }
+          function getProp(props, name, fallback) {
+            const p = props[name];
+            if (!p) return fallback || '';
+            if (p.type === 'title') return p.title.map(t => t.plain_text).join('');
+            if (p.type === 'rich_text') return p.rich_text.map(t => t.plain_text).join('');
+            if (p.type === 'select') return p.select?.name || '';
+            if (p.type === 'multi_select') return p.multi_select.map(s => s.name).join(', ');
+            if (p.type === 'date') return p.date?.start || '';
+            if (p.type === 'url') return p.url || '';
+            return '';
+          }
+          async function main() {
+            const cache = {
+              _meta: { gerado_em: new Date().toISOString(), versao: '2.0' },
+              stats: { reels: 0, refs: 0, temas: 0 },
+              hooks: [], reels: [], reelsVideos: [],
+              pesquisasAmetista: [], referenciaVisual: [],
+              universo: [], conteudoProducao: [], metricas: []
+            };
+            try {
+              const r = await queryDB(DBS.hooks);
+              cache.hooks = (r.results||[]).map(p => ({
+                text: getProp(p.properties,'Hook') || getProp(p.properties,'Gancho') || getProp(p.properties,'Tema'),
+                tema: getProp(p.properties,'Tema'),
+                pilar: getProp(p.properties,'Pilar'),
+                formato: getProp(p.properties,'Formato'),
+                emocao: getProp(p.properties,'Emocao') || getProp(p.properties,'Emoção'),
+                guardiaOrigem: getProp(p.properties,'Guardia de Origem') || getProp(p.properties,'Guardiã de Origem'),
+                prioridade: getProp(p.properties,'Prioridade'),
+                status: getProp(p.properties,'Status')
+              })).filter(h => h.text || h.tema);
+              cache.stats.temas = cache.hooks.length;
+            } catch(e) { console.error('hooks:',e.message); }
+            try {
+              const r = await queryDB(DBS.reelsVideos);
+              const items = (r.results||[]).map(p => ({
+                titulo: getProp(p.properties,'Nome')||getProp(p.properties,'Name')||getProp(p.properties,'Titulo'),
+                nome: getProp(p.properties,'Nome')||getProp(p.properties,'Name'),
+                plataforma: getProp(p.properties,'Plataforma')||'Instagram',
+                categoria: getProp(p.properties,'Categoria')||getProp(p.properties,'Tipo'),
+                formato: getProp(p.properties,'Formato')||'Reel',
+                guardiaOrigem: getProp(p.properties,'Guardia de Origem')||getProp(p.properties,'Guardiã de Origem')||'Manual',
+                thumbnail: ''
+              })).filter(r => r.titulo);
+              cache.reels = items;
+              cache.reelsVideos = items;
+              cache.stats.reels = items.length;
+            } catch(e) { console.error('reels:',e.message); }
+            try {
+              const r = await queryDB(DBS.referenciaVisual);
+              cache.referenciaVisual = (r.results||[]).map(p => ({
+                titulo: getProp(p.properties,'Nome')||getProp(p.properties,'Name'),
+                tipo: getProp(p.properties,'Tipo')||'',
+                guardiaOrigem: getProp(p.properties,'Guardia de Origem')||''
+              })).filter(r => r.titulo);
+              cache.stats.refs = cache.referenciaVisual.length;
+            } catch(e) { console.error('refs:',e.message); }
+            try {
+              const r = await queryDB(DBS.conteudoProducao);
+              cache.conteudoProducao = (r.results||[]).map(p => ({
+                titulo: getProp(p.properties,'Nome')||getProp(p.properties,'Name'),
+                status: getProp(p.properties,'Status'),
+                formato: getProp(p.properties,'Formato')
+              })).filter(r => r.titulo);
+            } catch(e) { console.error('conteudo:',e.message); }
+            try {
+              const r = await queryDB(DBS.metricas);
+              cache.metricas = (r.results||[]).map(p => ({
+                periodo: getProp(p.properties,'Mes')||getProp(p.properties,'Mês')||getProp(p.properties,'Nome')||getProp(p.properties,'Name'),
+                seguidores: getProp(p.properties,'Seguidores')||'',
+                alcance: getProp(p.properties,'Alcance')||''
+              })).filter(r => r.periodo);
+            } catch(e) { console.error('metricas:',e.message); }
+            fs.writeFileSync('data/notion-cache.json', JSON.stringify(cache, null, 2));
+            console.log('Done! hooks:' + cache.hooks.length + ' reels:' + cache.reels.length);
+          }
+          main().catch(e => { console.error(e); process.exit(1); });
+          "
+
+      - name: Commit updated cache
+        run: |
+          git config user.name "Vila Bot"
+          git config user.email "bot@vila-das-pedras.noreply"
+          git add data/notion-cache.json
+          if git diff --staged --quiet; then
+            echo "Sem mudancas"
+          else
+            git commit -m "sync: Notion cache $(date -u +%Y-%m-%dT%H:%M)"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
