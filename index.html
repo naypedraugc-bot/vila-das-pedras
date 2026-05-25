@@ -353,9 +353,12 @@ textarea.config-input{resize:vertical;min-height:65px;}
       <button class="profile-add" onclick="nav('config',this);mobClose()">➕ Gerenciar projetos</button>
     </div>
   </div>
+  <!-- MENU ESTÁTICO BASE — sobrescrito por renderMenu() quando cache Notion carrega -->
+  <div id="nav-dynamic">
   <div class="nav-section">
     <div class="nav-label">Visão Geral</div>
     <button class="nav-item active" onclick="nav('home',this);mobClose()">🏠 Home</button>
+    <button class="nav-item" onclick="nav('config',this);mobClose()">⚙️ Configurar Projeto</button>
     <button class="nav-item" onclick="nav('agentes',this);mobClose()">💎 As 7 Guardiãs</button>
     <button class="nav-item" onclick="nav('metricas',this);mobClose()">📊 Métricas</button>
   </div>
@@ -367,18 +370,17 @@ textarea.config-input{resize:vertical;min-height:65px;}
     <button class="nav-item" onclick="nav('carrossel',this);mobClose()">🎠 Gerar Carrossel</button>
   </div>
   <div class="nav-section">
-    <div class="nav-label">Conteúdo</div>
-    <button class="nav-item" onclick="nav('tiktok',this);mobClose()">🎵 Vídeos TikTok</button>
-    <button class="nav-item" onclick="nav('instagram',this);mobClose()">📸 Salvos Instagram</button>
-    <button class="nav-item" onclick="nav('bau',this);mobClose()">💡 Baú de Temas</button>
-    <button class="nav-item" onclick="nav('ferramentas',this);mobClose()">🤖 Ferramentas IA</button>
+    <div class="nav-label">Referências</div>
+    <button class="nav-item" onclick="nav('reels-videos',this);mobClose()">🎬 Reels e Vídeos</button>
+    <button class="nav-item" onclick="nav('ref-visual',this);mobClose()">🎨 Referência Visual</button>
+    <button class="nav-item" onclick="nav('universo',this);mobClose()">🌌 Universo Criativo &amp; Ideias</button>
+    <button class="nav-item" onclick="nav('ferramentas',this);mobClose()">🤖 Ferramentas de IA</button>
     <button class="nav-item" onclick="nav('ctas',this);mobClose()">📣 Banco de CTAs</button>
-    <button class="nav-item" onclick="nav('reels',this);mobClose()">🎬 Reels para Gravar</button>
+    <button class="nav-item" onclick="nav('producao',this);mobClose()">🎬 Conteúdos em Produção</button>
     <button class="nav-item" onclick="nav('calendario',this);mobClose()">📅 Calendário</button>
+    <button class="nav-item" onclick="nav('metricas-conteudo',this);mobClose()">📈 Métricas de Conteúdo</button>
+    <button class="nav-item" onclick="nav('hooks',this);mobClose()">🪝 Hooks</button>
   </div>
-  <div class="nav-section">
-    <div class="nav-label">Sistema</div>
-    <button class="nav-item" onclick="nav('config',this);mobClose()">⚙️ Configurar Projeto</button>
   </div>
 </nav>
 
@@ -728,6 +730,64 @@ textarea.config-input{resize:vertical;min-height:65px;}
   </div>
 </div>
 
+<!-- ══ REELS E VÍDEOS ══ -->
+<div class="page" id="page-reels-videos">
+  <div class="page-top"><div class="page-badge">Referências</div><h2>Reels e <em>Vídeos</em></h2><p>Referências de vídeos salvos via Notion — sincronizadas automaticamente.</p></div>
+  <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">Gancho</button><button class="filter-btn">Formato</button><button class="filter-btn">Tendência</button><button class="refresh-btn" onclick="carregarNotionCache()">↻ Sincronizar</button></div>
+  <div class="notion-grid" id="grid-reels-videos"><div class="empty-state">🎬 Nenhum vídeo salvo ainda.<br><small>Adicione referências no Notion — 🎥 Reels e Vídeos — e sincronize.</small></div></div>
+</div>
+
+<!-- ══ REFERÊNCIA VISUAL ══ -->
+<div class="page" id="page-ref-visual">
+  <div class="page-top"><div class="page-badge">Referências</div><h2>Referência <em>Visual</em></h2><p>Galeria de referências estéticas — capas, paletas, composição.</p></div>
+  <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">Estética</button><button class="filter-btn">Capa</button><button class="filter-btn">Paleta</button><button class="refresh-btn" onclick="carregarNotionCache()">↻ Sincronizar</button></div>
+  <div class="notion-grid" id="grid-ref-visual"><div class="empty-state">🎨 Nenhuma referência visual ainda.<br><small>Adicione no Notion — 📸 Referência Visual — e sincronize.</small></div></div>
+</div>
+
+<!-- ══ UNIVERSO CRIATIVO & IDEIAS ══ -->
+<div class="page" id="page-universo">
+  <div class="page-top"><div class="page-badge">Universo Criativo</div><h2>Universo Criativo &amp; <em>Ideias</em></h2><p>Banco de ideias e inspirações organizadas por potencial.</p></div>
+  <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">Alto Potencial</button><button class="filter-btn">Em análise</button><button class="filter-btn">Arquivado</button><button class="refresh-btn" onclick="carregarNotionCache()">↻ Sincronizar</button></div>
+  <div class="notion-grid" id="grid-universo"><div class="empty-state">🌌 Nenhuma ideia salva ainda.<br><small>Adicione no Notion — 💡 Ideias Brutas — e sincronize.</small></div></div>
+</div>
+
+<!-- ══ CONTEÚDOS EM PRODUÇÃO ══ -->
+<div class="page" id="page-producao">
+  <div class="page-top"><div class="page-badge">Pipeline</div><h2>Conteúdos em <em>Produção</em></h2><p>Pipeline Kanban — do briefing à publicação.</p></div>
+  <div class="notion-toolbar">
+    <button class="filter-btn active" onclick="filtrarProducao('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filtrarProducao('Ideia',this)">💡 Ideia</button>
+    <button class="filter-btn" onclick="filtrarProducao('Roteiro',this)">📝 Roteiro</button>
+    <button class="filter-btn" onclick="filtrarProducao('Revisao',this)">🌸 Revisão</button>
+    <button class="filter-btn" onclick="filtrarProducao('Aprovado',this)">✅ Aprovado</button>
+    <button class="filter-btn" onclick="filtrarProducao('Agendado',this)">📅 Agendado</button>
+    <button class="filter-btn" onclick="filtrarProducao('Publicado',this)">🚀 Publicado</button>
+    <button class="refresh-btn" onclick="carregarNotionCache()">↻ Sincronizar</button>
+  </div>
+  <div class="notion-grid" id="grid-producao"><div class="empty-state">🎬 Nenhum conteúdo em produção ainda.<br><small>Adicione no Notion — 🎬 Conteúdos em Produção — e sincronize.</small></div></div>
+</div>
+
+<!-- ══ MÉTRICAS DE CONTEÚDO ══ -->
+<div class="page" id="page-metricas-conteudo">
+  <div class="page-top"><div class="page-badge">Métricas</div><h2>Métricas de <em>Conteúdo</em></h2><p>Performance por conteúdo — puxado do Notion via Make.</p></div>
+  <div class="notion-toolbar"><button class="filter-btn active">Todos</button><button class="filter-btn">🔥 Viral</button><button class="filter-btn">✅ Bom</button><button class="filter-btn">⚠️ Médio</button><button class="refresh-btn" onclick="carregarNotionCache()">↻ Sincronizar</button></div>
+  <div class="notion-grid" id="grid-metricas-conteudo"><div class="empty-state">📈 Nenhuma métrica registrada ainda.<br><small>Adicione no Notion — 📊 Calendário de Conteúdo — e sincronize.</small></div></div>
+</div>
+
+<!-- ══ HOOKS ══ -->
+<div class="page" id="page-hooks">
+  <div class="page-top"><div class="page-badge">Banco Estratégico</div><h2>Banco de <em>Hooks</em></h2><p>Ganchos estratégicos por categoria, emoção e formato.</p></div>
+  <div class="notion-toolbar">
+    <button class="filter-btn active" onclick="filtrarHooks('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filtrarHooks('Viral',this)">🔥 Viral</button>
+    <button class="filter-btn" onclick="filtrarHooks('Autoridade',this)">🔵 Autoridade</button>
+    <button class="filter-btn" onclick="filtrarHooks('Conversao',this)">🟢 Conversão</button>
+    <button class="filter-btn" onclick="filtrarHooks('Conexao',this)">🌸 Conexão</button>
+    <button class="refresh-btn" onclick="carregarNotionCache()">↻ Sincronizar</button>
+  </div>
+  <div class="notion-grid" id="grid-hooks"><div class="loading-state"><div class="loading-dots"><span></span><span></span><span></span></div></div></div>
+</div>
+
 </main>
 
 <!-- ══ MODAL ══ -->
@@ -864,6 +924,22 @@ function deleteProfile(idx){
   profiles.splice(idx,1);if(activeIdx>=profiles.length)activeIdx=0;saveLS();renderProfileCards();
 }
 
+// IMG HELPERS
+function _imgPath(rel){
+  // Constrói path absoluto baseado na URL atual — funciona no GitHub Pages com qualquer subpath
+  var base=window.location.href.split('?')[0].split('#')[0];
+  if(!base.endsWith('/'))base=base.substring(0,base.lastIndexOf('/')+1);
+  return base+rel;
+}
+function vilaImgErr(el,emoji){
+  // Fallback: esconde img quebrada e mostra emoji no container pai
+  el.style.display='none';
+  var p=el.parentNode;
+  if(p){p.style.display='flex';p.style.alignItems='center';p.style.justifyContent='center';
+  p.style.fontSize='inherit';
+  var sp=document.createElement('span');sp.textContent=emoji;sp.style.fontSize='inherit';p.appendChild(sp);}
+}
+
 // AGENTS
 var GC={ametista:'linear-gradient(135deg,#1A0A2E,#4A1F7B)',sodalita:'linear-gradient(135deg,#0A1528,#1A3A7C)',aguamarinha:'linear-gradient(135deg,#001820,#004D5C)',quartzorosa:'linear-gradient(135deg,#2E0A1A,#7B1A4A)',citrino:'linear-gradient(135deg,#1A1200,#4A3500)',cornalina:'linear-gradient(135deg,#2E0A00,#7B1A00)',onix:'linear-gradient(135deg,#0A0A0A,#1E1E1E)'};
 function makePrompt(role,desc,mission,structure,extra,p){return 'Voce e '+role+'\n\nProjeto ativo: '+p.name+'\nNicho: '+p.niche+'\nDescricao: '+p.desc+'\nPublico: '+p.audience+'\nRedes: '+p.social+'\nTom: '+p.tone+'\nRegras: '+(p.rules||'')+'\n\n'+mission+'\n\n'+structure+(extra?'\n\n'+extra:'');}
@@ -906,15 +982,13 @@ function renderPipeline(cid){
     '<div class="gem-card" onclick="openModal(\''+k+'\')" style="position:relative">'+
     '<div class="gem-num">'+a.step+'</div>'+
     '<div class="gem-chakra">'+a.chakra.split('·')[0].trim()+'</div>'+
-    '<div class="gem-visual" style="background:'+GC[k]+'" id="gv-'+k+'"><span style="font-size:56px">'+a.emoji+'</span></div>'+
+    '<div class="gem-visual" style="background:'+GC[k]+';padding:0;overflow:hidden">'+
+    '<img src="'+_imgPath(a.img)+'" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block"'+
+    ' onerror="vilaImgErr(this,\''+a.emoji+'\')" />'+
+    '</div>'+
     '<div class="gem-body"><div class="gem-name">'+a.name+'</div><div class="gem-guardian" style="color:'+a.color+'">'+a.guardian+'</div><div class="gem-desc">'+a.meaning.substring(0,45)+'...</div></div>'+
     '</div>';
   }).join('');
-  Object.keys(AGENTS).forEach(function(k){
-    var img=new Image();
-    img.onload=function(){var el=document.getElementById('gv-'+k);if(el)el.innerHTML='<img src="'+AGENTS[k].img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block"/>';};
-    img.src=AGENTS[k].img;
-  });
 }
 
 // AGENT LIST
@@ -922,17 +996,16 @@ function renderAgentList(){
   var list=document.getElementById('agent-list');if(!list)return;
   var p=getP();
   list.innerHTML='<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:7px">Escolha a guardia</div>'+
-  Object.keys(AGENTS).map(function(k){var a=AGENTS[k];return '<button class="agent-pick '+(k===currentAgent?'selected':'')+'" onclick="selectAgent(\''+k+'\',this)"><div style="width:32px;height:32px;border-radius:8px;background:'+GC[k]+';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0" id="apv-'+k+'">'+a.emoji+'</div><div><div class="agent-pick-name">'+a.name+'</div><div class="agent-pick-role">'+a.guardian+'</div></div></button>';}).join('')+
+  Object.keys(AGENTS).map(function(k){var a=AGENTS[k];return '<button class="agent-pick '+(k===currentAgent?'selected':'')+'" onclick="selectAgent(\''+k+'\',this)"><div style="width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0"><img src="'+_imgPath(a.img)+'" style="width:32px;height:32px;object-fit:cover;object-position:top;display:block" onerror="vilaImgErr(this,\''+a.emoji+'\')" /></div><div><div class="agent-pick-name">'+a.name+'</div><div class="agent-pick-role">'+a.guardian+'</div></div></button>';}).join('')+
   '<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)"><div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px">Projeto ativo</div><div style="background:var(--gold-pale);border:1px solid rgba(201,150,58,.2);border-radius:7px;padding:7px 9px"><div style="font-size:11px;font-weight:600;color:var(--gold-light)" id="ap-name">'+p.name+'</div><div style="font-size:9px;color:var(--text-dim);margin-top:1px" id="ap-niche">'+p.niche.substring(0,26)+'...</div></div></div>';
-  Object.keys(AGENTS).forEach(function(k){var img=new Image();img.onload=function(){var el=document.getElementById('apv-'+k);if(el)el.innerHTML='<img src="'+AGENTS[k].img+'" style="width:32px;height:32px;border-radius:8px;object-fit:cover;object-position:top;display:block"/>';};img.src=AGENTS[k].img;});
+  // img loading handled inline above
 }
 
 // MODAL
 function openModal(key){
   currentModalKey=key;var a=AGENTS[key];var p=getP();
   var wrap=document.getElementById('modal-avatar-wrap');
-  wrap.innerHTML='<div id="mav" style="width:56px;height:56px;border-radius:12px;background:'+GC[key]+';display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0">'+a.emoji+'</div>';
-  var img=new Image();img.onload=function(){var el=document.getElementById('mav');if(el)el.innerHTML='<img src="'+a.img+'" style="width:56px;height:56px;border-radius:12px;object-fit:cover;object-position:top"/>';};img.src=a.img;
+  wrap.innerHTML='<div style="width:56px;height:56px;border-radius:12px;background:'+GC[key]+';overflow:hidden;flex-shrink:0"><img src="'+_imgPath(a.img)+'" style="width:56px;height:56px;object-fit:cover;object-position:top;display:block" onerror="vilaImgErr(this,\''+a.emoji+'\')"/></div>';
   document.getElementById('m-step').textContent='Guardia '+a.step+' de 7';
   document.getElementById('m-name').textContent=a.name;
   document.getElementById('m-guardian').textContent=a.guardian;document.getElementById('m-guardian').style.color=a.color;
@@ -1101,111 +1174,336 @@ function copyPromptResult(){navigator.clipboard.writeText(document.getElementByI
 function copyInfluencerPrompt(){var p='Crie um avatar/influencer digital:\nGenero: [feminino/masculino]\nEtnia: [brasileira]\nIdade: [25-30 anos]\nCabelo: [cor, estilo]\nExpressao: [confiante, sorridente]\nRoupa: [casual chique]\nCenario: [home office clean]\nEstilo: hiper-realista, fotografia profissional, 8K, sharp focus';navigator.clipboard.writeText(p);alert('✅ Prompt copiado!');}
 
 
+
 // ══════════════════════════════════════════════════════
 // VILA DAS PEDRAS — MÓDULO DE INTEGRAÇÃO NOTION + MAKE
 // ══════════════════════════════════════════════════════
-//
-// ARQUITETURA DA INTEGRAÇÃO:
-//
-//  NOTION (banco de dados)
-//    ↓  API pública do Notion (notion-sync.js ou Make)
-//  MAKE (automação)
-//    ↓  Webhook → GitHub Pages (data/notion-cache.json)
-//  SITE (interface visual)
-//    ↓  fetch() → lê JSON → atualiza cards
-//  GUARDIÃS (Claude Projects)
-//    ↓  consomem contexto via copy/paste ou automação
-//
-// ══════════════════════════════════════════════════════
-
 var VILA_CONFIG = {
-  // ── CONFIGURE AQUI ──────────────────────────────────
-  // 1. Sua Notion Integration Token (gerada em notion.so/my-integrations)
-  notionToken: '',  // 'secret_XXXXXXXX...'
-
-  // 2. IDs dos databases do Notion (copie da URL de cada database)
+  // OPÇÃO A — Notion direto (CORS bloqueado em produção, usar só em dev)
+  notionToken:  '',         // 'secret_XXXXXXXX...'
   databases: {
-    pesquisasAmetista:  '',  // ID do database 🌐 Pesquisas da Ametista
-    hooks:              '',  // ID do database 🧠 Hooks - BAÚ DE TEMAS
-    reelsVideos:        '',  // ID do database 🎥 Reels e Vídeos
-    referenciaVisual:   '',  // ID do database 📸 Referência Visual
-    conteudoProducao:   '',  // ID do database 🎬 Conteúdos em Produção
-    metricas:           '',  // ID do database 📊 Calendário de Conteúdo/Métricas
+    pesquisasAmetista: '',
+    hooks:             '',
+    reelsVideos:       '',
+    referenciaVisual:  '',
+    universo:          '',
+    conteudoProducao:  '',
+    metricas:          '',
   },
-
-  // 3. URL do webhook do Make (criado no Make.com)
-  makeWebhook: '',  // 'https://hook.eu1.make.com/XXXXXXXX'
-
-  // 4. Caminho do cache JSON local (gerado pelo Make)
-  cacheFile: 'data/notion-cache.json',
-  // ────────────────────────────────────────────────────
+  // OPÇÃO B — Make webhook (não precisa escrever no GitHub)
+  makeWebhook: '',          // 'https://hook.eu1.make.com/XXXXXXXX'
+  // OPÇÃO C — JSON estático no GitHub (método atual, funciona bem)
+  cacheFile:   'data/notion-cache.json',
+  // OPÇÃO D — Notion via proxy público (notion2json, super.so, etc)
+  notionProxyUrl: '',       // ex: 'https://notion-api.splitbee.io/v1/table/SEU-ID'
 };
 
-// ── CARREGAR DADOS DO NOTION (via cache JSON gerado pelo Make) ──
 var NOTION_DATA = {};
 
-async function carregarNotionCache() {
-  try {
-    var res = await fetch(VILA_CONFIG.cacheFile + '?v=' + Date.now());
-    if (!res.ok) return;
-    NOTION_DATA = await res.json();
-    console.log('[Vila] Cache Notion carregado:', Object.keys(NOTION_DATA));
-    aplicarDadosNotion();
-  } catch(e) {
-    console.log('[Vila] Cache Notion não encontrado — usando dados locais.');
+// ── MENU DINÂMICO — lê estrutura do cache e reconstrói o nav ──────────
+function renderMenu() {
+  var nav = document.getElementById('nav-dynamic');
+  if (!nav) return;
+
+  // Seções fixas sempre presentes
+  var secoes = [
+    {
+      label: 'Visão Geral',
+      items: [
+        { icon:'🏠', label:'Home',               id:'home' },
+        { icon:'⚙️', label:'Configurar Projeto', id:'config' },
+        { icon:'💎', label:'As 7 Guardiãs',      id:'agentes' },
+        { icon:'📊', label:'Métricas',            id:'metricas' },
+      ]
+    },
+    {
+      label: 'Criação com IA',
+      items: [
+        { icon:'🔮', label:'Conselho das Pedras', id:'conselho' },
+        { icon:'👤', label:'Criar Influencer',    id:'influencer' },
+        { icon:'🎬', label:'Estúdio de Vídeos',   id:'videos' },
+        { icon:'🎠', label:'Gerar Carrossel',     id:'carrossel' },
+      ]
+    },
+    {
+      label: 'Referências',
+      items: [
+        { icon:'🎬', label:'Reels e Vídeos',             id:'reels-videos' },
+        { icon:'🎨', label:'Referência Visual',           id:'ref-visual' },
+        { icon:'🌌', label:'Universo Criativo & Ideias',  id:'universo' },
+        { icon:'🤖', label:'Ferramentas de IA',           id:'ferramentas' },
+        { icon:'📣', label:'Banco de CTAs',               id:'ctas' },
+        { icon:'🎬', label:'Conteúdos em Produção',       id:'producao' },
+        { icon:'📅', label:'Calendário',                  id:'calendario' },
+        { icon:'📈', label:'Métricas de Conteúdo',        id:'metricas-conteudo' },
+        { icon:'🪝', label:'Hooks',                       id:'hooks' },
+      ]
+    }
+  ];
+
+  // Se cache tem estrutura extra do Notion, injeta dinamicamente
+  if (NOTION_DATA.menu && NOTION_DATA.menu.length > 0) {
+    secoes.push({ label: 'Do Notion', items: NOTION_DATA.menu });
   }
+
+  nav.innerHTML = secoes.map(function(s) {
+    return '<div class="nav-section"><div class="nav-label">' + s.label + '</div>' +
+      s.items.map(function(item) {
+        return '<button class="nav-item" onclick="nav(\'' + item.id + '\',this);mobClose()">' +
+          item.icon + ' ' + item.label + '</button>';
+      }).join('') +
+    '</div>';
+  }).join('');
+
+  // Reaplica active no item correto
+  document.querySelectorAll('.nav-item').forEach(function(btn) {
+    if (btn.textContent.trim().includes('Home')) btn.classList.add('active');
+  });
 }
 
-// ── APLICAR DADOS DO NOTION NOS CARDS DO SITE ──
-function aplicarDadosNotion() {
-  // Baú de Temas (Hooks)
-  if (NOTION_DATA.hooks && NOTION_DATA.hooks.length > 0) {
-    var g = document.getElementById('grid-bau');
-    if (g) {
-      g.innerHTML = NOTION_DATA.hooks.map(function(item) {
-        var pc = item.pilar === 'Viral' ? 'r' : item.pilar === 'Autoridade' ? 'b' : item.pilar === 'Conversao' ? 'g' : 'p';
-        return '<div class="notion-card"><div class="notion-card-top">' +
-          '<div style="font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px">' + (item.pilar || '') + '</div>' +
-          '<div class="notion-card-title">' + (item.titulo || '') + '</div>' +
-          '<div class="notion-card-meta" style="font-style:italic;margin-top:3px">' + (item.hook || '') + '</div>' +
-          '</div><div class="notion-card-tags">' +
-          '<span class="notion-tag ' + pc + '">' + (item.formato || '') + '</span>' +
-          '<span class="notion-tag">' + (item.status || '') + '</span>' +
-          '</div></div>';
-      }).join('');
-    }
+// ── CARREGAR CACHE E APLICAR ──────────────────────────────────────────
+async function carregarNotionCache() {
+  // Tenta as fontes em ordem: proxy Notion → JSON estático → dados locais
+
+  // OPÇÃO D: Notion via proxy público (splitbee/notion-api)
+  if (VILA_CONFIG.notionProxyUrl) {
+    try {
+      var rp = await fetch(VILA_CONFIG.notionProxyUrl, { cache: 'no-store' });
+      if (rp.ok) {
+        var raw = await rp.json();
+        // Adapta formato do proxy para NOTION_DATA
+        NOTION_DATA = _adaptarProxyNotion(raw);
+        console.log('[Vila] Notion proxy carregado');
+        renderMenu(); aplicarDadosNotion(); return;
+      }
+    } catch(e) { console.log('[Vila] Proxy Notion falhou:', e.message); }
   }
 
-  // Reels para Gravar
-  if (NOTION_DATA.reels && NOTION_DATA.reels.length > 0) {
-    var list = document.getElementById('reels-list');
-    if (list) {
-      list.innerHTML = NOTION_DATA.reels.map(function(r, i) {
-        return '<div class="notion-card"><div class="notion-card-top" style="display:flex;align-items:center;gap:12px">' +
-          '<div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:700;color:var(--text-dim);width:32px;flex-shrink:0;text-align:center">' + String(i+1).padStart(2,'0') + '</div>' +
-          '<div><div class="notion-card-title">' + (r.titulo || '') + '</div>' +
-          '<div class="notion-card-meta" style="font-style:italic;margin-top:2px">"' + (r.hook || '') + '"</div></div>' +
-          '</div><div class="notion-card-tags"><span class="notion-tag r">Para gravar</span>' +
-          '<span class="notion-tag b">' + (r.formato || '') + '</span></div></div>';
-      }).join('');
+  // OPÇÃO C: JSON estático no GitHub Pages (método padrão)
+  var base = window.location.href.split('?')[0].split('#')[0];
+  if (!base.endsWith('/')) base = base.substring(0, base.lastIndexOf('/') + 1);
+  var cachePath = base + VILA_CONFIG.cacheFile;
+  try {
+    var res = await fetch(cachePath + '?t=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      NOTION_DATA = await res.json();
+      console.log('[Vila] Cache JSON carregado:', cachePath);
+      renderMenu(); aplicarDadosNotion(); return;
     }
-  }
+    console.log('[Vila] Cache nao encontrado:', cachePath);
+  } catch(e) { console.log('[Vila] Erro cache:', e.message); }
+
+  // Fallback: dados locais ja embutidos nas funcoes (loadBAU, renderReels, etc)
+  console.log('[Vila] Usando dados locais embutidos.');
+}
+
+// Adapta resposta do Notion API proxy para o formato NOTION_DATA
+function _adaptarProxyNotion(raw) {
+  // O proxy notion-api.splitbee.io retorna array de pages com propriedades
+  // Adapte os nomes das propriedades conforme seus databases do Notion
+  var out = { hooks:[], reels:[], reelsVideos:[], referenciaVisual:[], universo:[], conteudoProducao:[], metricas:[], stats:{} };
+  if (!Array.isArray(raw)) return out;
+  raw.forEach(function(page) {
+    var p = page.properties || page;
+    // Hooks / Baú de Temas
+    if (p.Titulo || p.titulo || p.Nome) {
+      out.hooks.push({
+        titulo:  p.Titulo || p.titulo || p.Nome || '',
+        hook:    p.Hook || p.Gancho || '',
+        pilar:   p.Pilar || '',
+        formato: p.Formato || '',
+        status:  p.Status || '',
+        guardiaOrigem: p['Guardia de Origem'] || p.Guardia || 'Manual'
+      });
+    }
+  });
+  out.stats.temas = out.hooks.length;
+  return out;
+}
+
+// ── APLICAR DADOS EM TODOS OS GRIDS ──────────────────────────────────
+function aplicarDadosNotion() {
 
   // Stats da Home
   if (NOTION_DATA.stats) {
-    var nr = document.getElementById('dash-reels');
-    if (nr && NOTION_DATA.stats.reels) nr.textContent = NOTION_DATA.stats.reels;
+    var sr = document.getElementById('dash-reels');
+    if (sr && NOTION_DATA.stats.reels) sr.textContent = NOTION_DATA.stats.reels;
+  }
+
+  // HOOKS (Baú + página hooks)
+  if (NOTION_DATA.hooks && NOTION_DATA.hooks.length > 0) {
+    _renderGridHooks('grid-bau',   NOTION_DATA.hooks);
+    _renderGridHooks('grid-hooks', NOTION_DATA.hooks);
+  } else {
+    loadBAU(); // fallback local
+    renderHooksLocal();
+  }
+
+  // REELS PARA GRAVAR (página legada)
+  if (NOTION_DATA.reels && NOTION_DATA.reels.length > 0) {
+    _renderGridReels('reels-list', NOTION_DATA.reels);
+  }
+
+  // REELS E VÍDEOS (nova página)
+  if (NOTION_DATA.reelsVideos && NOTION_DATA.reelsVideos.length > 0) {
+    _renderGridReelsVideos('grid-reels-videos', NOTION_DATA.reelsVideos);
+  }
+
+  // REFERÊNCIA VISUAL
+  if (NOTION_DATA.referenciaVisual && NOTION_DATA.referenciaVisual.length > 0) {
+    _renderGridRefVisual('grid-ref-visual', NOTION_DATA.referenciaVisual);
+  }
+
+  // UNIVERSO CRIATIVO
+  if (NOTION_DATA.universo && NOTION_DATA.universo.length > 0) {
+    _renderGridUniverso('grid-universo', NOTION_DATA.universo);
+  }
+
+  // CONTEÚDOS EM PRODUÇÃO
+  if (NOTION_DATA.conteudoProducao && NOTION_DATA.conteudoProducao.length > 0) {
+    _renderGridProducao('grid-producao', NOTION_DATA.conteudoProducao);
+  }
+
+  // MÉTRICAS DE CONTEÚDO
+  if (NOTION_DATA.metricas && NOTION_DATA.metricas.length > 0) {
+    _renderGridMetricasConteudo('grid-metricas-conteudo', NOTION_DATA.metricas);
   }
 }
 
-// ── ENVIAR EVENTO PARA O MAKE (webhook) ──
-// Chame esta função para disparar automações no Make
-// Exemplo: vilaWebhook('nova_referencia', { titulo: 'Meu Reel', formato: 'Reel' })
+// ── RENDERERS INDIVIDUAIS ─────────────────────────────────────────────
+
+function _renderGridHooks(gridId, data) {
+  var g = document.getElementById(gridId); if (!g) return;
+  g.innerHTML = data.map(function(item) {
+    var pc = {Viral:'r', Autoridade:'b', Conversao:'g', Conexao:'p'}[item.pilar] || '';
+    return '<div class="notion-card"><div class="notion-card-top">' +
+      '<div style="font-size:8.5px;font-weight:700;text-transform:uppercase;color:var(--gold);margin-bottom:4px">' + (item.pilar||'') + '</div>' +
+      '<div class="notion-card-title">' + (item.titulo||'') + '</div>' +
+      '<div class="notion-card-meta" style="font-style:italic;margin-top:3px">' + (item.hook||'') + '</div>' +
+      '</div><div class="notion-card-tags"><span class="notion-tag '+pc+'">' + (item.formato||'') + '</span>' +
+      '<span class="notion-tag">' + (item.status||'') + '</span>' +
+      (item.guardiaOrigem ? '<span class="notion-tag p">' + item.guardiaOrigem + '</span>' : '') +
+      '</div></div>';
+  }).join('');
+}
+
+function renderHooksLocal() {
+  var dados = [
+    {titulo:'Transformei o Claude numa equipe de conteudo',hook:'"Voce ainda usa IA pra pedir legenda?"',pilar:'Viral',formato:'Reel Dinamico',status:'Prioridade'},
+    {titulo:'6 ferramentas de IA sem pagar nada',hook:'"Voce nao precisa pagar caro pra usar IA."',pilar:'Autoridade',formato:'Carrossel',status:'Para criar'},
+    {titulo:'Como crio conteudo para 3 clientes',hook:'"A resposta cabe em 60 segundos."',pilar:'Autoridade',formato:'Reel',status:'Para gravar'},
+    {titulo:'5 servicos com IA para oferecer hoje',hook:'"Se voce sabe usar IA, ja tem um negocio."',pilar:'Conversao',formato:'Carrossel',status:'Para criar'},
+    {titulo:'A ferramenta que virou meu vicio (gratuita)',hook:'"Essa IA parece ilegal de tao boa."',pilar:'Viral',formato:'Reel',status:'Para gravar'},
+    {titulo:'Por que sua legenda nao converte',hook:'"A legenda nao e decoracao. E venda."',pilar:'Autoridade',formato:'Carrossel',status:'Para criar'},
+  ];
+  _renderGridHooks('grid-hooks', dados);
+}
+
+function filtrarHooks(pilar, btn) {
+  document.querySelectorAll('#page-hooks .filter-btn').forEach(function(b){b.classList.remove('active');});
+  if (btn) btn.classList.add('active');
+  var src = (NOTION_DATA.hooks && NOTION_DATA.hooks.length > 0) ? NOTION_DATA.hooks : [];
+  var filtrado = pilar === 'todos' ? src : src.filter(function(h){return h.pilar === pilar;});
+  _renderGridHooks('grid-hooks', filtrado);
+}
+
+function _renderGridReels(listId, data) {
+  var list = document.getElementById(listId); if (!list) return;
+  list.innerHTML = data.map(function(r, i) {
+    return '<div class="notion-card"><div class="notion-card-top" style="display:flex;align-items:center;gap:12px">' +
+      '<div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:700;color:var(--text-dim);width:32px;flex-shrink:0;text-align:center">' + String(i+1).padStart(2,'0') + '</div>' +
+      '<div><div class="notion-card-title">' + (r.titulo||'') + '</div>' +
+      '<div class="notion-card-meta" style="font-style:italic;margin-top:2px">"' + (r.hook||'') + '"</div></div>' +
+      '</div><div class="notion-card-tags"><span class="notion-tag r">Para gravar</span>' +
+      '<span class="notion-tag b">' + (r.formato||'') + '</span></div></div>';
+  }).join('');
+}
+
+function _renderGridReelsVideos(gridId, data) {
+  var g = document.getElementById(gridId); if (!g) return;
+  if (!data.length) { g.innerHTML = '<div class="empty-state">🎬 Nenhum vídeo salvo ainda.</div>'; return; }
+  g.innerHTML = data.map(function(item) {
+    return '<div class="notion-card">' +
+      (item.thumbnail ? '<img src="' + item.thumbnail + '" style="width:100%;height:120px;object-fit:cover;display:block;"/>' : '') +
+      '<div class="notion-card-top"><div class="notion-card-title">' + (item.titulo||item.nome||'') + '</div>' +
+      '<div class="notion-card-meta">' + (item.plataforma||'') + ' · ' + (item.categoria||'') + '</div>' +
+      '</div><div class="notion-card-tags">' +
+      '<span class="notion-tag b">' + (item.formato||'Vídeo') + '</span>' +
+      (item.guardiaOrigem ? '<span class="notion-tag p">' + item.guardiaOrigem + '</span>' : '') +
+      '</div></div>';
+  }).join('');
+}
+
+function _renderGridRefVisual(gridId, data) {
+  var g = document.getElementById(gridId); if (!g) return;
+  if (!data.length) { g.innerHTML = '<div class="empty-state">🎨 Nenhuma referência visual ainda.</div>'; return; }
+  g.innerHTML = data.map(function(item) {
+    return '<div class="notion-card">' +
+      (item.imagem ? '<img src="' + item.imagem + '" style="width:100%;height:140px;object-fit:cover;display:block;"/>' : '<div style="width:100%;height:140px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:36px">🎨</div>') +
+      '<div class="notion-card-top"><div class="notion-card-title">' + (item.titulo||item.nome||'') + '</div>' +
+      '<div class="notion-card-meta">' + (item.categoria||'') + '</div>' +
+      '</div><div class="notion-card-tags"><span class="notion-tag">' + (item.formato||'Visual') + '</span></div></div>';
+  }).join('');
+}
+
+function _renderGridUniverso(gridId, data) {
+  var g = document.getElementById(gridId); if (!g) return;
+  if (!data.length) { g.innerHTML = '<div class="empty-state">🌌 Nenhuma ideia salva ainda.</div>'; return; }
+  g.innerHTML = data.map(function(item) {
+    var pc = {Alto:'g', Medio:'b', Baixo:'r'}[item.potencial] || '';
+    return '<div class="notion-card"><div class="notion-card-top">' +
+      '<div class="notion-card-title">' + (item.titulo||'') + '</div>' +
+      '<div class="notion-card-meta">' + (item.hook||item.descricao||'') + '</div>' +
+      '</div><div class="notion-card-tags">' +
+      '<span class="notion-tag '+pc+'">' + (item.potencial||'') + '</span>' +
+      '<span class="notion-tag">' + (item.formato||'Ideia') + '</span>' +
+      '</div></div>';
+  }).join('');
+}
+
+function _renderGridProducao(gridId, data) {
+  var g = document.getElementById(gridId); if (!g) return;
+  if (!data.length) { g.innerHTML = '<div class="empty-state">🎬 Nenhum conteúdo em produção ainda.</div>'; return; }
+  var statusCor = {Ideia:'',Roteiro:'b',Design:'p',Revisao:'',Aprovado:'g',Agendado:'b',Publicado:'g'};
+  g.innerHTML = data.map(function(item) {
+    var sc = statusCor[item.status] || '';
+    return '<div class="notion-card"><div class="notion-card-top">' +
+      '<div class="notion-card-title">' + (item.titulo||'') + '</div>' +
+      '<div class="notion-card-meta">' + (item.formato||'') + ' · ' + (item.pilar||'') + '</div>' +
+      '</div><div class="notion-card-tags">' +
+      '<span class="notion-tag '+sc+'">' + (item.status||'') + '</span>' +
+      (item.guardiaOrigem ? '<span class="notion-tag p">' + item.guardiaOrigem + '</span>' : '') +
+      (item.data ? '<span class="notion-tag">' + item.data + '</span>' : '') +
+      '</div></div>';
+  }).join('');
+}
+
+function filtrarProducao(status, btn) {
+  document.querySelectorAll('#page-producao .filter-btn').forEach(function(b){b.classList.remove('active');});
+  if (btn) btn.classList.add('active');
+  var src = NOTION_DATA.conteudoProducao || [];
+  var filtrado = status === 'todos' ? src : src.filter(function(c){return c.status === status;});
+  _renderGridProducao('grid-producao', filtrado);
+}
+
+function _renderGridMetricasConteudo(gridId, data) {
+  var g = document.getElementById(gridId); if (!g) return;
+  if (!data.length) { g.innerHTML = '<div class="empty-state">📈 Nenhuma métrica registrada ainda.</div>'; return; }
+  g.innerHTML = data.map(function(item) {
+    var pc = item.resultado === 'Viral' ? 'r' : item.resultado === 'Bom' ? 'g' : 'b';
+    return '<div class="notion-card"><div class="notion-card-top">' +
+      '<div class="notion-card-title">' + (item.titulo||'') + '</div>' +
+      '<div class="notion-card-meta">' + (item.formato||'') + ' · ' + (item.data||'') + '</div>' +
+      '</div><div class="notion-card-tags">' +
+      '<span class="notion-tag '+pc+'">' + (item.resultado||'') + '</span>' +
+      (item.views ? '<span class="notion-tag b">' + item.views + ' views</span>' : '') +
+      '</div></div>';
+  }).join('');
+}
+
+// ── WEBHOOK MAKE ──────────────────────────────────────────────────────
 async function vilaWebhook(evento, dados) {
-  if (!VILA_CONFIG.makeWebhook) {
-    console.log('[Vila] Webhook Make não configurado. Configure VILA_CONFIG.makeWebhook');
-    return;
-  }
+  if (!VILA_CONFIG.makeWebhook) { console.log('[Vila] Webhook não configurado.'); return; }
   try {
     await fetch(VILA_CONFIG.makeWebhook, {
       method: 'POST',
@@ -1213,17 +1511,11 @@ async function vilaWebhook(evento, dados) {
       body: JSON.stringify({ evento: evento, dados: dados, timestamp: new Date().toISOString() })
     });
     console.log('[Vila] Webhook enviado:', evento);
-  } catch(e) {
-    console.log('[Vila] Erro ao enviar webhook:', e);
-  }
+  } catch(e) { console.log('[Vila] Erro webhook:', e); }
 }
 
-// ── INIT DA INTEGRAÇÃO ──
+// ── INIT ──────────────────────────────────────────────────────────────
 carregarNotionCache();
-
-// ══════════════════════════════════════════════════════
-// FIM DO MÓDULO DE INTEGRAÇÃO
-// ══════════════════════════════════════════════════════
 
 // INIT
 updateUI();updateDT();
@@ -1231,6 +1523,7 @@ renderPipeline('pipeline-home');
 renderAgentList();
 renderFerramentas(allFerramentas);
 loadBAU();renderCTAs();renderReels();renderCal();renderMetGrid();
+renderHooksLocal();
 </script>
 </body>
 </html>
