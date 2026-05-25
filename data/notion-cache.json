@@ -1,6 +1,93 @@
 {
-  "conteudos": [],
-  "reels": [],
-  "referencias": [],
-  "projetos": []
+  "_meta": {
+    "gerado_em": "2026-05-24T00:00:00Z",
+    "fonte": "Notion via Make.com",
+    "versao": "1.0",
+    "instrucoes": "Este arquivo é gerado automaticamente pelo Make.com a partir do Notion. Não edite manualmente."
+  },
+
+  "stats": {
+    "reels": 3,
+    "refs": 0,
+    "temas": 6
+  },
+
+  "hooks": [
+    {
+      "titulo": "Transformei o Claude numa equipe de conteúdo",
+      "hook": "\"Você ainda usa IA pra pedir legenda?\"",
+      "pilar": "Viral",
+      "formato": "Reel Dinâmico",
+      "status": "⭐ Prioridade",
+      "guardiaOrigem": "Ametista"
+    },
+    {
+      "titulo": "6 ferramentas de IA sem pagar nada",
+      "hook": "\"Você não precisa pagar caro pra usar IA de verdade.\"",
+      "pilar": "Autoridade",
+      "formato": "Carrossel",
+      "status": "Para criar",
+      "guardiaOrigem": "Manual"
+    },
+    {
+      "titulo": "Como crio conteúdo para 3 clientes",
+      "hook": "\"A resposta cabe em 60 segundos.\"",
+      "pilar": "Autoridade",
+      "formato": "Reel",
+      "status": "Para gravar",
+      "guardiaOrigem": "Manual"
+    },
+    {
+      "titulo": "5 serviços com IA para oferecer hoje",
+      "hook": "\"Se você sabe usar IA, já tem um negócio.\"",
+      "pilar": "Conversao",
+      "formato": "Carrossel",
+      "status": "Para criar",
+      "guardiaOrigem": "Manual"
+    },
+    {
+      "titulo": "A ferramenta que virou meu vício (gratuita)",
+      "hook": "\"Essa IA parece ilegal de tão boa.\"",
+      "pilar": "Viral",
+      "formato": "Reel",
+      "status": "Para gravar",
+      "guardiaOrigem": "Ametista"
+    },
+    {
+      "titulo": "Por que sua legenda não converte",
+      "hook": "\"A legenda não é decoração. É venda.\"",
+      "pilar": "Autoridade",
+      "formato": "Carrossel",
+      "status": "Para criar",
+      "guardiaOrigem": "Manual"
+    }
+  ],
+
+  "reels": [
+    {
+      "titulo": "Transformei o Claude numa equipe de conteúdo",
+      "hook": "\"Você ainda usa IA pra pedir legenda?\"",
+      "formato": "Dinâmico",
+      "status": "Para gravar",
+      "guardiaOrigem": "Água Marinha"
+    },
+    {
+      "titulo": "5 formas de usar IA no seu negócio essa semana",
+      "hook": "\"Não é sobre ChatGPT. É sobre sistema.\"",
+      "formato": "Tela gravada",
+      "status": "Para gravar",
+      "guardiaOrigem": "Água Marinha"
+    },
+    {
+      "titulo": "Essa ferramenta parece ilegal de tão boa",
+      "hook": "\"Descobri uma IA que faz trabalho de um time.\"",
+      "formato": "Print + narração IA",
+      "status": "Para gravar",
+      "guardiaOrigem": "Manual"
+    }
+  ],
+
+  "pesquisasAmetista": [],
+  "referenciaVisual": [],
+  "conteudoProducao": []
 }
