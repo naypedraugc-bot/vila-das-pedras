@@ -1266,6 +1266,7 @@ function renderMenu() {
 async function carregarNotionCache() {
   // FONTE PRINCIPAL: JSONBin (alimentado pelo Make via Notion)
   try {
+    if (!VILA_CONFIG.jsonbinUrl) throw new Error('JSONBin desativado');
     var res = await fetch(VILA_CONFIG.jsonbinUrl, {
       cache: 'no-store',
       headers: { 'X-Access-Key': VILA_CONFIG.jsonbinKey }
